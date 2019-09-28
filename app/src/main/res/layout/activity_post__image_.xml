@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".Post_Image_Activity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/post_image_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:title="Image Post"
+        app:titleTextColor="?attr/textcolor">
+
+        <TextView
+            android:id="@+id/post_image_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="POST"
+            android:textAlignment="viewEnd"
+            android:textColor="?attr/textcolor" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/post_image_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_image_toolbar"
+        android:layout_marginTop="20dp"
+        android:hint="An interesting title"
+        android:paddingLeft="10dp"
+        android:textColor="?attr/textcolor"
+        android:textColorHint="?attr/textcolor" />
+
+
+    <LinearLayout
+        android:id="@+id/linear_cam_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_image_title"
+        android:layout_marginTop="20dp"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/post_image_open_camera"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="30dp"
+            app:cardBackgroundColor="#2196F3"
+            app:cardCornerRadius="75dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_camera_white" />
+        </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAMERA"
+                android:textColor="?attr/textcolor"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="18dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/post_image_open_gallery"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="80dp"
+            app:cardBackgroundColor="#2196F3"
+            app:cardCornerRadius="75dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_photo_librar_white" />
+        </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAMERA"
+                android:textColor="?attr/textcolor"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="35dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/gallery_image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/post_image_title"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/white_black"
+    tools:context=".DashboardFragment">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/dashboard_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:background="?attr/colorPrimary"
+        app:tabTextColor="?attr/textcolor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/dashboard_content_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/reddit_tab_layout"
+        />
+
+</FrameLayout>

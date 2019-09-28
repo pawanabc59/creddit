@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".Post_Link_Activity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/post_link_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:titleTextColor="?attr/textcolor"
+        app:title="Link Post"
+        >
+        <TextView
+            android:id="@+id/post_link_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POST"
+            android:textColor="?attr/textcolor"
+            android:textAlignment="viewEnd"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/post_link_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="An interesting title"
+        android:textColor="?attr/textcolor"
+        android:textColorHint="?attr/textcolor"
+        android:layout_below="@+id/post_link_toolbar"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        />
+
+    <EditText
+        android:id="@+id/post_link_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="http://"
+        android:textColor="?attr/textcolor"
+        android:textColorHint="?attr/textcolor"
+        android:layout_below="@+id/post_link_title"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        />
+
+</RelativeLayout>

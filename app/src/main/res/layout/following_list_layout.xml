@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/white_black"
+    android:layout_marginTop="25dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?attr/colorPrimary"
+        android:padding="15dp"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            app:cardCornerRadius="75dp"
+            >
+
+            <ImageView
+                android:id="@+id/sub_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/zoro"
+                android:scaleType="centerCrop"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/sub_name"
+            android:layout_width="235dp"
+            android:layout_height="30dp"
+            android:text="Zoro Wallpaper"
+            android:layout_marginLeft="15dp"
+            android:textColor="?attr/textcolor"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_star"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

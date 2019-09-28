@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group>
+        <item android:id="@+id/card_save"
+            android:icon="@drawable/ic_save"
+            android:title="Save"/>
+        <item android:id="@+id/card_hide_post"
+            android:icon="@drawable/ic_save"
+            android:title="Hide Post"/>
+        <item android:id="@+id/card_give_award"
+            android:icon="@drawable/ic_star"
+            android:title="Give Award"/>
+        <item android:id="@+id/card_report"
+            android:icon="@drawable/ic_save"
+            android:title="Report"/>
+        <item android:id="@+id/card_block_user"
+            android:icon="@drawable/ic_save"
+            android:title="Block User"/>
+    </group>
+
+</menu>

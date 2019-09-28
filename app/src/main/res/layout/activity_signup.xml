@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".SignupActivity">
+
+    <ImageView
+        android:id="@+id/sign_img"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/zoro"
+        />
+
+    <TextView
+        android:id="@+id/sign_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_img"
+        android:text="Log in to cReddit"
+        android:textSize="22sp"
+        android:textColor="#000"
+        />
+
+    <EditText
+        android:id="@+id/sign_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_txt"
+        android:hint="Username"
+        android:layout_marginTop="25dp"
+        android:inputType="textEmailAddress"
+        />
+
+    <EditText
+        android:id="@+id/sign_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_below="@+id/sign_username"
+        android:inputType="textPassword"
+        android:layout_marginTop="25dp"
+        />
+
+    <EditText
+        android:id="@+id/sign_cpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_below="@+id/sign_password"
+        android:inputType="textPassword"
+        android:layout_marginTop="25dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_cpassword"
+        android:layout_marginTop="25dp"
+        >
+
+        <TextView
+            android:id="@+id/sign_login_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="LOG IN INSTEAD"
+            />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sign_btn_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="CREATE ACCOUNT"
+        android:textSize="20sp"
+        android:textColor="#000"
+        />
+
+</RelativeLayout>
