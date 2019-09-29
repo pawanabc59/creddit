@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="custom feed fragment"
+        android:text="custom feed will come here"
         android:textSize="24sp"
         android:layout_margin="100dp"
         android:textColor="?attr/textcolor"/>

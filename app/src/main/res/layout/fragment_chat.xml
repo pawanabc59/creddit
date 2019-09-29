@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Chat"
+        android:text="You can chat with your friends here"
         android:textColor="?attr/textcolor"
         />
 
