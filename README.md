@@ -18,7 +18,7 @@ A social networking app where people can post and view others post and like them
 	2) Create a small social network
 	
 # Screenshots	
-![alt text](https://github.com/pawanabc59/creddit/blob/master/creddit/screenshots/1.jpg "Manga Reader")
+![](https://github.com/pawanabc59/creddit/blob/master/screenshots/1.jpeg "Manga Reader")
 
 	
 # Features:
