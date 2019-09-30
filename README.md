@@ -18,7 +18,14 @@ A social networking app where people can post and view others post and like them
 	2) Create a small social network
 	
 # Screenshots	
-![](https://github.com/pawanabc59/creddit/blob/master/screenshots/1.jpeg "Manga Reader")
+<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/1.jpeg">		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/2.jpeg">   		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/5.jpeg">		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/6.jpeg">
+
+<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/13.jpeg">		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/14.jpeg">   	<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/15.jpeg">   		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/12.jpeg">
+
+<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/16.jpeg">    	<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/3.jpeg">   	<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/4.jpeg">   	<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/7.jpeg">   	
+
+
+<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/9.jpeg">		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/10.jpeg">   	<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/11.jpeg">   		<img width="200" height="400" alt="img" src="https://github.com/pawanabc59/creddit/blob/master/screenshots/8.jpeg">
 
 	
 # Features:
