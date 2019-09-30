@@ -1,5 +1,5 @@
 # cReddit
-A social networking app where people can post and view others post and like them. It's a clone of the reddit.
+A social networking app where people can post and view others post and like them. It's a clone of the reddit app.
 
 # Get started:
 	* Download the code.
