@@ -1,14 +1,17 @@
-package com.example.creddit;
+package com.example.creddit.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class DashboardTabPageAdapter extends FragmentStatePagerAdapter {
+import com.example.creddit.Fragments.CustomFeedFragment;
+import com.example.creddit.Fragments.SubscriptionFragment;
+
+public class ProfilePageTabAdapter extends FragmentStatePagerAdapter {
 
     int counttab;
 
-    public DashboardTabPageAdapter(FragmentManager fm, int counttab) {
+    public ProfilePageTabAdapter(FragmentManager fm, int counttab) {
         super(fm);
         this.counttab = counttab;
     }
@@ -22,6 +25,9 @@ public class DashboardTabPageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 CustomFeedFragment customFeedFragment = new CustomFeedFragment();
                 return customFeedFragment;
+            case 2:
+                SubscriptionFragment subscriptionFragment1 = new SubscriptionFragment();
+                return subscriptionFragment1;
             default:
                 return null;
         }
@@ -31,4 +37,5 @@ public class DashboardTabPageAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return counttab;
     }
+
 }

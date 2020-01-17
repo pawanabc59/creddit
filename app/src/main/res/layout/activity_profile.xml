@@ -14,6 +14,7 @@
         android:id="@+id/appBarLayout">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
@@ -29,24 +30,26 @@
                 android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/profileBannerImage"
                 android:layout_width="match_parent"
-                android:layout_height="122dp"
+                android:layout_height="@dimen/_110sdp"
                 android:src="@drawable/zoro"
                 android:scaleType="centerCrop"
                 />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginVertical="60dp"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_75sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginVertical="@dimen/_55sdp"
                 app:cardCornerRadius="5dp"
                 app:cardBackgroundColor="?attr/white_black"
                 app:cardElevation="6dp">
 
             <ImageView
-                android:layout_width="95dp"
-                android:layout_height="95dp"
+                android:id="@+id/profileImage"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_75sdp"
                 android:src="@drawable/zoro"
                 android:scaleType="centerCrop"
                 />
@@ -62,8 +65,8 @@
                     android:textStyle="bold"
                     android:textColor="?attr/buttoncolor"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="@dimen/_24sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
                     />
 
             </FrameLayout>

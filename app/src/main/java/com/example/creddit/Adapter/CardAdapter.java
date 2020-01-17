@@ -1,4 +1,4 @@
-package com.example.creddit;
+package com.example.creddit.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creddit.Model.CardModal;
+import com.example.creddit.R;
+import com.example.creddit.SingleImageShowActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -111,7 +114,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnMenuItemClickListener {
 
         TextView card_title, posted_by, card_description;
-        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu;
+        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,6 +129,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             post_comment = itemView.findViewById(R.id.post_comment);
             post_share = itemView.findViewById(R.id.post_share);
             card_menu = itemView.findViewById(R.id.card_menu);
+            post_after_upvote = itemView.findViewById(R.id.post_after_upvote);
+            post_after_downvote = itemView.findViewById(R.id.post_after_downvote);
 
         }
 

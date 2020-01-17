@@ -1,5 +1,6 @@
 package com.example.creddit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -12,11 +13,30 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Post_Image_Activity extends AppCompatActivity {
 
@@ -25,6 +45,20 @@ public class Post_Image_Activity extends AppCompatActivity {
     ImageView gallery_image;
     LinearLayout linear_cam_gallery;
     private Bitmap bitmap;
+    byte[] image_byte_data;
+    Uri filepath;
+    TextView postImagePost,postImageTitle;
+    FirebaseDatabase firebaseDatabase;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    DatabaseReference mRef, mRef_post, mRef_user;
+    String userId,pushId,postTitle,currentDate, cardPostProfile;
+    SimpleDateFormat simpleDateFormat;
+    Date date;
+    int numberOfPosts;
+    ProgressBar postProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +74,30 @@ public class Post_Image_Activity extends AppCompatActivity {
 
         setContentView(R.layout.activity_post__image_);
 
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        date = new Date();
+        currentDate = simpleDateFormat.format(date);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        userId = user.getUid();
+
+        mRef = firebaseDatabase.getReference("creddit");
+        mRef_user = mRef.child("users").child(userId);
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference("creddit");
+
         open_camera = findViewById(R.id.post_image_open_camera);
         open_gallary = findViewById(R.id.post_image_open_gallery);
 
         gallery_image = findViewById(R.id.gallery_image);
         linear_cam_gallery = findViewById(R.id.linear_cam_gallery);
+        postImagePost = findViewById(R.id.post_image_post);
+        postImageTitle = findViewById(R.id.post_image_title);
+        postProgressBar = findViewById(R.id.postProgressBar);
 
         open_camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +113,93 @@ public class Post_Image_Activity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+
+        postImagePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                postImagePost.setVisibility(View.GONE);
+                postProgressBar.setVisibility(View.VISIBLE);
+
+                postTitle = postImageTitle.getText().toString();
+
+                mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        numberOfPosts = ((Long)dataSnapshot.getValue()).intValue();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                if (postTitle.equals("")) {
+                    postImagePost.setVisibility(View.VISIBLE);
+                    postProgressBar.setVisibility(View.GONE);
+                    postImageTitle.setError("Please add a title to post");
+                } else {
+                    pushId = mRef.push().getKey();
+                    mRef_post = mRef.child("posts").child(pushId);
+
+                    UploadTask uploadTask = storageReference.child("posts").child(userId).child(filepath.getLastPathSegment()).putBytes(image_byte_data);
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            storageReference.child("posts").child(userId).child(filepath.getLastPathSegment()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull final Task<Uri> task) {
+
+                                    mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            mRef_post.child("postNumber").setValue((-1)*(numberOfPosts+1));
+                                            mRef_post.child("uploadedBy").setValue(dataSnapshot.child("optionalName").getValue());
+                                            mRef_post.child("imagePath").setValue(task.getResult().toString());
+                                            mRef_post.child("userId").setValue(userId);
+                                            mRef_post.child("cardTitle").setValue(postTitle);
+                                            mRef_post.child("upvote").setValue("0");
+                                            mRef_post.child("downvote").setValue("0");
+                                            mRef_post.child("postTime").setValue(currentDate);
+                                            mRef_post.child("cardPostProfileImage").setValue(cardPostProfile);
+                                            mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts+1);
+
+                                            postImagePost.setVisibility(View.VISIBLE);
+                                            postProgressBar.setVisibility(View.GONE);
+
+                                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            postImagePost.setVisibility(View.VISIBLE);
+                                            postProgressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getApplicationContext(), "Image Not Uploaded",Toast.LENGTH_SHORT);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -67,16 +207,17 @@ public class Post_Image_Activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null){
-            Uri filepath = data.getData();
-//            profile_image.setImageURI(filepath);
+
+            filepath = data.getData();
             try{
                 linear_cam_gallery.setVisibility(View.GONE);
                 gallery_image.setVisibility(View.VISIBLE);
                 bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), filepath );
-                gallery_image.setImageBitmap(bitmap);
-//                profile_image.setImageURI(filepath);
+//                gallery_image.setImageBitmap(bitmap);
 
-//                Zoro image link : https://tinyurl.com/y3tdn867
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+                image_byte_data = byteArrayOutputStream.toByteArray();
 
                 Picasso.get().load(filepath).into(gallery_image);
             }

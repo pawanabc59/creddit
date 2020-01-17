@@ -1,8 +1,11 @@
-package com.example.creddit;
+package com.example.creddit.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.creddit.Fragments.HomeFragment;
+import com.example.creddit.Fragments.PopularFragment;
 
 public class TabPageAdapter extends FragmentStatePagerAdapter {
     int counttab;

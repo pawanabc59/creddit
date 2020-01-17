@@ -1,4 +1,4 @@
-package com.example.creddit;
+package com.example.creddit.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.example.creddit.Post_Image_Activity;
+import com.example.creddit.Post_Link_Activity;
+import com.example.creddit.Post_Text_Activity;
+import com.example.creddit.Post_Video_Activity;
+import com.example.creddit.R;
 
 public class BottomSheetDialogFragment extends com.google.android.material.bottomsheet.BottomSheetDialogFragment {
 

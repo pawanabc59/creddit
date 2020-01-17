@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".SignupActivity">
+    tools:context=".SignupActivity"
+    android:background="?attr/white_black">
 
     <ImageView
         android:id="@+id/sign_img"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/zoro"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/reddit_logo_hd"
         />
 
     <TextView
@@ -19,45 +20,69 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_img"
-        android:text="Log in to cReddit"
-        android:textSize="22sp"
-        android:textColor="#000"
+        android:text="Create an account"
+        android:textSize="15sp"
+        android:textColor="?attr/textcolor"
+        android:layout_marginTop="@dimen/_30sdp"
         />
 
-    <EditText
-        android:id="@+id/sign_username"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textRegistercUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sign_txt"
-        android:hint="Username"
-        android:layout_marginTop="25dp"
-        android:inputType="textEmailAddress"
-        />
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_below="@+id/sign_txt">
 
-    <EditText
-        android:id="@+id/sign_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:layout_below="@+id/sign_username"
-        android:inputType="textPassword"
-        android:layout_marginTop="25dp"
-        />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sign_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:layout_marginTop="25dp"
+            android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/sign_cpassword"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textRegisterPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:layout_below="@+id/sign_password"
-        android:inputType="textPassword"
-        android:layout_marginTop="25dp"
-        />
+        android:layout_below="@+id/textRegistercUsername"
+        android:layout_marginTop="@dimen/_15sdp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sign_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_marginTop="25dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textRegistercPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textRegisterPassword"
+        android:layout_marginTop="@dimen/_15sdp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sign_cpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:layout_marginTop="25dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sign_cpassword"
+        android:layout_below="@+id/textRegistercPassword"
         android:layout_marginTop="25dp"
         >
 
@@ -65,8 +90,8 @@
             android:id="@+id/sign_login_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:textSize="18sp"
+            android:textColor="?attr/buttoncolor"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:text="LOG IN INSTEAD"
             />
@@ -77,12 +102,23 @@
     <Button
         android:id="@+id/sign_btn_signup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:text="CREATE ACCOUNT"
-        android:textSize="20sp"
-        android:textColor="#000"
+        android:textSize="14sp"
+        android:textColor="#fff"
+        android:background="?attr/buttoncolor"
         />
+
+    <ProgressBar
+        android:id="@+id/signUpProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:visibility="gone" />
 
 </RelativeLayout>

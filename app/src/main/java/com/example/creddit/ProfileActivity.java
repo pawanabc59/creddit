@@ -1,20 +1,43 @@
 package com.example.creddit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.creddit.Adapter.ProfilePageTabAdapter;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
     SharedPref sharedPref;
     TextView profile_edit;
+    ImageView profileImage, profileBannerImage;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference mRef;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+
+    CollapsingToolbarLayout toolbarLayout;
+
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +53,45 @@ public class ProfileActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_profile);
 
+        profileImage = findViewById(R.id.profileImage);
+        profileBannerImage = findViewById(R.id.profileBannerImage);
+
+        toolbarLayout = findViewById(R.id.toolbarTitle);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        mRef = firebaseDatabase.getReference("creddit").child("users");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
+        userId = user.getUid();
+
+        mRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
+                String profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue().toString();
+                if (profileImagePath.equals("null")){
+                    Picasso.get().load(R.drawable.reddit_logo_hd).into(profileImage);
+                }else {
+                    Picasso.get().load(profileImagePath).error(R.drawable.reddit_logo_hd).into(profileImage);
+                }
+
+                if (profileBannerImagePath.equals("null")){
+                    Picasso.get().load(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                }else {
+                    Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                }
+
+                toolbarLayout.setTitle(dataSnapshot.child("optionalName").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         Toolbar toolbar = findViewById(R.id.profile_toolbar);
         setSupportActionBar(toolbar);
 
@@ -41,7 +103,9 @@ public class ProfileActivity extends AppCompatActivity {
         profile_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Edit is clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"Edit is clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                startActivity(intent);
             }
         });
 

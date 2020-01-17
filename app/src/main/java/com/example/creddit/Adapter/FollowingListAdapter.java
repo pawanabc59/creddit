@@ -1,4 +1,4 @@
-package com.example.creddit;
+package com.example.creddit.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creddit.Model.FollowingListModal;
+import com.example.creddit.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_black"
-    tools:context=".MailFragment">
+    tools:context=".Fragments.MailFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

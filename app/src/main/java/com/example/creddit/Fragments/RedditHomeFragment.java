@@ -1,7 +1,5 @@
-package com.example.creddit;
+package com.example.creddit.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,25 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.creddit.R;
+import com.example.creddit.Adapter.TabPageAdapter;
 import com.google.android.material.tabs.TabLayout;
 
-public class DashboardFragment extends Fragment {
+public class RedditHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_reddit_home, container, false);
 
-        TabLayout tabLayout = view.findViewById(R.id.dashboard_tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Subscription"));
-        tabLayout.addTab(tabLayout.newTab().setText("Custom Feeds"));
+        TabLayout tabLayout = view.findViewById(R.id.reddit_tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Home"));
+        tabLayout.addTab(tabLayout.newTab().setText("Popular"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = view.findViewById(R.id.dashboard_content_pager);
-        DashboardTabPageAdapter dashboardTabPageAdapter = new DashboardTabPageAdapter(getFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(dashboardTabPageAdapter);
+        final ViewPager viewPager = view.findViewById(R.id.reddit_content_pager);
+        TabPageAdapter tabPageAdapter = new TabPageAdapter(getFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(tabPageAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

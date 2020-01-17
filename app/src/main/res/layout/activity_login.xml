@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="?attr/white_black">
 
     <ImageView
         android:id="@+id/login_img"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/zoro"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/reddit_logo_hd"
         />
 
     <TextView
@@ -20,43 +21,59 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_img"
         android:text="Log in to cReddit"
-        android:textSize="22sp"
-        android:textColor="#000"
+        android:textSize="16sp"
+        android:textColor="?attr/textcolor"
+        android:layout_marginTop="@dimen/_20sdp"
         />
 
-    <EditText
-        android:id="@+id/login_username"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLoginUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_txt"
-        android:hint="Username"
-        android:layout_marginTop="20dp"
-        android:inputType="textEmailAddress"
-        />
+        android:layout_marginTop="@dimen/_15sdp"
+        >
 
-    <EditText
-        android:id="@+id/login_password"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_txt"
+            android:hint="Username"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:layout_below="@+id/login_username"
-        android:inputType="textPassword"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_below="@+id/textLoginUsername"
+        android:layout_marginTop="@dimen/_15sdp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_password"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/textLoginPassword"
+        android:layout_marginTop="@dimen/_15sdp"
         >
 
         <TextView
             android:id="@+id/login_signup_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:textSize="18sp"
+            android:textColor="?attr/buttoncolor"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:text="SIGN UP"
             />
@@ -65,8 +82,8 @@
             android:id="@+id/login_forgot_pass_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:textSize="18sp"
+            android:textColor="?attr/buttoncolor"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:text="FORGOT PASSWORD"
             android:layout_marginLeft="120dp"
@@ -77,12 +94,24 @@
     <Button
         android:id="@+id/login_btn_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:text="LOG IN"
-        android:textSize="20sp"
-        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:background="?attr/buttoncolor"
         />
+
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:visibility="gone" />
 
 </RelativeLayout>

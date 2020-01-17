@@ -1,12 +1,12 @@
-package com.example.creddit;
+package com.example.creddit.Model;
 
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FollowingListModal {
 
-    int sub_image;
-    String sub_name;
+    public int sub_image;
+    public String sub_name;
 
     public FollowingListModal(int sub_image, String sub_name) {
         this.sub_image = sub_image;

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/white_black"
-    tools:context=".DashboardFragment">
+    tools:context=".Fragments.DashboardFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/dashboard_tab_layout"

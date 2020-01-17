@@ -14,18 +14,35 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         app:title="Image Post"
-        app:titleTextColor="?attr/textcolor">
+        app:titleTextColor="?attr/textcolor"
+        android:layout_marginRight="@dimen/_10sdp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/post_image_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
             android:text="POST"
-            android:textAlignment="viewEnd"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/_170sdp"
+            android:layout_marginTop="@dimen/_12sdp"
             android:textColor="?attr/textcolor" />
+
+        <ProgressBar
+            android:id="@+id/postProgressBar"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_165sdp"
+            android:visibility="gone"
+            />
+
+        </FrameLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <EditText
@@ -33,9 +50,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/post_image_toolbar"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:hint="An interesting title"
-        android:paddingLeft="10dp"
+        android:paddingLeft="@dimen/_10sdp"
         android:textColor="?attr/textcolor"
         android:textColorHint="?attr/textcolor" />
 
@@ -45,8 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/post_image_title"
-        android:layout_marginTop="20dp"
-        android:padding="20dp">
+        android:layout_marginTop="@dimen/_20sdp"
+        android:padding="@dimen/_20sdp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -55,15 +72,15 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/post_image_open_camera"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="30dp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginLeft="@dimen/_25sdp"
             app:cardBackgroundColor="#2196F3"
             app:cardCornerRadius="75dp">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_camera_white" />
         </androidx.cardview.widget.CardView>
@@ -75,7 +92,7 @@
                 android:textColor="?attr/textcolor"
                 android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="18dp"
+                android:layout_marginLeft="@dimen/_15sdp"
                 />
 
         </LinearLayout>
@@ -87,15 +104,15 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/post_image_open_gallery"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="80dp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginLeft="@dimen/_60sdp"
             app:cardBackgroundColor="#2196F3"
             app:cardCornerRadius="75dp">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_photo_librar_white" />
         </androidx.cardview.widget.CardView>
@@ -103,11 +120,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CAMERA"
+                android:text="LIBRARY"
                 android:textColor="?attr/textcolor"
                 android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="35dp"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:fontFamily=""
                 />
 
         </LinearLayout>
@@ -117,9 +135,9 @@
     <ImageView
         android:id="@+id/gallery_image"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/_300sdp"
         android:layout_below="@+id/post_image_title"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:visibility="gone" />
 
 

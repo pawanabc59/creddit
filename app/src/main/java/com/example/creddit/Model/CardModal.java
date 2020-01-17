@@ -1,11 +1,13 @@
-package com.example.creddit;
+package com.example.creddit.Model;
 
 public class CardModal {
 
-    int card_profile_image, card_image;
-    String card_title, posted_by, card_description;
+    public String card_profile_image, card_image;
+    public String card_title;
+    public String posted_by;
+    public String card_description;
 
-    public CardModal(int card_profile_image, int card_image, String card_title, String posted_by, String card_description) {
+    public CardModal(String card_profile_image, String card_image, String card_title, String posted_by, String card_description) {
         this.card_profile_image = card_profile_image;
         this.card_image = card_image;
         this.card_title = card_title;
@@ -13,19 +15,19 @@ public class CardModal {
         this.card_description = card_description;
     }
 
-    public int getCard_profile_image() {
+    public String getCard_profile_image() {
         return card_profile_image;
     }
 
-    public void setCard_profile_image(int card_profile_image) {
+    public void setCard_profile_image(String card_profile_image) {
         this.card_profile_image = card_profile_image;
     }
 
-    public int getCard_image() {
+    public String getCard_image() {
         return card_image;
     }
 
-    public void setCard_image(int card_image) {
+    public void setCard_image(String card_image) {
         this.card_image = card_image;
     }
 
