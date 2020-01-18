@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
@@ -36,10 +37,14 @@ public class HomeFragment extends Fragment {
     List<CardModal> home_posts;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
-    DatabaseReference mRef,mRef_user, mRef_post;
+    DatabaseReference mRef,mRef_user, mRef_post,mRef2;
     FirebaseUser user;
     String userId;
-    String cardProfileImage="",cardPostUserId, cardImage, cardTitle, postedBy, cardDescription;
+    String cardProfileImage="",cardPostUserId, cardImage, cardTitle, postedBy, cardDescription, cardPostTime;
+
+    String currentDate, postTime;
+    SimpleDateFormat sdf;
+    Date todayDate, postedDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +60,9 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
+        sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        currentDate = sdf.format(new Date());
+
         home_posts = new ArrayList<>();
 
         final CardAdapter cardAdapter = new CardAdapter(getContext(), home_posts);
@@ -67,19 +75,53 @@ public class HomeFragment extends Fragment {
         else {
             userId = user.getUid();
             mRef_user = mRef.child("users");
-            mRef_post = mRef.child("posts");
+            mRef_post = mRef.child("posts").child("imagePosts");
+
+//            Query query = FirebaseDatabase.getInstance().getReference().child("creddit").child("posts").orderByChild("postNumber");
 
             mRef_post.orderByChild("postNumber").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     try{
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                        cardImage = dataSnapshot1.child("imagePath").getValue().toString();
-                        cardTitle = dataSnapshot1.child("uploadedBy").getValue().toString();
-                        postedBy = dataSnapshot1.child("uploadedBy").getValue().toString();
-                        cardDescription = dataSnapshot1.child("cardTitle").getValue().toString();
-                        cardPostUserId = dataSnapshot1.child("userId").getValue().toString();
-                        cardProfileImage = dataSnapshot1.child("cardPostProfileImage").getValue().toString();
+//                        cardImage = dataSnapshot1.child("imagePath").getValue().toString();
+//                        cardTitle = dataSnapshot1.child("uploadedBy").getValue().toString();
+//                        postedBy = dataSnapshot1.child("uploadedBy").getValue().toString();
+//                        cardDescription = dataSnapshot1.child("cardTitle").getValue().toString();
+//                        cardPostUserId = dataSnapshot1.child("userId").getValue().toString();
+//                        cardProfileImage = dataSnapshot1.child("cardPostProfileImage").getValue().toString();
+                        postTime = dataSnapshot1.child("postTime").getValue().toString();
+
+                        todayDate = sdf.parse(currentDate);
+                        postedDate = sdf.parse(postTime);
+
+                        long diff = todayDate.getTime() - postedDate.getTime();
+                        long seconds = diff / 1000;
+                        long minutes = seconds / 60;
+                        long hours = minutes / 60;
+                        int days = (int) (hours / 24);
+
+                        if ((days/365)>0){
+                            int year = days/365;
+                            int leftMonths = days%365;
+                            int month = leftMonths/30;
+                            int leftDays = month%30;
+                            cardPostTime = (year+"y "+month+"m ");
+                        }
+                        else if ((days/30)>0){
+                            int month = days/30;
+                            int leftDays = days%30;
+                            cardPostTime = (month+"m ");
+                        }
+                        else if ((hours/24)>0){
+                            cardPostTime = (days+"d ");
+                        }
+                        else if ((minutes/60)>0){
+                            cardPostTime = (hours+"h ");
+                        }
+                        else {
+                            cardPostTime = (minutes+"min ");
+                        }
 
 //                        mRef_user.child(cardPostUserId).addListenerForSingleValueEvent(new ValueEventListener() {
 //                            @Override
@@ -92,7 +134,7 @@ public class HomeFragment extends Fragment {
 //
 //                            }
 //                        });
-                            home_posts.add(new CardModal(cardProfileImage, cardImage, cardTitle, postedBy, cardDescription));
+                            home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue().toString(), dataSnapshot1.child("imagePath").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("cardTitle").getValue().toString(), cardPostTime));
                             cardAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {

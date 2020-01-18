@@ -153,7 +153,7 @@ public class Post_Image_Activity extends AppCompatActivity {
                     postImageTitle.setError("Please add a title to post");
                 } else {
                     pushId = mRef.push().getKey();
-                    mRef_post = mRef.child("posts").child(pushId);
+                    mRef_post = mRef.child("posts").child("imagePosts").child(pushId);
 
                     UploadTask uploadTask = storageReference.child("posts").child(userId).child(filepath.getLastPathSegment()).putBytes(image_byte_data);
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

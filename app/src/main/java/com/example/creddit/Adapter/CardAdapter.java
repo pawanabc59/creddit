@@ -52,6 +52,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         holder.card_description.setText(mData.get(position).card_description);
         Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
         Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
+        holder.postedTime.setText(mData.get(position).postedTime);
 
         holder.post_upvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +114,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnMenuItemClickListener {
 
-        TextView card_title, posted_by, card_description;
+        TextView card_title, posted_by, card_description,postedTime;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -131,6 +132,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             card_menu = itemView.findViewById(R.id.card_menu);
             post_after_upvote = itemView.findViewById(R.id.post_after_upvote);
             post_after_downvote = itemView.findViewById(R.id.post_after_downvote);
+            postedTime = itemView.findViewById(R.id.postedTime);
 
         }
 
