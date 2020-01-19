@@ -2,6 +2,10 @@ package com.example.creddit.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,13 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creddit.BuildConfig;
 import com.example.creddit.Model.CardModal;
 import com.example.creddit.R;
 import com.example.creddit.SingleImageShowActivity;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static android.widget.PopupMenu.*;
@@ -78,7 +89,27 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         holder.post_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "share is clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "share is clicked", Toast.LENGTH_SHORT).show();
+                Picasso.get().load(mData.get(position).getCard_image()).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Intent intent1 = new Intent(Intent.ACTION_SEND);
+                        intent1.setType("images/*");
+//                        intent.addFlags( Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION );
+                        intent1.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                        mContext.startActivity(Intent.createChooser(intent1, "mWallpaper"));
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
             }
         });
 
@@ -86,9 +117,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SingleImageShowActivity.class);
-                intent.putExtra("card_title", holder.card_title.getText().toString());
-//                intent.putExtra("card_description", holder.card_description.toString());
-                intent.putExtra("posted_by", holder.posted_by.getText().toString());
+//                intent.putExtra("card_title", holder.card_title.getText().toString());
+//                intent.putExtra("card_description", mData.get(position).card_description);
+//                intent.putExtra("posted_by", holder.posted_by.getText().toString());
+                intent.putExtra("cardImage", mData.get(position).getCard_image());
+//                intent.putExtra("cardProfileImage", mData.get(position).getCard_profile_image());
                 mContext.startActivity(intent);
 
             }
@@ -160,7 +193,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             }
             return true;
         }
+    }
 
-
+    private Uri getLocalBitmapUri(Bitmap bitmap) {
+        Uri uri = null;
+        try {
+            File file = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "creddit_" + System.currentTimeMillis() + ".png");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.close();
+            uri = FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".provider", file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uri;
     }
 }

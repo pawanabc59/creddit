@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:paddingTop="10dp"
-    app:layout_goneMarginBottom="10dp">
+    android:layout_marginTop="@dimen/_2sdp"
+    android:layout_marginBottom="@dimen/_3sdp"
+    android:paddingTop="@dimen/_5sdp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_image_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        app:cardBackgroundColor="?attr/colorPrimary">
+        app:cardBackgroundColor="?attr/colorPrimary"
+        app:strokeColor="#000"
+        app:strokeWidth="@dimen/_1sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,11 +88,11 @@
 
                     <ImageView
                         android:id="@+id/card_menu"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
-                        android:layout_marginTop="@dimen/_9sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
                         android:src="@drawable/ic_menu_show"
                         app:itemTextColor="?attr/textcolor" />
 
@@ -123,8 +124,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:layout_marginBottom="@dimen/_7sdp"
                 android:background="?attr/colorPrimary">
 
                 <RelativeLayout
@@ -216,7 +217,7 @@
                     android:id="@+id/post_share"
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
-                    android:layout_marginLeft="@dimen/_85sdp"
+                    android:layout_marginLeft="@dimen/_65sdp"
                     android:src="@drawable/ic_share" />
             </LinearLayout>
 

@@ -106,21 +106,21 @@ public class HomeFragment extends Fragment {
                             int leftMonths = days%365;
                             int month = leftMonths/30;
                             int leftDays = month%30;
-                            cardPostTime = (year+"y "+month+"m ");
+                            cardPostTime = (year+"y "+month+"m ago");
                         }
                         else if ((days/30)>0){
                             int month = days/30;
                             int leftDays = days%30;
-                            cardPostTime = (month+"m ");
+                            cardPostTime = (month+"m ago");
                         }
                         else if ((hours/24)>0){
-                            cardPostTime = (days+"d ");
+                            cardPostTime = (days+"d ago");
                         }
                         else if ((minutes/60)>0){
-                            cardPostTime = (hours+"h ");
+                            cardPostTime = (hours+"h ago");
                         }
                         else {
-                            cardPostTime = (minutes+"min ");
+                            cardPostTime = (minutes+"min ago");
                         }
 
 //                        mRef_user.child(cardPostUserId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
 //
 //                            }
 //                        });
-                            home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue().toString(), dataSnapshot1.child("imagePath").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("cardTitle").getValue().toString(), cardPostTime));
+                            home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue().toString(), dataSnapshot1.child("imagePath").getValue().toString(), "Posted by "+dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("cardTitle").getValue().toString(), cardPostTime));
                             cardAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {

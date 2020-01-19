@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -53,6 +54,11 @@ dependencies {
 
 //    library for compressing image
     implementation 'id.zelory:compressor:2.1.0'
+
+//    library for zoom images
+//    implementation 'com.github.MikeOrtiz:TouchImageView:2.3.2'
+
+//    implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.github.karanchuri:PermissionManager:0.1.0'
 
