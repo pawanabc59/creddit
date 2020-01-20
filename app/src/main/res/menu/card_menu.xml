@@ -7,6 +7,9 @@
         <item android:id="@+id/card_save"
             android:icon="@drawable/ic_save"
             android:title="Save"/>
+<!--        <item android:id="@+id/card_download"-->
+<!--            android:icon="@drawable/ic_download"-->
+<!--            android:title="Block User"/>-->
         <item android:id="@+id/card_hide_post"
             android:icon="@drawable/ic_save"
             android:title="Hide Post"/>

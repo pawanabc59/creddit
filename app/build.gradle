@@ -57,6 +57,7 @@ dependencies {
 
 //    library for zoom images
 //    implementation 'com.github.MikeOrtiz:TouchImageView:2.3.2'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
 //    implementation 'com.android.support:multidex:1.0.3'
 

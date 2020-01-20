@@ -1,11 +1,14 @@
 package com.example.creddit.Adapter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +43,7 @@ import static android.widget.PopupMenu.*;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
     private Context mContext;
     private List<CardModal> mData;
+    String cardImagePath;
 
     public CardAdapter(Context mContext, List<CardModal> mData) {
         this.mContext = mContext;
@@ -64,6 +70,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
         Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
         holder.postedTime.setText(mData.get(position).postedTime);
+        cardImagePath = mData.get(position).getCard_image();
 
         holder.post_upvote.setOnClickListener(new View.OnClickListener() {
             @Override

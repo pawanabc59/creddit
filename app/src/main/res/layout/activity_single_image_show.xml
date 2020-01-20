@@ -82,21 +82,42 @@
 
 <!--    </LinearLayout>-->
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        >-->
 
-    <ImageView
-        android:id="@+id/single_card_image"
+<!--    <ImageView-->
+<!--        android:id="@+id/single_card_image"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:adjustViewBounds="true"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:layout_gravity="center"-->
+<!--        />-->
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/single_card_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></com.github.chrisbanes.photoview.PhotoView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/imageDownload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_65sdp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_download"
+        app:fab_colorNormal="#2196F3"
+        app:fab_colorPressed="#2196F3"
         />
 
-    </HorizontalScrollView>
+<!--    </HorizontalScrollView>-->
 
 <!--    <LinearLayout-->
 <!--        android:id="@+id/single_footer"-->
