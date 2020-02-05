@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment {
 //                        cardDescription = dataSnapshot1.child("cardTitle").getValue().toString();
 //                        cardPostUserId = dataSnapshot1.child("userId").getValue().toString();
 //                        cardProfileImage = dataSnapshot1.child("cardPostProfileImage").getValue().toString();
+                        String postKey = dataSnapshot1.getKey();
                         postTime = dataSnapshot1.child("postTime").getValue().toString();
 
                         todayDate = sdf.parse(currentDate);
@@ -134,7 +135,7 @@ public class HomeFragment extends Fragment {
 //
 //                            }
 //                        });
-                            home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue().toString(), dataSnapshot1.child("imagePath").getValue().toString(), "Posted by "+dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("cardTitle").getValue().toString(), cardPostTime));
+                            home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue().toString(), dataSnapshot1.child("imagePath").getValue().toString(), "Posted by "+dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("uploadedBy").getValue().toString(), dataSnapshot1.child("cardTitle").getValue().toString(), cardPostTime, dataSnapshot1.child("vote").getValue().toString()));
                             cardAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {

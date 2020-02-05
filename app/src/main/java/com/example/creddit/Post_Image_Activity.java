@@ -173,6 +173,7 @@ public class Post_Image_Activity extends AppCompatActivity {
                                             mRef_post.child("cardTitle").setValue(postTitle);
                                             mRef_post.child("upvote").setValue("0");
                                             mRef_post.child("downvote").setValue("0");
+                                            mRef_post.child("vote").setValue("0");
                                             mRef_post.child("postTime").setValue(currentDate);
                                             mRef_post.child("cardPostProfileImage").setValue(cardPostProfile);
                                             mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts+1);

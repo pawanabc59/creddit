@@ -29,6 +29,13 @@ import com.example.creddit.BuildConfig;
 import com.example.creddit.Model.CardModal;
 import com.example.creddit.R;
 import com.example.creddit.SingleImageShowActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -44,6 +51,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     private Context mContext;
     private List<CardModal> mData;
     String cardImagePath;
+    int vote;
+    FirebaseDatabase firebaseDatabase;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    DatabaseReference mRef,mRefUser;
 
     public CardAdapter(Context mContext, List<CardModal> mData) {
         this.mContext = mContext;
@@ -64,29 +76,156 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final CardAdapter.MyViewHolder holder, final int position) {
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        mRef = firebaseDatabase.getReference("creddit").child("posts").child("imagePosts");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        String userId = user.getUid();
+        mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
+
+        final ImageView postUpvote = holder.post_upvote;
+        ImageView postDownvote = holder.post_downvote;
+        ImageView postComment = holder.post_comment;
+        final ImageView postAfterUpvote = holder.post_after_upvote;
+        ImageView postAfterDownvote = holder.post_after_downvote;
+        final TextView upvoteCount = holder.upvoteCount;
+        TextView downvoteCount = holder.downvoteCount;
+        TextView commentCount = holder.commentCount;
+
+        vote = Integer.parseInt(mData.get(position).getVote());
         holder.card_title.setText(mData.get(position).card_title);
         holder.posted_by.setText(mData.get(position).posted_by);
         holder.card_description.setText(mData.get(position).card_description);
         Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
         Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
         holder.postedTime.setText(mData.get(position).postedTime);
-        cardImagePath = mData.get(position).getCard_image();
 
-        holder.post_upvote.setOnClickListener(new View.OnClickListener() {
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, "post is upvoted", Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    mRefUser.child("upvotedPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                            for (DataSnapshot dataSnapshot3:dataSnapshot2.getChildren()){
+                                if (dataSnapshot3.getValue().toString().equals(dataSnapshot1.getKey())){
+                                    postUpvote.setVisibility(View.GONE);
+                                    postAfterUpvote.setVisibility(View.VISIBLE);
+                                    upvoteCount.setText(dataSnapshot1.child("vote").getValue().toString());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-        holder.post_downvote.setOnClickListener(new View.OnClickListener() {
+        cardImagePath = mData.get(position).getCard_image();
+
+//        firebaseDatabase.getReference("creddit").child("posts").child("numberOfPosts").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                vote = dataSnapshot.getValue(Integer.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        postUpvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(mContext, "post is upvoted", Toast.LENGTH_SHORT).show();
+//                mData.get(position).getCard_image();
+//                final String pushKey = mRef.push().getKey();
+
+                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                            if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())){
+                                mRef.child(dataSnapshot1.getKey()).child("vote").setValue(vote+1);
+                                postUpvote.setVisibility(View.GONE);
+                                postAfterUpvote.setVisibility(View.VISIBLE);
+//                upvoteCount.setTextColor();
+                                upvoteCount.setText(""+(vote+1));
+                                vote = vote+1;
+                                mRefUser.child("upvotedPosts").child(dataSnapshot1.getKey()).setValue(dataSnapshot1.getKey());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+        postAfterUpvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                            if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())){
+                                mRef.child(dataSnapshot1.getKey()).child("vote").setValue(vote-1);
+                                postAfterUpvote.setVisibility(View.GONE);
+                                postUpvote.setVisibility(View.VISIBLE);
+                                upvoteCount.setText(""+(vote-1));
+                                vote = vote-1;
+                                mRefUser.child("upvotedPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot dataSnapshot2: dataSnapshot.getChildren()){
+                                            if (dataSnapshot2.getKey().equals(dataSnapshot1.getKey())){
+                                                mRefUser.child("upvotedPosts").child(dataSnapshot2.getKey()).removeValue();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        postDownvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "post is downvoted", Toast.LENGTH_SHORT).show();
             }
         });
 
-        holder.post_comment.setOnClickListener(new View.OnClickListener() {
+        postComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "comment is clicked", Toast.LENGTH_SHORT).show();
@@ -154,7 +293,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnMenuItemClickListener {
 
-        TextView card_title, posted_by, card_description,postedTime;
+        TextView card_title, posted_by, card_description,postedTime, upvoteCount, downvoteCount, commentCount;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -173,6 +312,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             post_after_upvote = itemView.findViewById(R.id.post_after_upvote);
             post_after_downvote = itemView.findViewById(R.id.post_after_downvote);
             postedTime = itemView.findViewById(R.id.postedTime);
+            upvoteCount = itemView.findViewById(R.id.upvoteCount);
+            downvoteCount = itemView.findViewById(R.id.downvoteCount);
+            commentCount = itemView.findViewById(R.id.commentCount);
 
         }
 
