@@ -1,9 +1,5 @@
 package com.example.creddit;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -47,28 +46,28 @@ public class Post_Image_Activity extends AppCompatActivity {
     private Bitmap bitmap;
     byte[] image_byte_data;
     Uri filepath;
-    TextView postImagePost,postImageTitle;
+    TextView postImagePost, postImageTitle;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     DatabaseReference mRef, mRef_post, mRef_user;
-    String userId,pushId,postTitle,currentDate, cardPostProfile;
+    String userId, pushId, postTitle, currentDate, cardPostProfile;
     SimpleDateFormat simpleDateFormat;
     Date date;
     int numberOfPosts;
     ProgressBar postProgressBar;
+    ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPref = new SharedPref(this);
-        if (sharedPref.loadNightModeState()==true){
+        if (sharedPref.loadNightModeState() == true) {
             setTheme(R.style.darktheme);
-        }
-        else{
+        } else {
             setTheme(R.style.AppTheme);
         }
 
@@ -123,29 +122,37 @@ public class Post_Image_Activity extends AppCompatActivity {
 
                 postTitle = postImageTitle.getText().toString();
 
-                mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+                numberOfPostValueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        numberOfPosts = ((Long)dataSnapshot.getValue()).intValue();
+                        if (dataSnapshot.exists()) {
+                            numberOfPosts = ((Long) dataSnapshot.getValue()).intValue();
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                };
 
-                mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
+                mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(numberOfPostValueEventListener);
+
+                cardPostProfileValueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
+                        if (dataSnapshot.exists()) {
+                            cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                };
+
+                mRef_user.addListenerForSingleValueEvent(cardPostProfileValueEventListener);
 
                 if (postTitle.equals("")) {
                     postImagePost.setVisibility(View.VISIBLE);
@@ -166,24 +173,24 @@ public class Post_Image_Activity extends AppCompatActivity {
                                     mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            mRef_post.child("postNumber").setValue((-1)*(numberOfPosts+1));
+                                            mRef_post.child("postNumber").setValue((-1) * (numberOfPosts + 1));
                                             mRef_post.child("uploadedBy").setValue(dataSnapshot.child("optionalName").getValue());
                                             mRef_post.child("imagePath").setValue(task.getResult().toString());
                                             mRef_post.child("userId").setValue(userId);
                                             mRef_post.child("cardTitle").setValue(postTitle);
-                                            mRef_post.child("upvote").setValue("0");
-                                            mRef_post.child("downvote").setValue("0");
+//                                            mRef_post.child("upvote").setValue("0");
+//                                            mRef_post.child("downvote").setValue("0");
                                             mRef_post.child("vote").setValue("0");
                                             mRef_post.child("postTime").setValue(currentDate);
                                             mRef_post.child("cardPostProfileImage").setValue(cardPostProfile);
-                                            mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts+1);
+                                            mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts + 1);
 
                                             postImagePost.setVisibility(View.VISIBLE);
                                             postProgressBar.setVisibility(View.GONE);
 
                                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(intent);
                                         }
 
@@ -191,7 +198,7 @@ public class Post_Image_Activity extends AppCompatActivity {
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                             postImagePost.setVisibility(View.VISIBLE);
                                             postProgressBar.setVisibility(View.GONE);
-                                            Toast.makeText(getApplicationContext(), "Image Not Uploaded",Toast.LENGTH_SHORT);
+                                            Toast.makeText(getApplicationContext(), "Image Not Uploaded", Toast.LENGTH_SHORT);
                                         }
                                     });
                                 }
@@ -207,13 +214,13 @@ public class Post_Image_Activity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
 
             filepath = data.getData();
-            try{
+            try {
                 linear_cam_gallery.setVisibility(View.GONE);
                 gallery_image.setVisibility(View.VISIBLE);
-                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), filepath );
+                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), filepath);
 //                gallery_image.setImageBitmap(bitmap);
 
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -221,11 +228,19 @@ public class Post_Image_Activity extends AppCompatActivity {
                 image_byte_data = byteArrayOutputStream.toByteArray();
 
                 Picasso.get().load(filepath).into(gallery_image);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef.child("posts").child("numberOfPosts").removeEventListener(numberOfPostValueEventListener);
+
+        mRef_user.removeEventListener(cardPostProfileValueEventListener);
     }
 }

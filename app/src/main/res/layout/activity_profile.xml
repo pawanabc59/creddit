@@ -86,7 +86,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -104,11 +104,11 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/profile_content_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/reddit_tab_layout"
+            android:layout_height="@dimen/_500sdp"
+            android:layout_below="@+id/profile_tab_layout"
             />
 
-        </FrameLayout>
+        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 

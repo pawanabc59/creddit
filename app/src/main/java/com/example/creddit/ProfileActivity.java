@@ -39,6 +39,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     String userId;
 
+    ValueEventListener profileValueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,31 +68,35 @@ public class ProfileActivity extends AppCompatActivity {
 
         userId = user.getUid();
 
-        mRef.child(userId).addValueEventListener(new ValueEventListener() {
+        profileValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
-                String profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue().toString();
-                if (profileImagePath.equals("null")){
-                    Picasso.get().load(R.drawable.reddit_logo_hd).into(profileImage);
-                }else {
-                    Picasso.get().load(profileImagePath).error(R.drawable.reddit_logo_hd).into(profileImage);
-                }
+                if (dataSnapshot.exists()) {
+                    String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
+                    String profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue().toString();
+                    if (profileImagePath.equals("null")) {
+                        Picasso.get().load(R.drawable.reddit_logo_hd).into(profileImage);
+                    } else {
+                        Picasso.get().load(profileImagePath).error(R.drawable.reddit_logo_hd).into(profileImage);
+                    }
 
-                if (profileBannerImagePath.equals("null")){
-                    Picasso.get().load(R.drawable.reddit_logo_hd).into(profileBannerImage);
-                }else {
-                    Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(profileBannerImage);
-                }
+                    if (profileBannerImagePath.equals("null")) {
+                        Picasso.get().load(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                    } else {
+                        Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                    }
 
-                toolbarLayout.setTitle(dataSnapshot.child("optionalName").getValue().toString());
+                    toolbarLayout.setTitle(dataSnapshot.child("optionalName").getValue().toString());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        mRef.child(userId).addValueEventListener(profileValueEventListener);
 
         Toolbar toolbar = findViewById(R.id.profile_toolbar);
         setSupportActionBar(toolbar);
@@ -138,5 +144,12 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef.child(userId).removeEventListener(profileValueEventListener);
     }
 }

@@ -60,6 +60,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
     SharedPref sessionManager;
 
+    ValueEventListener editProfileValueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,11 +96,11 @@ public class EditProfileActivity extends AppCompatActivity {
         progressBarBanner = findViewById(R.id.progressBarBanner);
         progressBarImage = findViewById(R.id.progressBarimage);
 
-        mRef.child(userId).addValueEventListener(new ValueEventListener() {
+        editProfileValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
-                String profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue().toString();
+                String profileImagePath = dataSnapshot.child("profileImage").getValue(String.class);
+                String profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue(String.class);
                 if (profileImagePath.equals("null")){
                     Picasso.get().load(R.drawable.reddit_logo_hd).into(editImage);
                 }else {
@@ -111,15 +113,17 @@ public class EditProfileActivity extends AppCompatActivity {
                     Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(editBanner);
                 }
 
-                editOptionalName.setText(dataSnapshot.child("optionalName").getValue().toString());
-                editAbout.setText(dataSnapshot.child("optionalAbout").getValue().toString());
+                editOptionalName.setText(dataSnapshot.child("optionalName").getValue(String.class));
+                editAbout.setText(dataSnapshot.child("optionalAbout").getValue(String.class));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        mRef.child(userId).addValueEventListener(editProfileValueEventListener);
 
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,5 +294,12 @@ public class EditProfileActivity extends AppCompatActivity {
 //                alertDialog.dismiss();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef.child(userId).removeEventListener(editProfileValueEventListener);
     }
 }

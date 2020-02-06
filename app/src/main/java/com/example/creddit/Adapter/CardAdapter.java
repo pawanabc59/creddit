@@ -1,14 +1,11 @@
 package com.example.creddit.Adapter;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,7 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static android.widget.PopupMenu.*;
+import static android.widget.PopupMenu.OnMenuItemClickListener;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
     private Context mContext;
@@ -55,7 +50,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    DatabaseReference mRef,mRefUser;
+    DatabaseReference mRef, mRefUser;
+    int i;
 
     public CardAdapter(Context mContext, List<CardModal> mData) {
         this.mContext = mContext;
@@ -81,8 +77,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        String userId = user.getUid();
-        mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
+//        String userId = user.getUid();
+//        mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
 
         final ImageView postUpvote = holder.post_upvote;
         ImageView postDownvote = holder.post_downvote;
@@ -93,7 +89,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         TextView downvoteCount = holder.downvoteCount;
         TextView commentCount = holder.commentCount;
 
-        vote = Integer.parseInt(mData.get(position).getVote());
+//        vote = Integer.parseInt(mData.get(position).getVote());
         holder.card_title.setText(mData.get(position).card_title);
         holder.posted_by.setText(mData.get(position).posted_by);
         holder.card_description.setText(mData.get(position).card_description);
@@ -101,78 +97,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
         holder.postedTime.setText(mData.get(position).postedTime);
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                    mRefUser.child("upvotedPosts").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                            for (DataSnapshot dataSnapshot3:dataSnapshot2.getChildren()){
-                                if (dataSnapshot3.getValue().toString().equals(dataSnapshot1.getKey())){
-                                    postUpvote.setVisibility(View.GONE);
-                                    postAfterUpvote.setVisibility(View.VISIBLE);
-                                    upvoteCount.setText(dataSnapshot1.child("vote").getValue().toString());
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         cardImagePath = mData.get(position).getCard_image();
-
-//        firebaseDatabase.getReference("creddit").child("posts").child("numberOfPosts").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                vote = dataSnapshot.getValue(Integer.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         postUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(mContext, "post is upvoted", Toast.LENGTH_SHORT).show();
-//                mData.get(position).getCard_image();
-//                final String pushKey = mRef.push().getKey();
-
-                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                            if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())){
-                                mRef.child(dataSnapshot1.getKey()).child("vote").setValue(vote+1);
-                                postUpvote.setVisibility(View.GONE);
-                                postAfterUpvote.setVisibility(View.VISIBLE);
-//                upvoteCount.setTextColor();
-                                upvoteCount.setText(""+(vote+1));
-                                vote = vote+1;
-                                mRefUser.child("upvotedPosts").child(dataSnapshot1.getKey()).setValue(dataSnapshot1.getKey());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                Toast.makeText(mContext, "post is upvoted", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -180,41 +110,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         postAfterUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(mContext, "post is downvoted", Toast.LENGTH_SHORT).show();
 
-                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                            if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())){
-                                mRef.child(dataSnapshot1.getKey()).child("vote").setValue(vote-1);
-                                postAfterUpvote.setVisibility(View.GONE);
-                                postUpvote.setVisibility(View.VISIBLE);
-                                upvoteCount.setText(""+(vote-1));
-                                vote = vote-1;
-                                mRefUser.child("upvotedPosts").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot dataSnapshot2: dataSnapshot.getChildren()){
-                                            if (dataSnapshot2.getKey().equals(dataSnapshot1.getKey())){
-                                                mRefUser.child("upvotedPosts").child(dataSnapshot2.getKey()).removeValue();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
             }
         });
 
@@ -293,7 +190,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnMenuItemClickListener {
 
-        TextView card_title, posted_by, card_description,postedTime, upvoteCount, downvoteCount, commentCount;
+        TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote;
 
         public MyViewHolder(@NonNull View itemView) {

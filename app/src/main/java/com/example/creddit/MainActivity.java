@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String currentDate;
     SimpleDateFormat sdf;
 
+    ValueEventListener navigationValueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             userId = user.getUid();
             mRef2 = mRef.child(userId);
-            mRef2.addValueEventListener(new ValueEventListener() {
+
+            navigationValueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String profileImage = dataSnapshot.child("profileImage").getValue().toString();
@@ -196,7 +199,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            };
+
+            mRef2.addValueEventListener(navigationValueEventListener);
 
             navigationView.inflateMenu(R.menu.drawer_menu);
         }
@@ -327,4 +332,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        finish();
 //    }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef2.removeEventListener(navigationValueEventListener);
+    }
 }

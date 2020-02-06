@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.creddit.Fragments.CustomFeedFragment;
 import com.example.creddit.Fragments.SubscriptionFragment;
+import com.example.creddit.Fragments.UploadedImageFragment;
 
 public class ProfilePageTabAdapter extends FragmentStatePagerAdapter {
 
@@ -20,8 +21,8 @@ public class ProfilePageTabAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
-                return subscriptionFragment;
+                UploadedImageFragment uploadedImageFragment = new UploadedImageFragment();
+                return uploadedImageFragment;
             case 1:
                 CustomFeedFragment customFeedFragment = new CustomFeedFragment();
                 return customFeedFragment;

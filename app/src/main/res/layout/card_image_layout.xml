@@ -94,7 +94,19 @@
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:src="@drawable/ic_menu_show"
-                        app:itemTextColor="?attr/textcolor" />
+                        app:itemTextColor="?attr/textcolor"
+                        android:visibility="visible"/>
+
+                    <ImageView
+                        android:id="@+id/deletePost"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:src="@drawable/ic_delete"
+                        app:itemTextColor="?attr/textcolor"
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
