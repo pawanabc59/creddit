@@ -25,5 +25,13 @@ A social networking app where people can post and view others post and like them
     • Modern UI for my profile.
     • UI for uploading post from gallery and posting the links.
     
+# Built with
+   - [Android Studio](https://developer.android.com/studio).
+   - [Firebase](https://console.firebase.google.com/).
+
+# Acknowledgments
+  - Hat tip to any third party library that is used.
+  - Inspiration.
+
 # Author
   [Pawan Kumar Maurya](https://github.com/pawanabc59)
