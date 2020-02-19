@@ -1,4 +1,6 @@
 # cReddit
+<img width="100" height="100" alt="cReddit" src="https://github.com/pawanabc59/creddit/blob/master/app/src/main/res/drawable-v24/reddit_logo_hd.png">
+
 A social networking app where people can post and view others post and like them. It's a clone of the reddit app.
 
 # Get started:
