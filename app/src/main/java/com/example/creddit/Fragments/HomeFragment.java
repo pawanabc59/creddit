@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
 
         home_posts = new ArrayList<>();
 
-        final CardAdapter cardAdapter = new CardAdapter(getContext(), home_posts);
+        final CardAdapter cardAdapter = new CardAdapter(getContext(), home_posts, getActivity());
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 //        home_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Pawan Kumar Maurya", "Check my awesome zoro wallpaper" ));
 
@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
 //
 //                            }
 //                        });
-                                home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("vote").getValue(Integer.class).toString()));
+                                home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
                                 cardAdapter.notifyDataSetChanged();
                             }
                         } catch (Exception e) {

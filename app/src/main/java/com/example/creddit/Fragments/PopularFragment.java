@@ -46,7 +46,7 @@ public class PopularFragment extends Fragment {
 //        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
 //        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
 
-        CardAdapter cardAdapter = new CardAdapter(getContext(), popular_posts);
+        CardAdapter cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recycler_popular_posts.setLayoutManager(linearLayoutManager);
         recycler_popular_posts.setAdapter(cardAdapter);

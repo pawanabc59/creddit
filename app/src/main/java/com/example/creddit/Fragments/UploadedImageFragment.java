@@ -57,7 +57,7 @@ public class UploadedImageFragment extends Fragment {
 
         uploadedImage = new ArrayList<>();
 
-        final CardAdapter cardAdapter = new CardAdapter(getContext(), uploadedImage);
+        final CardAdapter cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity());
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 
 
@@ -98,7 +98,7 @@ public class UploadedImageFragment extends Fragment {
                                 cardPostTime = (minutes + "min ago");
                             }
 
-                            uploadedImage.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("vote").getValue(Integer.class).toString()));
+                            uploadedImage.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
                             cardAdapter.notifyDataSetChanged();
                         }
                     } catch (Exception e) {

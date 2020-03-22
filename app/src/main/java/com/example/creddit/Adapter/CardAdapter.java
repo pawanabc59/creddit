@@ -1,11 +1,15 @@
 package com.example.creddit.Adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creddit.BuildConfig;
 import com.example.creddit.Model.CardModal;
+import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
 import com.example.creddit.SingleImageShowActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,12 +55,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    DatabaseReference mRef, mRefUser;
-    int i;
+    DatabaseReference mRef, mRefUser, mRef2;
+    Activity parentActivity;
+    ValueEventListener deletePostValueEventListener,getPostCountValueEventListener;
+    int i, numberOfPost, flag=0;
+    String TAG = "my";
 
-    public CardAdapter(Context mContext, List<CardModal> mData) {
+    public CardAdapter(Context mContext, List<CardModal> mData, Activity parentActivity) {
         this.mContext = mContext;
         this.mData = mData;
+        this.parentActivity = parentActivity;
     }
 
     @NonNull
@@ -64,7 +73,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         View view;
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        view = inflater.inflate(R.layout.card_image_layout, null);
+//        if (parentActivity instanceof ProfileActivity){
+//            view = inflater.inflate(R.layout.card_image_layout_delete, null);
+//        }else {
+            view = inflater.inflate(R.layout.card_image_layout, null);
+//        }
 
         return new MyViewHolder(view);
     }
@@ -74,9 +87,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("posts").child("imagePosts");
+        mRef2 = firebaseDatabase.getReference("creddit").child("posts");
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
 //        String userId = user.getUid();
 //        mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
 
@@ -88,6 +103,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         final TextView upvoteCount = holder.upvoteCount;
         TextView downvoteCount = holder.downvoteCount;
         TextView commentCount = holder.commentCount;
+        ImageView deletePost = holder.deletePost;
+        ImageView cardMenu = holder.card_menu;
+
+        if (parentActivity instanceof ProfileActivity){
+            cardMenu.setVisibility(View.GONE);
+            deletePost.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardMenu.setVisibility(View.VISIBLE);
+            deletePost.setVisibility(View.GONE);
+        }
 
 //        vote = Integer.parseInt(mData.get(position).getVote());
         holder.card_title.setText(mData.get(position).card_title);
@@ -98,6 +124,72 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         holder.postedTime.setText(mData.get(position).postedTime);
 
         cardImagePath = mData.get(position).getCard_image();
+
+        deletePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(mContext, "delete is clicked", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: delete is clicked");
+
+                getPostCountValueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        numberOfPost = dataSnapshot.child("numberOfPosts").getValue(Integer.class);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                };
+
+                mRef2.addValueEventListener(getPostCountValueEventListener);
+
+                new AlertDialog.Builder(parentActivity)
+                        .setTitle("Delete Post?")
+                        .setMessage("Do you really want to delete the post")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deletePostValueEventListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                                if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())){
+                                                    mRef.child(dataSnapshot1.getKey()).child("cardPostProfileImage").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("cardTitle").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("imagePath").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("postTime").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("uploadedBy").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("vote").removeValue();
+//                                                    mRef2.child("numberOfPosts").setValue(numberOfPost-1);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                };
+
+                                mRef.addValueEventListener(deletePostValueEventListener);
+                                flag = 1;
+                            }
+                        }).show();
+            }
+        });
 
         postUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +276,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     }
 
     @Override
+    public void onViewDetachedFromWindow(@NonNull MyViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (flag == 1) {
+            mRef.removeEventListener(deletePostValueEventListener);
+            mRef2.removeEventListener(getPostCountValueEventListener);
+        }
+    }
+
+    @Override
     public int getItemCount() {
         return mData.size();
     }
@@ -191,7 +292,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnMenuItemClickListener {
 
         TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
-        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote;
+        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -212,6 +313,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             upvoteCount = itemView.findViewById(R.id.upvoteCount);
             downvoteCount = itemView.findViewById(R.id.downvoteCount);
             commentCount = itemView.findViewById(R.id.commentCount);
+            deletePost = itemView.findViewById(R.id.deletePost);
 
         }
 
