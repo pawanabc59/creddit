@@ -129,8 +129,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(mContext, "delete is clicked", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onClick: delete is clicked");
+//                Toast.makeText(mContext, "delete is clicked", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "onClick: delete is clicked");
 
                 getPostCountValueEventListener = new ValueEventListener() {
                     @Override

@@ -54,7 +54,7 @@
         <item name="android:itemBackground">#212121</item>
         <item name="android:editTextColor">#ffffff</item>
 
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">#2196F3</item>
         <item name="android:textColorHint">#808080</item>
 
         <item name="colorControlNormal">#808080</item>
