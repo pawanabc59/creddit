@@ -319,6 +319,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+            
             switch (menuItem.getItemId()) {
                 case R.id.card_save:
                     Toast.makeText(mContext, "Save is clicked", Toast.LENGTH_SHORT).show();

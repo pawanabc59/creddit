@@ -71,6 +71,9 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-storage:19.1.0'
 
+    //    For Image cropping library.
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

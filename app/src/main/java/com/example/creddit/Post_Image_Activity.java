@@ -1,9 +1,11 @@
 package com.example.creddit;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -31,6 +34,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -45,7 +50,7 @@ public class Post_Image_Activity extends AppCompatActivity {
     LinearLayout linear_cam_gallery;
     private Bitmap bitmap;
     byte[] image_byte_data;
-    Uri filepath;
+    Uri filepath, uri;
     TextView postImagePost, postImageTitle;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
@@ -108,8 +113,9 @@ public class Post_Image_Activity extends AppCompatActivity {
         open_gallary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 1);
+                CropImage.startPickImageActivity(Post_Image_Activity.this);
+//                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 1);
             }
         });
 
@@ -210,37 +216,82 @@ public class Post_Image_Activity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            Uri imageuri = CropImage.getPickImageResultUri(this, data);
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageuri)){
+                uri = imageuri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+            else {
+                startCrop(imageuri);
+            }
+        }
 
-            filepath = data.getData();
-            try {
-                linear_cam_gallery.setVisibility(View.GONE);
-                gallery_image.setVisibility(View.VISIBLE);
-                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), filepath);
+        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK){
+                filepath = result.getUri();
+                try {
+                    linear_cam_gallery.setVisibility(View.GONE);
+                    gallery_image.setVisibility(View.VISIBLE);
+                    bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), filepath);
 //                gallery_image.setImageBitmap(bitmap);
 
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
-                image_byte_data = byteArrayOutputStream.toByteArray();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+                    image_byte_data = byteArrayOutputStream.toByteArray();
 
-                Picasso.get().load(filepath).into(gallery_image);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    Picasso.get().load(filepath).into(gallery_image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
-
         }
+
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+//
+//            filepath = data.getData();
+//            try {
+//                linear_cam_gallery.setVisibility(View.GONE);
+//                gallery_image.setVisibility(View.VISIBLE);
+//                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), filepath);
+////                gallery_image.setImageBitmap(bitmap);
+//
+//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+//                image_byte_data = byteArrayOutputStream.toByteArray();
+//
+//                Picasso.get().load(filepath).into(gallery_image);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+    }
+
+    private void startCrop(Uri imageuri){
+        CropImage.activity(imageuri).setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        mRef.child("posts").child("numberOfPosts").removeEventListener(numberOfPostValueEventListener);
+        try {
 
-        mRef_user.removeEventListener(cardPostProfileValueEventListener);
+            mRef.child("posts").child("numberOfPosts").removeEventListener(numberOfPostValueEventListener);
+
+            mRef_user.removeEventListener(cardPostProfileValueEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
