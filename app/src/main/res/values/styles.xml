@@ -24,6 +24,7 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:itemBackground">#ffffff</item>
         <item name="android:editTextColor">#000000</item>
+        <item name="android:fontFamily">@font/app_font</item>
 
 <!--        this changes the popup menu text color -->
         <item name="android:textColor">#000000</item>
@@ -53,6 +54,7 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:itemBackground">#212121</item>
         <item name="android:editTextColor">#ffffff</item>
+        <item name="android:fontFamily">@font/app_font</item>
 
         <item name="android:textColor">#2196F3</item>
         <item name="android:textColorHint">#808080</item>
@@ -66,6 +68,10 @@
     <style name="collapsingToolbarLayoutTitleColor" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">?attr/textcolor</item>
     </style>
+
+<!--    <style name="CustomAlertDialog">-->
+<!--        <item name="android:windowBackground">#000</item>-->
+<!--    </style>-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

@@ -131,7 +131,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Welcome User", Toast.LENGTH_SHORT).show();
                             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                             String uid = firebaseUser.getUid();
                             mRef2 = mRef.child(uid);
@@ -147,15 +146,18 @@ public class LoginActivity extends AppCompatActivity {
                                         mRef2.child("optionalName").setValue(dataSnapshot.child("optionalName").getValue().toString());
                                         mRef2.child("optionalAbout").setValue(dataSnapshot.child("optionalAbout").getValue().toString());
                                         mRef2.child("profileBannerImage").setValue(dataSnapshot.child("profileBannerImage").getValue().toString());
+                                        mRef2.child("savedImages").child("numberOfSavedImages").setValue(dataSnapshot.child("savedImages").child("numberOfSavedImages").getValue(Integer.class));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         mRef2.child("profileImage").setValue("null");
                                         mRef2.child("optionalName").setValue(email);
                                         mRef2.child("optionalAbout").setValue("none");
                                         mRef2.child("profileBannerImage").setValue("null");
+                                        mRef2.child("savedImages").child("numberOfSavedImages").setValue(0);
                                     }
                                     loginProgressBar.setVisibility(View.GONE);
                                     btnLogin.setVisibility(View.VISIBLE);
+                                    Toast.makeText(getApplicationContext(), "Welcome User", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                 }

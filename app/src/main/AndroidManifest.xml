@@ -17,7 +17,8 @@
         android:roundIcon="@drawable/reddit_logo_hd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".SavePostActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashScreen">
@@ -36,10 +37,10 @@
         <activity android:name=".Post_Video_Activity" />
         <activity android:name=".Post_Image_Activity" />
         <activity android:name=".Post_Link_Activity" />
-        <activity android:name=".MainActivity"></activity>
-
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -50,7 +51,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
         </provider>
-
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

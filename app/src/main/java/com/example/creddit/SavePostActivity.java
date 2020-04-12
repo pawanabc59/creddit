@@ -1,21 +1,14 @@
-package com.example.creddit.Fragments;
-
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
+package com.example.creddit;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.os.Bundle;
 
 import com.example.creddit.Adapter.CardAdapter;
 import com.example.creddit.Model.CardModal;
-import com.example.creddit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,10 +21,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UploadedImageFragment extends Fragment {
+public class SavePostActivity extends AppCompatActivity {
 
-    RecyclerView uploadedImageRecyclerView;
-    List<CardModal> uploadedImage;
+    SharedPref sharedPref;
+    RecyclerView savedPostsRecyclerView;
+    List<CardModal> savedPostsList;
     SimpleDateFormat sdf;
     String currentDate, postTime, cardPostTime, userId;
     Date todayDate, postedDate;
@@ -41,14 +35,20 @@ public class UploadedImageFragment extends Fragment {
 
     DatabaseReference rootRef, postRef;
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_uploaded_image, container, false);
+        sharedPref = new SharedPref(this);
+        if (sharedPref.loadNightModeState() == true) {
+            setTheme(R.style.darktheme);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
 
-        uploadedImageRecyclerView = view.findViewById(R.id.uploadedImageRecyclerView);
+        setContentView(R.layout.activity_save_post);
+
+        savedPostsRecyclerView = findViewById(R.id.savedPostsRecyclerView);
 
         sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         currentDate = sdf.format(new Date());
@@ -56,16 +56,16 @@ public class UploadedImageFragment extends Fragment {
         postRef = FirebaseDatabase.getInstance().getReference("creddit").child("posts").child("imagePosts");
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        uploadedImage = new ArrayList<>();
+        savedPostsList = new ArrayList<>();
 
-        cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity());
-        LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        cardAdapter = new CardAdapter(getApplicationContext(), savedPostsList, this);
+        LinearLayoutManager cardManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
 
 
         postValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                uploadedImage.clear();
+                savedPostsList.clear();
                 if (dataSnapshot.exists()) {
                     try {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
@@ -99,7 +99,7 @@ public class UploadedImageFragment extends Fragment {
                                 cardPostTime = (minutes + "min ago");
                             }
 
-                            uploadedImage.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
+                            savedPostsList.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
                             cardAdapter.notifyDataSetChanged();
                         }
                     } catch (Exception e) {
@@ -116,11 +116,9 @@ public class UploadedImageFragment extends Fragment {
 
         postRef.orderByChild("userId").equalTo(userId).addValueEventListener(postValueEventListener);
 
-        uploadedImageRecyclerView.setLayoutManager(cardManager);
-        uploadedImageRecyclerView.setAdapter(cardAdapter);
+        savedPostsRecyclerView.setLayoutManager(cardManager);
+        savedPostsRecyclerView.setAdapter(cardAdapter);
 
-        return view;
+
     }
-
-
 }

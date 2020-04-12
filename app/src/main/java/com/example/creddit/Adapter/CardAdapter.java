@@ -9,8 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +28,7 @@ import com.example.creddit.BuildConfig;
 import com.example.creddit.Model.CardModal;
 import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
+import com.example.creddit.SharedPref;
 import com.example.creddit.SingleImageShowActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,9 +58,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     FirebaseUser user;
     DatabaseReference mRef, mRefUser, mRef2;
     Activity parentActivity;
-    ValueEventListener deletePostValueEventListener,getPostCountValueEventListener;
-    int i, numberOfPost, flag=0;
+    ValueEventListener deletePostValueEventListener, getPostCountValueEventListener;
+    int i, numberOfPost, flag = 0;
     String TAG = "my";
+    SharedPref sharedPref;
+    int theme;
 
     public CardAdapter(Context mContext, List<CardModal> mData, Activity parentActivity) {
         this.mContext = mContext;
@@ -71,12 +74,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     @Override
     public CardAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        sharedPref = new SharedPref(mContext);
+        if (sharedPref.loadNightModeState() == true) {
+            theme = R.style.darktheme;
+//            setTheme(R.style.darktheme);
+        } else {
+            theme = R.style.AppTheme;
+//            setTheme(R.style.AppTheme);
+        }
+
         View view;
         LayoutInflater inflater = LayoutInflater.from(mContext);
 //        if (parentActivity instanceof ProfileActivity){
 //            view = inflater.inflate(R.layout.card_image_layout_delete, null);
 //        }else {
-            view = inflater.inflate(R.layout.card_image_layout, null);
+        view = inflater.inflate(R.layout.card_image_layout, null);
 //        }
 
         return new MyViewHolder(view);
@@ -92,8 +104,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-//        String userId = user.getUid();
-//        mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
+        if (user != null) {
+            String userId = user.getUid();
+            mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
+        }
 
         final ImageView postUpvote = holder.post_upvote;
         ImageView postDownvote = holder.post_downvote;
@@ -106,11 +120,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         ImageView deletePost = holder.deletePost;
         ImageView cardMenu = holder.card_menu;
 
-        if (parentActivity instanceof ProfileActivity){
+        if (parentActivity instanceof ProfileActivity) {
             cardMenu.setVisibility(View.GONE);
             deletePost.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             cardMenu.setVisibility(View.VISIBLE);
             deletePost.setVisibility(View.GONE);
         }
@@ -161,9 +174,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                                 deletePostValueEventListener = new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()){
-                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                                                if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())){
+                                        if (dataSnapshot.exists()) {
+                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                if (dataSnapshot1.child("imagePath").getValue().toString().equals(mData.get(position).getCard_image())) {
                                                     mRef.child(dataSnapshot1.getKey()).child("cardPostProfileImage").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("cardTitle").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("imagePath").removeValue();
@@ -268,7 +281,40 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
                 menuInflater.inflate(R.menu.card_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new MyViewHolder(view));
+//                popupMenu.setOnMenuItemClickListener(new MyViewHolder(view));
+                Menu menu = popupMenu.getMenu();
+                MenuItem saveItem = menu.findItem(R.id.card_save);
+                MenuItem unsaveItem = menu.findItem(R.id.card_unsave);
+//                saveItem.setVisible(false);
+
+                unsaveItem.setVisible(false);
+                popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.card_save:
+//                                Toast.makeText(mContext, "Post is Saved", Toast.LENGTH_SHORT).show();
+
+                                break;
+                            case R.id.card_hide_post:
+                                Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
+                                break;
+//                            case R.id.card_give_award:
+//                                Toast.makeText(mContext, "give award is clicked", Toast.LENGTH_SHORT).show();
+//                                break;
+                            case R.id.card_report:
+                                Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.card_block_user:
+                                Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
+                                break;
+
+                        }
+
+                        return true;
+                    }
+                });
                 popupMenu.show();
             }
         });
@@ -289,7 +335,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         return mData.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements OnMenuItemClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost;
@@ -317,31 +363,31 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         }
 
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            
-            switch (menuItem.getItemId()) {
-                case R.id.card_save:
-                    Toast.makeText(mContext, "Save is clicked", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext, ProfileActivity.class);
-//                    mContext.startActivity(intent);
-                    break;
-                case R.id.card_hide_post:
-                    Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.card_give_award:
-                    Toast.makeText(mContext, "give award is clicked", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.card_report:
-                    Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.card_block_user:
-                    Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
-                    break;
-
-            }
-            return true;
-        }
+//        @Override
+//        public boolean onMenuItemClick(MenuItem menuItem) {
+//
+//            switch (menuItem.getItemId()) {
+//                case R.id.card_save:
+//                    Toast.makeText(mContext, "Save is clicked", Toast.LENGTH_SHORT).show();
+////                    Intent intent = new Intent(mContext, ProfileActivity.class);
+////                    mContext.startActivity(intent);
+//                    break;
+//                case R.id.card_hide_post:
+//                    Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
+//                    break;
+////                case R.id.card_give_award:
+////                    Toast.makeText(mContext, "give award is clicked", Toast.LENGTH_SHORT).show();
+////                    break;
+//                case R.id.card_report:
+//                    Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case R.id.card_block_user:
+//                    Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
+//                    break;
+//
+//            }
+//            return true;
+//        }
     }
 
     private Uri getLocalBitmapUri(Bitmap bitmap) {

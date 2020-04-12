@@ -15,7 +15,7 @@
             android:icon="@drawable/ic_security"
             android:title="Reddit Premimum"/>
         <item android:id="@+id/saved"
-            android:icon="@drawable/ic_save"
+            android:icon="@drawable/ic_saved"
             android:title="Saved"/>
         <item android:id="@+id/history"
             android:icon="@drawable/ic_history"
