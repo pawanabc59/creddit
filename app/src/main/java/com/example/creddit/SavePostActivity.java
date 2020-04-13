@@ -31,7 +31,7 @@ public class SavePostActivity extends AppCompatActivity {
     Date todayDate, postedDate;
     CardAdapter cardAdapter;
 
-    ValueEventListener postValueEventListener;
+    ValueEventListener SavedPostValueEventListener;
 
     DatabaseReference rootRef, postRef;
 
@@ -53,8 +53,8 @@ public class SavePostActivity extends AppCompatActivity {
         sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         currentDate = sdf.format(new Date());
 
-        postRef = FirebaseDatabase.getInstance().getReference("creddit").child("posts").child("imagePosts");
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        postRef = FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).child("savedImages");
 
         savedPostsList = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class SavePostActivity extends AppCompatActivity {
         LinearLayoutManager cardManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
 
 
-        postValueEventListener = new ValueEventListener() {
+        SavedPostValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 savedPostsList.clear();
@@ -114,7 +114,7 @@ public class SavePostActivity extends AppCompatActivity {
             }
         };
 
-        postRef.orderByChild("userId").equalTo(userId).addValueEventListener(postValueEventListener);
+        postRef.orderByChild("postNumber").addValueEventListener(SavedPostValueEventListener);
 
         savedPostsRecyclerView.setLayoutManager(cardManager);
         savedPostsRecyclerView.setAdapter(cardAdapter);

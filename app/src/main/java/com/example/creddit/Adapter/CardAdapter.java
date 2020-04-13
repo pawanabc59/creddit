@@ -58,11 +58,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     FirebaseUser user;
     DatabaseReference mRef, mRefUser, mRef2;
     Activity parentActivity;
-    ValueEventListener deletePostValueEventListener, getPostCountValueEventListener;
+    ValueEventListener deletePostValueEventListener, getPostCountValueEventListener, savedImageCountValueEventListener, savePostValueEventListener, showSavedImageValueEventListener, unsavePostValueEventListener;
     int i, numberOfPost, flag = 0;
     String TAG = "my";
     SharedPref sharedPref;
-    int theme;
+    int theme, savedImageCount;
+    String userId;
 
     public CardAdapter(Context mContext, List<CardModal> mData, Activity parentActivity) {
         this.mContext = mContext;
@@ -105,7 +106,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         user = firebaseAuth.getCurrentUser();
 
         if (user != null) {
-            String userId = user.getUid();
+            userId = user.getUid();
             mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
         }
 
@@ -283,19 +284,114 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                 menuInflater.inflate(R.menu.card_menu, popupMenu.getMenu());
 //                popupMenu.setOnMenuItemClickListener(new MyViewHolder(view));
                 Menu menu = popupMenu.getMenu();
-                MenuItem saveItem = menu.findItem(R.id.card_save);
-                MenuItem unsaveItem = menu.findItem(R.id.card_unsave);
-//                saveItem.setVisible(false);
+                final MenuItem saveItem = menu.findItem(R.id.card_save);
+                final MenuItem unsaveItem = menu.findItem(R.id.card_unsave);
+//                unsaveItem.setVisible(false);
 
-                unsaveItem.setVisible(false);
+                showSavedImageValueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+//                            for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+//                                if (dataSnapshot1.child("imagePath").getValue(String.class).equals(mData.get(position).getCard_image())){
+                                    saveItem.setVisible(false);
+                                    unsaveItem.setVisible(true);
+//                                }
+//                            }
+                        }
+                        else{
+                            saveItem.setVisible(true);
+                            unsaveItem.setVisible(false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                };
+                firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").orderByChild("imagePath").equalTo(mData.get(position).getCard_image()).addValueEventListener(showSavedImageValueEventListener);
+
                 popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         switch (menuItem.getItemId()) {
                             case R.id.card_save:
-//                                Toast.makeText(mContext, "Post is Saved", Toast.LENGTH_SHORT).show();
+                                savedImageCountValueEventListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            savedImageCount = dataSnapshot.child("numberOfSavedImages").getValue(Integer.class);
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                };
+                                firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").addListenerForSingleValueEvent(savedImageCountValueEventListener);
+
+                                savePostValueEventListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                                if (dataSnapshot1.child("imagePath").getValue(String.class).equals(mData.get(position).getCard_image())){
+                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("key").setValue(dataSnapshot1.getKey());
+                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("imagePath").setValue(mData.get(position).getCard_image());
+                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("postNumber").setValue(-(savedImageCount+1));
+                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child("numberOfSavedImages").setValue(savedImageCount+1);
+                                                    saveItem.setVisible(false);
+                                                    unsaveItem.setVisible(true);
+                                                    Toast.makeText(mContext, "Post Saved!", Toast.LENGTH_SHORT).show();
+                                                    break;
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                };
+                                firebaseDatabase.getReference("creddit").child("posts").child("imagePosts").addListenerForSingleValueEvent(savePostValueEventListener);
+
+                                break;
+
+                            case R.id.card_unsave:
+
+                                unsavePostValueEventListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            try {
+                                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                    if (dataSnapshot1.child("imagePath").getValue(String.class).equals(mData.get(position).getCard_image())) {
+                                                        firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("key").removeValue();
+                                                        firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("imagePath").removeValue();
+                                                        firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                                        unsaveItem.setVisible(false);
+                                                        saveItem.setVisible(true);
+                                                        Toast.makeText(mContext, "Post Unsaved!", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                };
+                                firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").addListenerForSingleValueEvent(unsavePostValueEventListener);
                                 break;
                             case R.id.card_hide_post:
                                 Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
@@ -327,6 +423,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         if (flag == 1) {
             mRef.removeEventListener(deletePostValueEventListener);
             mRef2.removeEventListener(getPostCountValueEventListener);
+//            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(savedImageCountValueEventListener);
+//            firebaseDatabase.getReference("creddit").child("posts").child("imagePosts").removeEventListener(savePostValueEventListener);
+            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(showSavedImageValueEventListener);
+//            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(unsavePostValueEventListener);
         }
     }
 

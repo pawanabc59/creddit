@@ -306,12 +306,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.history:
-                break;
             case R.id.profile:
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                break;
+            case R.id.saved_posts:
+                Intent intent3 = new Intent(getApplicationContext(), SavePostActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.logout:
                 firebaseAuth.signOut();

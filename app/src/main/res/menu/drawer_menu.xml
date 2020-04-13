@@ -14,9 +14,9 @@
         <item android:id="@+id/reddit_premium"
             android:icon="@drawable/ic_security"
             android:title="Reddit Premimum"/>
-        <item android:id="@+id/saved"
+        <item android:id="@+id/saved_posts"
             android:icon="@drawable/ic_saved"
-            android:title="Saved"/>
+            android:title="Saved Posts"/>
         <item android:id="@+id/history"
             android:icon="@drawable/ic_history"
             android:title="History"/>
