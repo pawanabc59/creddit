@@ -44,6 +44,7 @@ public class SingleImageShowActivity extends AppCompatActivity {
     String pushKey;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef;
+    ImageView backgroundWallpaper;
 //    TextView single_card_title, single_card_posted_by, singleCardDescription;
 //    ImageView single_post_upvote, single_post_downvote, single_post_comment, single_post_share;
 
@@ -72,6 +73,7 @@ public class SingleImageShowActivity extends AppCompatActivity {
 
 //        single_card_profile_image = findViewById(R.id.single_card_profile_image);
         single_card_image = findViewById(R.id.single_card_image);
+        backgroundWallpaper = findViewById(R.id.backgroundWallpaper);
         imageDownload = findViewById(R.id.imageDownload);
 //        single_card_title = findViewById(R.id.single_card_title);
 //        single_card_posted_by = findViewById(R.id.single_posted_by);
@@ -93,6 +95,7 @@ public class SingleImageShowActivity extends AppCompatActivity {
 //        singleCardDescription.setText(card_description);
 
 //        Picasso.get().load(cardProfileImage).into(single_card_profile_image);
+        Picasso.get().load(cardImage).resize(5,5).into(backgroundWallpaper);
         Picasso.get().load(cardImage).into(single_card_image);
 
         imageDownload.setOnClickListener(new View.OnClickListener() {

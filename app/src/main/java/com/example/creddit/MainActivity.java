@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.saved_posts:
-                Intent intent3 = new Intent(getApplicationContext(), SavePostActivity.class);
+                Intent intent3 = new Intent(getApplicationContext(), SavedActivity.class);
                 startActivity(intent3);
                 break;
             case R.id.logout:

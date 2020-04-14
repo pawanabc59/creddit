@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.creddit.Model.FollowingListModal;
+import com.example.creddit.Model.FollowingListModel;
 import com.example.creddit.R;
 import com.squareup.picasso.Picasso;
 
@@ -18,9 +18,9 @@ import java.util.List;
 
 public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdapter.MyViewHolder> {
     private Context mContext;
-    private List<FollowingListModal> mData;
+    private List<FollowingListModel> mData;
 
-    public FollowingListAdapter(Context mContext, List<FollowingListModal> mData) {
+    public FollowingListAdapter(Context mContext, List<FollowingListModel> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }

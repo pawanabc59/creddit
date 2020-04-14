@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.creddit.Adapter.CardAdapter;
-import com.example.creddit.Model.CardModal;
+import com.example.creddit.Model.CardModel;
 import com.example.creddit.R;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
 public class PopularFragment extends Fragment {
 
     RecyclerView recycler_popular_posts;
-    List<CardModal> popular_posts;
+    List<CardModel> popular_posts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,19 +32,19 @@ public class PopularFragment extends Fragment {
 
         popular_posts = new ArrayList<>();
 
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
-//        popular_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
+//        popular_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Posted by pawan", "Check my awesome zoro wallpaper" ));
 
         CardAdapter cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

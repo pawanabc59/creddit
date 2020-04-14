@@ -1,7 +1,5 @@
 package com.example.creddit.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.creddit.Adapter.CardAdapter;
-import com.example.creddit.Model.CardModal;
+import com.example.creddit.Model.CardModel;
 import com.example.creddit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +29,7 @@ import java.util.List;
 public class UploadedImageFragment extends Fragment {
 
     RecyclerView uploadedImageRecyclerView;
-    List<CardModal> uploadedImage;
+    List<CardModel> uploadedImage;
     SimpleDateFormat sdf;
     String currentDate, postTime, cardPostTime, userId;
     Date todayDate, postedDate;
@@ -99,7 +97,7 @@ public class UploadedImageFragment extends Fragment {
                                 cardPostTime = (minutes + "min ago");
                             }
 
-                            uploadedImage.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
+                            uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
                             cardAdapter.notifyDataSetChanged();
                         }
                     } catch (Exception e) {

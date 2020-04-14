@@ -97,11 +97,24 @@
 <!--        android:layout_gravity="center"-->
 <!--        />-->
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backgroundWallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        />
+
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/single_card_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             ></com.github.chrisbanes.photoview.PhotoView>
+
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/imageDownload"

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.creddit.Adapter.FollowingListAdapter;
-import com.example.creddit.Model.FollowingListModal;
+import com.example.creddit.Model.FollowingListModel;
 import com.example.creddit.R;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
 public class SubscriptionFragment extends Fragment {
 
     RecyclerView sub_recyclerview;
-    List<FollowingListModal> followingListModals;
+    List<FollowingListModel> followingListModals;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,24 +31,24 @@ public class SubscriptionFragment extends Fragment {
         sub_recyclerview = view.findViewById(R.id.sub_recyclerview);
 
         followingListModals = new ArrayList<>();
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Zoro Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Luffy Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Luffy Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Luffy Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Luffy Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Luffy Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Sanji Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Sanji Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Sanji Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Sanji Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Sanji Fan Club"));
-        followingListModals.add(new FollowingListModal(R.drawable.zoro, "Sanji Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Zoro Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Luffy Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Luffy Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Luffy Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Luffy Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Luffy Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Sanji Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Sanji Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Sanji Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Sanji Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Sanji Fan Club"));
+        followingListModals.add(new FollowingListModel(R.drawable.zoro, "Sanji Fan Club"));
 
         FollowingListAdapter followingListAdapter = new FollowingListAdapter(getContext(), followingListModals);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

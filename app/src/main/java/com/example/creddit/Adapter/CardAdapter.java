@@ -25,7 +25,7 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creddit.BuildConfig;
-import com.example.creddit.Model.CardModal;
+import com.example.creddit.Model.CardModel;
 import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
 import com.example.creddit.SharedPref;
@@ -48,9 +48,9 @@ import java.util.List;
 
 import static android.widget.PopupMenu.OnMenuItemClickListener;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private Context mContext;
-    private List<CardModal> mData;
+    private List<CardModel> mData;
     String cardImagePath;
     int vote;
     FirebaseDatabase firebaseDatabase;
@@ -65,7 +65,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     int theme, savedImageCount;
     String userId;
 
-    public CardAdapter(Context mContext, List<CardModal> mData, Activity parentActivity) {
+    public CardAdapter(Context mContext, List<CardModel> mData, Activity parentActivity) {
         this.mContext = mContext;
         this.mData = mData;
         this.parentActivity = parentActivity;
@@ -73,30 +73,33 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
     @NonNull
     @Override
-    public CardAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        sharedPref = new SharedPref(mContext);
-        if (sharedPref.loadNightModeState() == true) {
-            theme = R.style.darktheme;
-//            setTheme(R.style.darktheme);
-        } else {
-            theme = R.style.AppTheme;
-//            setTheme(R.style.AppTheme);
-        }
+//        sharedPref = new SharedPref(mContext);
+//        if (sharedPref.loadNightModeState() == true) {
+//            theme = R.style.darktheme;
+////            setTheme(R.style.darktheme);
+//        } else {
+//            theme = R.style.AppTheme;
+////            setTheme(R.style.AppTheme);
+//        }
 
         View view;
-        LayoutInflater inflater = LayoutInflater.from(mContext);
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 //        if (parentActivity instanceof ProfileActivity){
 //            view = inflater.inflate(R.layout.card_image_layout_delete, null);
 //        }else {
-        view = inflater.inflate(R.layout.card_image_layout, null);
+//        view = layoutInflater.inflate(R.layout.card_image_layout, parent, false);
+        view = layoutInflater.inflate(R.layout.card_image_layout, null);
 //        }
 
-        return new MyViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CardAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("posts").child("imagePosts");
@@ -198,7 +201,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                                     }
                                 };
 
-                                mRef.addValueEventListener(deletePostValueEventListener);
+                                mRef.addListenerForSingleValueEvent(deletePostValueEventListener);
                                 flag = 1;
                             }
                         }).show();
@@ -418,10 +421,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull MyViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         if (flag == 1) {
-            mRef.removeEventListener(deletePostValueEventListener);
+//            mRef.removeEventListener(deletePostValueEventListener);
             mRef2.removeEventListener(getPostCountValueEventListener);
 //            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(savedImageCountValueEventListener);
 //            firebaseDatabase.getReference("creddit").child("posts").child("imagePosts").removeEventListener(savePostValueEventListener);
@@ -435,12 +438,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         return mData.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             card_title = itemView.findViewById(R.id.card_title);
@@ -463,31 +466,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         }
 
-//        @Override
-//        public boolean onMenuItemClick(MenuItem menuItem) {
-//
-//            switch (menuItem.getItemId()) {
-//                case R.id.card_save:
-//                    Toast.makeText(mContext, "Save is clicked", Toast.LENGTH_SHORT).show();
-////                    Intent intent = new Intent(mContext, ProfileActivity.class);
-////                    mContext.startActivity(intent);
-//                    break;
-//                case R.id.card_hide_post:
-//                    Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
-//                    break;
-////                case R.id.card_give_award:
-////                    Toast.makeText(mContext, "give award is clicked", Toast.LENGTH_SHORT).show();
-////                    break;
-//                case R.id.card_report:
-//                    Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case R.id.card_block_user:
-//                    Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
-//                    break;
-//
-//            }
-//            return true;
-//        }
     }
 
     private Uri getLocalBitmapUri(Bitmap bitmap) {

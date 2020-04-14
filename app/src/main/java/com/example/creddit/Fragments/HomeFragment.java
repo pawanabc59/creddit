@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.creddit.Adapter.CardAdapter;
-import com.example.creddit.Model.CardModal;
+import com.example.creddit.Model.CardModel;
 import com.example.creddit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,10 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +30,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     RecyclerView recycler_home_posts;
-    List<CardModal> home_posts;
+    List<CardModel> home_posts;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
     DatabaseReference mRef,mRef_user, mRef_post,mRef2;
@@ -68,7 +64,7 @@ public class HomeFragment extends Fragment {
 
         final CardAdapter cardAdapter = new CardAdapter(getContext(), home_posts, getActivity());
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-//        home_posts.add(new CardModal(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Pawan Kumar Maurya", "Check my awesome zoro wallpaper" ));
+//        home_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Pawan Kumar Maurya", "Check my awesome zoro wallpaper" ));
 
 //        if (user == null){
 //
@@ -134,7 +130,7 @@ public class HomeFragment extends Fragment {
 //
 //                            }
 //                        });
-                                home_posts.add(new CardModal(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
+                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime));
                                 cardAdapter.notifyDataSetChanged();
                             }
                         } catch (Exception e) {
