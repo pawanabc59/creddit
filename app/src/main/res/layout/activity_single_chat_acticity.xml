@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SingleChatActicity"
+    android:background="?attr/cardbackground">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chatToolbarTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/white_black"
+        app:title="UserName"
+        app:titleTextColor="?attr/textcolor"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chatToolbarTitle"
+        android:layout_above="@+id/sendMessage"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:background="?attr/white_black"/>
+
+    <LinearLayout
+        android:id="@+id/sendMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:weightSum="11"
+        >
+    <EditText
+        android:id="@+id/sendMessageEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:hint="Enter Message"
+        android:background="?attr/cardbackground"
+        android:textColor="?attr/textcolor"
+        android:padding="@dimen/_5sdp"
+        android:layout_weight="10.7"
+        />
+
+        <ImageButton
+            android:id="@+id/sendMessageButton"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:src="@drawable/ic_send"
+            android:layout_weight="0.3"/>
+    </LinearLayout>
+
+</RelativeLayout>

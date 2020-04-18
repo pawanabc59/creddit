@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/UserCardLayout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_4sdp"
+    android:background="?attr/cardbackground">
+
+    <ImageView
+        android:id="@+id/UsersProfileImage"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_margin="@dimen/_7sdp"
+        android:src="@drawable/reddit_logo_hd"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/UserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="opoiuytgfxcvbnkl"
+        android:textColor="?attr/textcolor"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+</LinearLayout>

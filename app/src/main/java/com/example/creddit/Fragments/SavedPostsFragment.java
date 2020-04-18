@@ -42,6 +42,7 @@ public class SavedPostsFragment extends Fragment {
 
     String currentDate, postTime;
     SimpleDateFormat sdf;
+    CardAdapter cardAdapter;
     Date todayDate, postedDate;
     ValueEventListener postValueEventListener, savedPostValueEventListener;
 
@@ -65,7 +66,7 @@ public class SavedPostsFragment extends Fragment {
 
         saved_posts = new ArrayList<>();
 
-        final CardAdapter cardAdapter = new CardAdapter(getContext(), saved_posts, getActivity());
+        cardAdapter = new CardAdapter(getContext(), saved_posts, getActivity());
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRef_user = mRef.child("users").child(userId).child("savedImages");
         mRef_post = mRef.child("posts").child("imagePosts");

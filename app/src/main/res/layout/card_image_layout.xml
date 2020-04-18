@@ -57,8 +57,8 @@
                             android:text="Group Title"
                             android:textAlignment="textStart"
                             android:textColor="?attr/textcolor"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp"
+                            android:textStyle="normal" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="posted by creator's name"
                                 android:textColor="#808080"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                             <TextView
                                 android:id="@+id/postedTime"
@@ -80,7 +80,7 @@
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:text="Post Time"
                                 android:textColor="#808080"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
