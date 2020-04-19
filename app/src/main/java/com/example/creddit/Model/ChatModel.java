@@ -2,12 +2,18 @@ package com.example.creddit.Model;
 
 public class ChatModel {
 
-    String userImage, chatUserName, chatMessage;
+    String userImage, chatUserName, chatMessage, userId, chatId, senderId, senderProfilePicture, senderUserName;
 
-    public ChatModel(String userImage, String chatUserName, String chatMessage) {
+    public ChatModel(String userImage, String chatUserName, String chatMessage, String userId, String chatId) {
         this.userImage = userImage;
         this.chatUserName = chatUserName;
         this.chatMessage = chatMessage;
+        this.userId = userId;
+        this.chatId = chatId;
+//        this.receiverId = receiverId;
+//        this.senderId = senderId;
+//        this.senderProfilePicture = senderProfilePicture;
+//        this.senderUserName = senderUserName;
     }
 
     public String getUserImage() {
@@ -33,4 +39,52 @@ public class ChatModel {
     public void setChatMessage(String chatMessage) {
         this.chatMessage = chatMessage;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
+
+    //    public String getReceiverId() {
+//        return receiverId;
+//    }
+//
+//    public void setReceiverId(String receiverId) {
+//        this.receiverId = receiverId;
+//    }
+//
+//    public String getSenderId() {
+//        return senderId;
+//    }
+//
+//    public void setSenderId(String senderId) {
+//        this.senderId = senderId;
+//    }
+//
+//    public String getSenderProfilePicture() {
+//        return senderProfilePicture;
+//    }
+//
+//    public void setSenderProfilePicture(String senderProfilePicture) {
+//        this.senderProfilePicture = senderProfilePicture;
+//    }
+//
+//    public String getSenderUserName() {
+//        return senderUserName;
+//    }
+//
+//    public void setSenderUserName(String senderUserName) {
+//        this.senderUserName = senderUserName;
+//    }
 }

@@ -35,7 +35,7 @@ public class SingleChatActicity extends AppCompatActivity {
     SharedPref sharedPref;
     FirebaseDatabase firebaseDatabase;
     FirebaseUser firebaseUser;
-    String senderUserId, receiverUserId, receiverProfilePicture, receiverUsername, chatId, editMessage, currentDate ;
+    String senderUserId, receiverUserId, receiverProfilePicture, receiverUsername, chatId, editMessage, currentDate, senderProfilePicture, senderUsername ;
     Date date;
     SimpleDateFormat simpleDateFormat;
     DatabaseReference mRef;
@@ -76,113 +76,95 @@ public class SingleChatActicity extends AppCompatActivity {
         receiverUserId = intent.getExtras().getString("receiverId");
         receiverProfilePicture = intent.getExtras().getString("receiverProfilePicture");
         receiverUsername = intent.getExtras().getString("receiverUsername");
+        receiver = intent.getExtras().getInt("receiverNumber");
 
-//        sender = Integer.parseInt(senderUserId.substring(0,5).toLowerCase());
-//        receiver = Integer.parseInt(receiverUserId.substring(0,5).toLowerCase());
-//
-//        if (sender > receiver){
-//            chatId = senderUserId+receiverUserId;
-//        }else{
-//            chatId = receiverUserId+senderUserId;
-//        }
-
-        mRef.child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef.child("users").child(senderUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                        if (dataSnapshot1.getKey().equals((senderUserId+receiverUserId))){
-                            chatId = senderUserId+receiverUserId;
-                            break;
-                        }
-                        else {
-                            chatId = receiverUserId+senderUserId;
-                        }
+                    sender = dataSnapshot.child("userNumber").getValue(Integer.class);
+                    String senderString = String.valueOf(sender);
+                    String receiverString = String.valueOf(receiver);
+                    if (sender > receiver){
+                        chatId = senderString+"_"+receiverString;
+                    }else{
+                        chatId = receiverString+"_"+senderString;
                     }
-//                    chatId = senderUserId+receiverUserId;
-                }
-                else {
-                    chatId = receiverUserId+senderUserId;
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    senderProfilePicture = dataSnapshot.child("profileImage").getValue(String.class);
+                    senderUsername = dataSnapshot.child("optionalName").getValue(String.class);
 
-            }
-        });
+                    chatModels = new ArrayList<>();
 
-        chatModels = new ArrayList<>();
+                    chatMessageAdapter = new ChatMessageAdapter(SingleChatActicity.this, chatModels);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    linearLayoutManager.setStackFromEnd(true);
+//                    linearLayoutManager.setReverseLayout(true);
 
-        chatMessageAdapter = new ChatMessageAdapter(SingleChatActicity.this, chatModels);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+                    mRef.child("users").child(receiverUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                chatToolbarTitle.setTitle(dataSnapshot.child("optionalName").getValue().toString());
+                            }
+                        }
 
-        mRef.child("users").child(receiverUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    chatToolbarTitle.setTitle(dataSnapshot.child("optionalName").getValue().toString());
-                }
-            }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                        }
+                    });
 
 //        try{
-            chatNumberValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()){
-                        chatNumber = dataSnapshot.getValue(Integer.class);
-                    }
-                    else{
-                        chatNumber = 0;
-                        mRef.child("chats").child(chatId).child("numberOfChats").setValue(0);
-                    }
-                }
+                    chatNumberValueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                chatNumber = dataSnapshot.getValue(Integer.class);
+                            }
+                            else{
+                                chatNumber = 0;
+                                mRef.child("chats").child(chatId).child("numberOfChats").setValue(0);
+                            }
+                        }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            };
-            try {
-                mRef.child("chats").child(chatId).child("numberOfChats").addValueEventListener(chatNumberValueEventListener);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                        }
+                    };
+                    try {
+                        mRef.child("chats").child(chatId).child("numberOfChats").addValueEventListener(chatNumberValueEventListener);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
 
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editMessage = sendMessageEdit.getText().toString().trim();
-                if (editMessage.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Message cannot be empty", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    final String key = mRef.push().getKey();
+                    sendMessageButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            editMessage = sendMessageEdit.getText().toString().trim();
+                            if (editMessage.isEmpty()){
+                                Toast.makeText(getApplicationContext(), "Message cannot be empty", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                final String key = mRef.push().getKey();
 //                    sendMessageValueEventListener = new ValueEventListener() {
 //                        @Override
 //                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                            date = new Date();
-                            currentDate = simpleDateFormat.format(date);
+                                simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                                date = new Date();
+                                currentDate = simpleDateFormat.format(date);
 
-                            mRef.child("chats").child(chatId).child("chatMessage").child(key).child("senderId").setValue(senderUserId);
-                            mRef.child("chats").child(chatId).child("chatMessage").child(key).child("receiverId").setValue(receiverUserId);
-                            mRef.child("chats").child(chatId).child("chatMessage").child(key).child("message").setValue(editMessage);
-                            mRef.child("chats").child(chatId).child("chatMessage").child(key).child("chatNumber").setValue(-(chatNumber+1));
-                            mRef.child("chats").child(chatId).child("chatMessage").child(key).child("chatTime").setValue(currentDate);
-                            mRef.child("chats").child(chatId).child("numberOfChats").setValue((chatNumber+1));
+                                mRef.child("chats").child(chatId).child("chatMessage").child(key).child("senderId").setValue(senderUserId);
+                                mRef.child("chats").child(chatId).child("chatMessage").child(key).child("receiverId").setValue(receiverUserId);
+                                mRef.child("chats").child(chatId).child("chatMessage").child(key).child("message").setValue(editMessage);
+                                mRef.child("chats").child(chatId).child("chatMessage").child(key).child("chatNumber").setValue(-(chatNumber+1));
+                                mRef.child("chats").child(chatId).child("chatMessage").child(key).child("chatTime").setValue(currentDate);
+                                mRef.child("chats").child(chatId).child("numberOfChats").setValue((chatNumber+1));
 //                        }
 //
 //                        @Override
@@ -191,41 +173,85 @@ public class SingleChatActicity extends AppCompatActivity {
 //                        }
 //                    };
 //                    mRef.child("chats").child(chatId).child("chatMessage").child(key).addValueEventListener(sendMessageValueEventListener);
-                }
-                sendMessageEdit.setText("");
-            }
-        });
+                            }
+                            sendMessageEdit.setText("");
+                        }
+                    });
 
 //        try{
-            showChatMessageValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    chatModels.clear();
-                    if (dataSnapshot.exists()){
-                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                            chatModels.add(new ChatModel("UserImage", "UserName", dataSnapshot1.child("message").getValue(String.class)));
-                            chatMessageAdapter.notifyDataSetChanged();
+                    showChatMessageValueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            chatModels.clear();
+                            if (dataSnapshot.exists()){
+                                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                    if (senderUserId.equals(dataSnapshot1.child("senderId").getValue(String.class))){
+                                        chatModels.add(new ChatModel(senderProfilePicture, senderUsername, dataSnapshot1.child("message").getValue(String.class), senderUserId, chatId));
+                                    }
+                                    else {
+                                        chatModels.add(new ChatModel(receiverProfilePicture, receiverUsername, dataSnapshot1.child("message").getValue(String.class), receiverUserId, chatId));
+                                    }
+                                    chatMessageAdapter.notifyDataSetChanged();
+                                }
+                            }
                         }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    };
+
+                    try {
+                        mRef.child("chats").child(chatId).child("chatMessage").addValueEventListener(showChatMessageValueEventListener);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            };
-
-            try {
-                mRef.child("chats").child(receiverUserId+senderUserId).child("chatMessage").addValueEventListener(showChatMessageValueEventListener);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
 
-        chatRecyclerView.setLayoutManager(linearLayoutManager);
-        chatRecyclerView.setAdapter(chatMessageAdapter);
+                    chatRecyclerView.setLayoutManager(linearLayoutManager);
+                    chatRecyclerView.setAdapter(chatMessageAdapter);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+//        sender = Integer.parseInt(senderUserId.substring(0,5).toLowerCase());
+
+//        mRef.child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()){
+//                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+//                        if (dataSnapshot1.getKey().equals((senderUserId+receiverUserId))){
+//                            chatId = senderUserId+receiverUserId;
+//                            break;
+//                        }
+//                        else {
+//                            chatId = receiverUserId+senderUserId;
+//                        }
+//                    }
+////                    chatId = senderUserId+receiverUserId;
+//                }
+//                else {
+//                    chatId = receiverUserId+senderUserId;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
 
     }
 

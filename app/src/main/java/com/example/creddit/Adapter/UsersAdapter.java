@@ -55,6 +55,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 intent.putExtra("receiverId", mData.get(position).getReceiverId());
                 intent.putExtra("receiverProfilePicture", mData.get(position).getUserProfileImage());
                 intent.putExtra("receiverUsername", mData.get(position).getUserName());
+                intent.putExtra("receiverNumber", mData.get(position).getReceiverNumber());
                 mContext.startActivity(intent);
             }
         });

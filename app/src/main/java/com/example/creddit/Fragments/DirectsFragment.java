@@ -65,7 +65,7 @@ public class DirectsFragment extends Fragment {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                         if (!userId.equals(dataSnapshot1.getKey())) {
-                            usersModels.add(new UsersModel(dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.getKey().toString()));
+                            usersModels.add(new UsersModel(dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.getKey().toString() ,dataSnapshot1.child("userNumber").getValue(Integer.class)));
                         }
                         usersAdapter.notifyDataSetChanged();
                     }

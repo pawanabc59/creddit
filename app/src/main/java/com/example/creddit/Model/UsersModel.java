@@ -5,11 +5,13 @@ import android.widget.ImageView;
 public class UsersModel {
 
     String UserName, UserProfileImage, ReceiverId;
+    int ReceiverNumber;
 
-    public UsersModel(String userName, String userProfileImage, String receiverId) {
+    public UsersModel(String userName, String userProfileImage, String receiverId, int receiverNumber) {
         UserName = userName;
         UserProfileImage = userProfileImage;
         ReceiverId = receiverId;
+        ReceiverNumber = receiverNumber;
     }
 
     public String getUserName() {
@@ -34,5 +36,13 @@ public class UsersModel {
 
     public void setReceiverId(String receiverId) {
         ReceiverId = receiverId;
+    }
+
+    public int getReceiverNumber() {
+        return ReceiverNumber;
+    }
+
+    public void setReceiverNumber(int receiverNumber) {
+        ReceiverNumber = receiverNumber;
     }
 }

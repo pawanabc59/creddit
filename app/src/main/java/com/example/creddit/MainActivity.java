@@ -338,6 +338,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
 
-        mRef2.removeEventListener(navigationValueEventListener);
+        try {
+            mRef2.removeEventListener(navigationValueEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

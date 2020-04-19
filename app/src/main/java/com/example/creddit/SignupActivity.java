@@ -20,8 +20,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +43,7 @@ public class SignupActivity extends AppCompatActivity {
     String uid;
     String currentDate;
     SimpleDateFormat sdf;
+    int numberOfUsers;
 
     SharedPref sessionManager;
 
@@ -78,6 +82,20 @@ public class SignupActivity extends AppCompatActivity {
 
         btnRegister = findViewById(R.id.sign_btn_signup);
         registerProgressBar = findViewById(R.id.signUpProgressBar);
+
+        FirebaseDatabase.getInstance().getReference("creddit").child("numberOfUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    numberOfUsers = dataSnapshot.getValue(Integer.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +169,8 @@ public class SignupActivity extends AppCompatActivity {
 
                             uid = firebaseAuth.getCurrentUser().getUid();
                             mRef.child(uid).child("createdAt").setValue(currentDate);
+                            mRef.child(uid).child("userNumber").setValue(numberOfUsers+1);
+                            FirebaseDatabase.getInstance().getReference("creddit").child("numberOfUsers").setValue(numberOfUsers+1);
 
                             firebaseAuth.signOut();
 
