@@ -165,6 +165,8 @@ public class SingleChatActicity extends AppCompatActivity {
                                 mRef.child("chats").child(chatId).child("chatMessage").child(key).child("chatNumber").setValue(-(chatNumber+1));
                                 mRef.child("chats").child(chatId).child("chatMessage").child(key).child("chatTime").setValue(currentDate);
                                 mRef.child("chats").child(chatId).child("numberOfChats").setValue((chatNumber+1));
+                                mRef.child("users").child(senderUserId).child("friends").child(receiverUserId).setValue(receiverUserId);
+                                mRef.child("users").child(receiverUserId).child("friends").child(senderUserId).setValue(senderUserId);
 //                        }
 //
 //                        @Override

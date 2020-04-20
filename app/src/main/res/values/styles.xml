@@ -44,7 +44,8 @@
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#2196F3</item>
         <item name="backgroundcolor">#031113</item>
-        <item name="cardbackground">#424242</item>
+<!--        <item name="cardbackground">#424242</item>-->
+        <item name="cardbackground">#1d1d1d</item>
         <item name="textcolor">#ffffff</item>
         <item name="tintcolor">#808080</item>
         <item name="buttoncolor">#2196F3</item>

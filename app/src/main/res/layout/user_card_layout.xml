@@ -13,6 +13,7 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/_7sdp"
         android:src="@drawable/reddit_logo_hd"
+        android:background="@drawable/outline_layout"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -23,7 +24,7 @@
         android:textColor="?attr/textcolor"
         android:textSize="16sp"
         android:textStyle="normal"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"/>
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_3sdp"/>
 
 </LinearLayout>

@@ -1,21 +1,18 @@
 package com.example.creddit.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.creddit.Adapter.FollowingListAdapter;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.creddit.Adapter.UsersAdapter;
-import com.example.creddit.Model.FollowingListModel;
 import com.example.creddit.Model.UsersModel;
 import com.example.creddit.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,8 +35,9 @@ public class DirectsFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     String userId;
-    ValueEventListener UsersListValueEventListener;
+    ValueEventListener UsersListValueEventListener, searchUserValueEventListener;
     UsersAdapter usersAdapter;
+    SearchView searchUsers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,20 +50,135 @@ public class DirectsFragment extends Fragment {
         userId = user.getUid();
 
         ShowUsersRecyclerView = view.findViewById(R.id.ShowUsersRecyclerView);
+        searchUsers = view.findViewById(R.id.searchUsers);
 
         usersModels = new ArrayList<>();
 
         usersAdapter = new UsersAdapter(getContext(), usersModels);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
+//        UsersListValueEventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                usersModels.clear();
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+////                        if (!userId.equals(dataSnapshot1.getKey())) {
+////                            usersModels.add(new UsersModel(dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.getKey().toString() ,dataSnapshot1.child("userNumber").getValue(Integer.class)));
+////                        }
+////                        usersAdapter.notifyDataSetChanged();
+//                        mRef.child("users").child(dataSnapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
+//                                if (dataSnapshot3.exists()) {
+//                                    usersModels.add(new UsersModel(dataSnapshot3.child("optionalName").getValue(String.class), dataSnapshot3.child("profileImage").getValue(String.class), dataSnapshot3.getKey().toString(), dataSnapshot3.child("userNumber").getValue(Integer.class)));
+//                                    usersAdapter.notifyDataSetChanged();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        };
+
+//        mRef.child("users").addValueEventListener(UsersListValueEventListener);
+
+//        try {
+//        mRef.child("users").child(userId).child("friends").addValueEventListener(UsersListValueEventListener);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        showFriends();
+
+        ShowUsersRecyclerView.setLayoutManager(linearLayoutManager);
+        ShowUsersRecyclerView.setAdapter(usersAdapter);
+
+        searchUsers.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!TextUtils.isEmpty(query.trim())) {
+                    searchUser(query);
+                } else {
+                    showFriends();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String newText) {
+
+                if (!TextUtils.isEmpty(newText.trim())) {
+                    searchUser(newText);
+                } else {
+                    showFriends();
+                }
+                return true;
+            }
+        });
+
+        return view;
+    }
+
+    private void showFriends() {
         UsersListValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersModels.clear();
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                        if (!userId.equals(dataSnapshot1.getKey())) {
+//                            usersModels.add(new UsersModel(dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.getKey().toString() ,dataSnapshot1.child("userNumber").getValue(Integer.class)));
+//                        }
+//                        usersAdapter.notifyDataSetChanged();
+                        mRef.child("users").child(dataSnapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
+                                if (dataSnapshot3.exists()) {
+                                    usersModels.add(new UsersModel(dataSnapshot3.child("optionalName").getValue(String.class), dataSnapshot3.child("profileImage").getValue(String.class), dataSnapshot3.getKey().toString(), dataSnapshot3.child("userNumber").getValue(Integer.class)));
+                                    usersAdapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        mRef.child("users").child(userId).child("friends").addValueEventListener(UsersListValueEventListener);
+    }
+
+    private void searchUser(final String newText) {
+        searchUserValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersModels.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         if (!userId.equals(dataSnapshot1.getKey())) {
-                            usersModels.add(new UsersModel(dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.getKey().toString() ,dataSnapshot1.child("userNumber").getValue(Integer.class)));
+                            if (dataSnapshot1.child("optionalName").getValue(String.class).toLowerCase().contains(newText.toLowerCase()) ||
+                                    dataSnapshot1.child("email").getValue(String.class).toLowerCase().contains(newText.toLowerCase())) {
+                                usersModels.add(new UsersModel(dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.getKey().toString(), dataSnapshot1.child("userNumber").getValue(Integer.class)));
+                            }
                         }
                         usersAdapter.notifyDataSetChanged();
                     }
@@ -78,19 +191,20 @@ public class DirectsFragment extends Fragment {
             }
         };
 
-        mRef.child("users").addValueEventListener(UsersListValueEventListener);
-
-        ShowUsersRecyclerView.setLayoutManager(linearLayoutManager);
-        ShowUsersRecyclerView.setAdapter(usersAdapter);
-
-        return view;
+        mRef.child("users").addValueEventListener(searchUserValueEventListener);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        mRef.child("users").removeEventListener(UsersListValueEventListener);
+        mRef.child("users").child(userId).child("friends").removeEventListener(UsersListValueEventListener);
+        try {
+            mRef.child("users").addValueEventListener(searchUserValueEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

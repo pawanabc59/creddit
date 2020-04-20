@@ -13,6 +13,8 @@
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
         android:layout_marginRight="@dimen/_6sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:background="@drawable/outline_layout"
         android:src="@drawable/reddit_logo"
         android:scaleType="centerCrop"/>
 
