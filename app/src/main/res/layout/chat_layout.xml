@@ -36,6 +36,8 @@
             android:textColor="?attr/textcolor"
             android:textSize="18sp"
             android:layout_marginTop="@dimen/_4sdp"
+            android:paddingHorizontal="@dimen/_6sdp"
+            android:paddingVertical="@dimen/_2sdp"
             android:text="User message"/>
 
     </LinearLayout>

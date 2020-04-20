@@ -32,16 +32,23 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_5sdp"
         android:orientation="horizontal"
+        android:background="?attr/white_black"
         android:weightSum="11"
         >
     <EditText
         android:id="@+id/sendMessageEdit"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_height="wrap_content"
         android:hint="Enter Message"
-        android:background="?attr/cardbackground"
+        android:background="@drawable/outline_layout"
+        android:layout_marginHorizontal="@dimen/_7sdp"
         android:textColor="?attr/textcolor"
         android:padding="@dimen/_5sdp"
+        android:minLines="1"
+        android:maxLines="4"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
         android:layout_weight="10.7"
         />
 
@@ -50,7 +57,9 @@
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_35sdp"
             android:src="@drawable/ic_send"
-            android:layout_weight="0.3"/>
+            android:layout_weight="0.3"
+            android:layout_gravity="bottom"
+            />
     </LinearLayout>
 
 </RelativeLayout>

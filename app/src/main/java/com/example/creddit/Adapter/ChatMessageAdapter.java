@@ -74,6 +74,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 //                holder.chatMessage.setText(mData.get(position).getChatMessage());
 //                holder.chatUserName.setText(mData.get(position).getSenderUserName());
 //            } else {
+
+        if (userId.equals(mData.get(position).getUserId())){
+            holder.chatMessage.setBackgroundResource(R.drawable.sender_chat_layout);
+        }
+        else{
+            holder.chatMessage.setBackgroundResource(R.drawable.receiver_chat_layout);
+        }
                 Picasso.get().load(mData.get(position).getUserImage()).into(holder.userImage);
                 holder.chatMessage.setText(mData.get(position).getChatMessage());
                 holder.chatUserName.setText(mData.get(position).getChatUserName());
