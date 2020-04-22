@@ -23,16 +23,17 @@
         android:layout_below="@+id/chatToolbarTitle"
         android:layout_above="@+id/sendMessage"
         android:layout_marginTop="@dimen/_1sdp"
-        android:background="?attr/white_black"/>
+        android:paddingBottom="@dimen/_10sdp"
+        android:background="?attr/cardbackground"/>
 
     <LinearLayout
         android:id="@+id/sendMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:padding="@dimen/_7sdp"
         android:orientation="horizontal"
-        android:background="?attr/white_black"
+        android:background="?attr/cardbackground"
         android:weightSum="11"
         >
     <EditText
@@ -43,7 +44,9 @@
         android:background="@drawable/outline_layout"
         android:layout_marginHorizontal="@dimen/_7sdp"
         android:textColor="?attr/textcolor"
+        android:fontFamily="@font/hind_madurai"
         android:padding="@dimen/_5sdp"
+        android:paddingHorizontal="@dimen/_7sdp"
         android:minLines="1"
         android:maxLines="4"
         android:inputType="textMultiLine"

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -348,7 +349,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                     firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child("numberOfSavedImages").setValue(savedImageCount+1);
                                                     saveItem.setVisible(false);
                                                     unsaveItem.setVisible(true);
-                                                    Toast.makeText(mContext, "Post Saved!", Toast.LENGTH_SHORT).show();
+                                                    showToast("Post Saved! ");
+//                                                    Toast.makeText(mContext, "Post Saved!", Toast.LENGTH_SHORT).show();
                                                     break;
 
                                                 }
@@ -379,7 +381,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                         firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
                                                         unsaveItem.setVisible(false);
                                                         saveItem.setVisible(true);
-                                                        Toast.makeText(mContext, "Post Unsaved!", Toast.LENGTH_SHORT).show();
+                                                        showToast("Post Unsaved! ");
+//                                                        Toast.makeText(mContext, "Post Unsaved!", Toast.LENGTH_SHORT).show();
                                                         break;
                                                     }
                                                 }
@@ -397,16 +400,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                 firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").addListenerForSingleValueEvent(unsavePostValueEventListener);
                                 break;
                             case R.id.card_hide_post:
-                                Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
+                                showToast("hide post is clicked!");
+//                                Toast.makeText(mContext, "hide post is clicked", Toast.LENGTH_SHORT).show();
                                 break;
 //                            case R.id.card_give_award:
 //                                Toast.makeText(mContext, "give award is clicked", Toast.LENGTH_SHORT).show();
 //                                break;
                             case R.id.card_report:
-                                Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
+                                showToast("report is clicked");
+//                                Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.card_block_user:
-                                Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
+                                showToast("block user is clicked");
+//                                Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
                                 break;
 
                         }
@@ -482,5 +488,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             e.printStackTrace();
         }
         return uri;
+    }
+
+    public void showToast(String toast_text){
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View layout = inflater.inflate(R.layout.toast_layout, null);
+
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(toast_text);
+
+        Toast toast = new Toast(mContext);
+        toast.setGravity(Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

@@ -103,6 +103,8 @@ public class DirectsFragment extends Fragment {
         ShowUsersRecyclerView.setLayoutManager(linearLayoutManager);
         ShowUsersRecyclerView.setAdapter(usersAdapter);
 
+        searchUsers.setIconified(false);
+//        searchUsers.setFocusable(true);
         searchUsers.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

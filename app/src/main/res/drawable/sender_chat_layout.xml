@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Background Color -->
-    <solid android:color="?attr/cardbackground" />
+    <solid android:color="#4b4b4b" />
 
     <!-- Border Color -->
     <stroke android:width="0.5dp" android:color="#C0C0C0" />

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="@dimen/_220sdp"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/toast_outline_layout"
+    >
+
+    <TextView
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="match_parent"
+        android:background="#3ec160"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="?attr/cardbackground"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_12sdp">
+
+    <ImageView
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:src="@drawable/reddit_logo_hd"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/toast_text"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hind_madurai"
+        android:textStyle="normal"
+        android:text="Toast Text"
+        android:layout_gravity="center_vertical"
+        android:textSize="16sp"
+        android:layout_marginLeft="@dimen/_10sdp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

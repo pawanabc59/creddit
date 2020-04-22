@@ -12,9 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_5sdp"
-        android:layout_marginVertical="@dimen/_3sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
         app:queryHint="Search User"
         app:defaultQueryHint="Search User"
+        app:iconifiedByDefault="false"
+        android:background="@drawable/outline_layout"
         />
 
     <TextView
