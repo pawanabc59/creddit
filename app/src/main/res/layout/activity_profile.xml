@@ -29,15 +29,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/profileBannerImage"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_110sdp"
-                android:src="@drawable/zoro"
-                android:scaleType="centerCrop"
-                />
+                <ImageView
+                    android:id="@+id/profileBannerImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_110sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/zoro" />
 
-            <androidx.cardview.widget.CardView
+                <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/_75sdp"
                 android:layout_height="@dimen/_75sdp"
                 android:layout_marginLeft="@dimen/_20sdp"

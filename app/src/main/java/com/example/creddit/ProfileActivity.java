@@ -36,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseUser user;
 
     CollapsingToolbarLayout toolbarLayout;
+    Toolbar toolbar;
 
     String userId;
 
@@ -59,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileBannerImage = findViewById(R.id.profileBannerImage);
 
         toolbarLayout = findViewById(R.id.toolbarTitle);
+//        toolbar = findViewById(R.id.profile_toolbar);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("users");
@@ -104,6 +106,13 @@ public class ProfileActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         profile_edit = findViewById(R.id.profile_edit);
         profile_edit.setOnClickListener(new View.OnClickListener() {

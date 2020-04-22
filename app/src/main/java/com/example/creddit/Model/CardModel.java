@@ -5,15 +5,16 @@ public class CardModel {
     public String card_profile_image, card_image;
     public String card_title;
     public String posted_by;
-    public String card_description, postedTime, vote;
+    public String card_description, postedTime, userId, vote;
 
-    public CardModel(String card_profile_image, String card_image, String card_title, String posted_by, String card_description, String postedTime) {
+    public CardModel(String card_profile_image, String card_image, String card_title, String posted_by, String card_description, String postedTime, String userId) {
         this.card_profile_image = card_profile_image;
         this.card_image = card_image;
         this.card_title = card_title;
         this.posted_by = posted_by;
         this.card_description = card_description;
         this.postedTime = postedTime;
+        this.userId = userId;
 //        this.vote = vote;
     }
 
@@ -71,5 +72,13 @@ public class CardModel {
 
     public void setCard_description(String card_description) {
         this.card_description = card_description;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

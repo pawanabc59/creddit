@@ -17,7 +17,8 @@
         android:roundIcon="@drawable/reddit_logo_hd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SingleChatActicity"></activity>
+        <activity android:name=".AnotherUserActivity"></activity>
+        <activity android:name=".SingleChatActicity" />
         <activity android:name=".SavedActivity" />
         <activity
             android:name=".SplashScreen"

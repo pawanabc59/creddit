@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creddit.AnotherUserActivity;
 import com.example.creddit.BuildConfig;
 import com.example.creddit.Model.CardModel;
 import com.example.creddit.ProfileActivity;
@@ -266,6 +268,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }
         });
 
+        holder.cardHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, AnotherUserActivity.class);
+                intent.putExtra("anotherUserId", mData.get(position).getUserId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
+
         holder.card_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -448,6 +460,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost;
+        LinearLayout cardHeader;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -469,6 +482,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             downvoteCount = itemView.findViewById(R.id.downvoteCount);
             commentCount = itemView.findViewById(R.id.commentCount);
             deletePost = itemView.findViewById(R.id.deletePost);
+            cardHeader = itemView.findViewById(R.id.card_header);
 
         }
 
