@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,11 +38,14 @@ public class HomeFragment extends Fragment {
     FirebaseUser user;
     String userId;
     String cardProfileImage="",cardPostUserId, cardImage, cardTitle, postedBy, cardDescription, cardPostTime;
+    CardAdapter cardAdapter;
 
     String currentDate, postTime;
     SimpleDateFormat sdf;
     Date todayDate, postedDate;
-    ValueEventListener postValueEventListener;
+    ValueEventListener postValueEventListener, followedUserslistValueEventListener, userFollowedValueEventListener;
+
+    ArrayList<String> followedUsersId = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,80 +66,83 @@ public class HomeFragment extends Fragment {
 
         home_posts = new ArrayList<>();
 
-        final CardAdapter cardAdapter = new CardAdapter(getContext(), home_posts, getActivity());
+        cardAdapter = new CardAdapter(getContext(), home_posts, getActivity());
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 //        home_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Pawan Kumar Maurya", "Check my awesome zoro wallpaper" ));
 
-//        if (user == null){
-//
-//        }
-//        else {
-//            userId = user.getUid();
-            mRef_user = mRef.child("users");
-            mRef_post = mRef.child("posts").child("imagePosts");
+        if (user == null){
 
-//            Query query = FirebaseDatabase.getInstance().getReference().child("creddit").child("posts").orderByChild("postNumber");
+            showPosts();
 
-            postValueEventListener = new ValueEventListener() {
+        }
+        else {
+            userId = user.getUid();
+
+            followedUserslistValueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    home_posts.clear();
-                    if (dataSnapshot.exists()) {
-                        try {
-                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                        cardImage = dataSnapshot1.child("imagePath").getValue().toString();
-//                        cardTitle = dataSnapshot1.child("uploadedBy").getValue().toString();
-//                        postedBy = dataSnapshot1.child("uploadedBy").getValue().toString();
-//                        cardDescription = dataSnapshot1.child("cardTitle").getValue().toString();
-//                        cardPostUserId = dataSnapshot1.child("userId").getValue().toString();
-//                        cardProfileImage = dataSnapshot1.child("cardPostProfileImage").getValue().toString();
-                                String postKey = dataSnapshot1.getKey();
-                                postTime = dataSnapshot1.child("postTime").getValue(String.class);
-
-                                todayDate = sdf.parse(currentDate);
-                                postedDate = sdf.parse(postTime);
-
-                                long diff = todayDate.getTime() - postedDate.getTime();
-                                long seconds = diff / 1000;
-                                long minutes = seconds / 60;
-                                long hours = minutes / 60;
-                                int days = (int) (hours / 24);
-
-                                if ((days / 365) > 0) {
-                                    int year = days / 365;
-                                    int leftMonths = days % 365;
-                                    int month = leftMonths / 30;
-                                    int leftDays = month % 30;
-                                    cardPostTime = (year + "y " + month + "m ago");
-                                } else if ((days / 30) > 0) {
-                                    int month = days / 30;
-                                    int leftDays = days % 30;
-                                    cardPostTime = (month + "m ago");
-                                } else if ((hours / 24) > 0) {
-                                    cardPostTime = (days + "d ago");
-                                } else if ((minutes / 60) > 0) {
-                                    cardPostTime = (hours + "h ago");
-                                } else {
-                                    cardPostTime = (minutes + "min ago");
-                                }
-
-//                        mRef_user.child(cardPostUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot dataSnapshotUser) {
-//                                cardProfileImage = dataSnapshotUser.child("profileImage").getValue().toString();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                            }
-//                        });
-                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
-                                cardAdapter.notifyDataSetChanged();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if (dataSnapshot.exists()){
+                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                            followedUsersId.add(dataSnapshot1.getKey());
                         }
+
+                        userFollowedValueEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                home_posts.clear();
+                                if (dataSnapshot2.exists()){
+                                    try {
+                                        for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
+                                            String postKey = dataSnapshot3.getKey();
+                                            postTime = dataSnapshot3.child("postTime").getValue(String.class);
+
+                                            todayDate = sdf.parse(currentDate);
+                                            postedDate = sdf.parse(postTime);
+
+                                            long diff = todayDate.getTime() - postedDate.getTime();
+                                            long seconds = diff / 1000;
+                                            long minutes = seconds / 60;
+                                            long hours = minutes / 60;
+                                            int days = (int) (hours / 24);
+
+                                            if ((days / 365) > 0) {
+                                                int year = days / 365;
+                                                int leftMonths = days % 365;
+                                                int month = leftMonths / 30;
+                                                int leftDays = month % 30;
+                                                cardPostTime = (year + "y " + month + "m ago");
+                                            } else if ((days / 30) > 0) {
+                                                int month = days / 30;
+                                                int leftDays = days % 30;
+                                                cardPostTime = (month + "m ago");
+                                            } else if ((hours / 24) > 0) {
+                                                cardPostTime = (days + "d ago");
+                                            } else if ((minutes / 60) > 0) {
+                                                cardPostTime = (hours + "h ago");
+                                            } else {
+                                                cardPostTime = (minutes + "min ago");
+                                            }
+
+                                            if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
+                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class)));
+                                                cardAdapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        };
+                        mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
+                    }
+                    else {
+                        showPosts();
                     }
                 }
 
@@ -145,19 +152,88 @@ public class HomeFragment extends Fragment {
                 }
             };
 
-            mRef_post.orderByChild("postNumber").addValueEventListener(postValueEventListener);
+            mRef.child("users").child(userId).child("followingList").addValueEventListener(followedUserslistValueEventListener);
 
-            recycler_home_posts.setLayoutManager(cardManager);
-            recycler_home_posts.setAdapter(cardAdapter);
-//        }
+        }
+
+        recycler_home_posts.setLayoutManager(cardManager);
+        recycler_home_posts.setAdapter(cardAdapter);
 
         return view;
+    }
+
+    public void showPosts(){
+        mRef_user = mRef.child("users");
+        mRef_post = mRef.child("posts").child("imagePosts");
+
+        postValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                home_posts.clear();
+                if (dataSnapshot.exists()) {
+                    try {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            String postKey = dataSnapshot1.getKey();
+                            postTime = dataSnapshot1.child("postTime").getValue(String.class);
+
+                            todayDate = sdf.parse(currentDate);
+                            postedDate = sdf.parse(postTime);
+
+                            long diff = todayDate.getTime() - postedDate.getTime();
+                            long seconds = diff / 1000;
+                            long minutes = seconds / 60;
+                            long hours = minutes / 60;
+                            int days = (int) (hours / 24);
+
+                            if ((days / 365) > 0) {
+                                int year = days / 365;
+                                int leftMonths = days % 365;
+                                int month = leftMonths / 30;
+                                int leftDays = month % 30;
+                                cardPostTime = (year + "y " + month + "m ago");
+                            } else if ((days / 30) > 0) {
+                                int month = days / 30;
+                                int leftDays = days % 30;
+                                cardPostTime = (month + "m ago");
+                            } else if ((hours / 24) > 0) {
+                                cardPostTime = (days + "d ago");
+                            } else if ((minutes / 60) > 0) {
+                                cardPostTime = (hours + "h ago");
+                            } else {
+                                cardPostTime = (minutes + "min ago");
+                            }
+
+                            home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
+                            cardAdapter.notifyDataSetChanged();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        mRef_post.orderByChild("postNumber").addValueEventListener(postValueEventListener);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        mRef_post.removeEventListener(postValueEventListener);
+        try {
+            if (user == null) {
+                mRef_post.removeEventListener(postValueEventListener);
+            } else {
+                mRef.child("users").child(userId).child("followingList").removeEventListener(followedUserslistValueEventListener);
+                mRef.child("posts").child("imagePosts").removeEventListener(userFollowedValueEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

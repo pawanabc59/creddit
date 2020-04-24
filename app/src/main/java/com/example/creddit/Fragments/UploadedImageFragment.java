@@ -58,7 +58,8 @@ public class UploadedImageFragment extends Fragment {
 
         cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity());
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-
+//        cardManager.setReverseLayout(true);
+//        cardManager.setStackFromEnd(true);
 
         postValueEventListener = new ValueEventListener() {
             @Override
@@ -68,37 +69,40 @@ public class UploadedImageFragment extends Fragment {
                     try {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                            postTime = dataSnapshot1.child("postTime").getValue(String.class);
+                            if (dataSnapshot1.child("userId").getValue(String.class).equals(userId)) {
 
-                            todayDate = sdf.parse(currentDate);
-                            postedDate = sdf.parse(postTime);
+                                postTime = dataSnapshot1.child("postTime").getValue(String.class);
 
-                            long diff = todayDate.getTime() - postedDate.getTime();
-                            long seconds = diff / 1000;
-                            long minutes = seconds / 60;
-                            long hours = minutes / 60;
-                            int days = (int) (hours / 24);
+                                todayDate = sdf.parse(currentDate);
+                                postedDate = sdf.parse(postTime);
 
-                            if ((days / 365) > 0) {
-                                int year = days / 365;
-                                int leftMonths = days % 365;
-                                int month = leftMonths / 30;
-                                int leftDays = month % 30;
-                                cardPostTime = (year + "y " + month + "m ago");
-                            } else if ((days / 30) > 0) {
-                                int month = days / 30;
-                                int leftDays = days % 30;
-                                cardPostTime = (month + "m ago");
-                            } else if ((hours / 24) > 0) {
-                                cardPostTime = (days + "d ago");
-                            } else if ((minutes / 60) > 0) {
-                                cardPostTime = (hours + "h ago");
-                            } else {
-                                cardPostTime = (minutes + "min ago");
+                                long diff = todayDate.getTime() - postedDate.getTime();
+                                long seconds = diff / 1000;
+                                long minutes = seconds / 60;
+                                long hours = minutes / 60;
+                                int days = (int) (hours / 24);
+
+                                if ((days / 365) > 0) {
+                                    int year = days / 365;
+                                    int leftMonths = days % 365;
+                                    int month = leftMonths / 30;
+                                    int leftDays = month % 30;
+                                    cardPostTime = (year + "y " + month + "m ago");
+                                } else if ((days / 30) > 0) {
+                                    int month = days / 30;
+                                    int leftDays = days % 30;
+                                    cardPostTime = (month + "m ago");
+                                } else if ((hours / 24) > 0) {
+                                    cardPostTime = (days + "d ago");
+                                } else if ((minutes / 60) > 0) {
+                                    cardPostTime = (hours + "h ago");
+                                } else {
+                                    cardPostTime = (minutes + "min ago");
+                                }
+
+                                uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
+                                cardAdapter.notifyDataSetChanged();
                             }
-
-                            uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
-                            cardAdapter.notifyDataSetChanged();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -112,7 +116,7 @@ public class UploadedImageFragment extends Fragment {
             }
         };
 
-        postRef.orderByChild("userId").equalTo(userId).addValueEventListener(postValueEventListener);
+        postRef.orderByChild("postNumber").addValueEventListener(postValueEventListener);
 
         uploadedImageRecyclerView.setLayoutManager(cardManager);
         uploadedImageRecyclerView.setAdapter(cardAdapter);
@@ -120,5 +124,9 @@ public class UploadedImageFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        postRef.removeEventListener(postValueEventListener);
+    }
 }

@@ -66,6 +66,9 @@
                     android:layout_gravity="bottom|end"
                     android:layout_marginBottom="@dimen/_24sdp"
                     android:layout_marginRight="@dimen/_15sdp"
+                    android:background="@drawable/text_outline_layout"
+                    android:paddingVertical="@dimen/_3sdp"
+                    android:paddingHorizontal="@dimen/_6sdp"
                     />
 
             </FrameLayout>

@@ -73,8 +73,6 @@ public class AnotherUserActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        userId = user.getUid();
-
         profileValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -123,57 +121,68 @@ public class AnotherUserActivity extends AppCompatActivity {
         profile_joined = findViewById(R.id.anotherUserProfileJoined);
         sameUserProfile = findViewById(R.id.sameUserProfile);
 
-        if (userId.equals(anotherUserId)){
-            profile_join.setVisibility(View.GONE);
-            profile_joined.setVisibility(View.GONE);
-            sameUserProfile.setVisibility(View.VISIBLE);
-            showToast("This is Your Profile!");
+        if (user == null){
+            profile_join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showToast("You need to login first to join this!");
+                }
+            });
         }
+        else {
+            userId = user.getUid();
 
-        mRef.child(userId).child("followingList").child(anotherUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    if (!userId.equals(anotherUserId)) {
-                        profile_join.setVisibility(View.GONE);
-                        sameUserProfile.setVisibility(View.GONE);
-                        profile_joined.setVisibility(View.VISIBLE);
+            if (userId.equals(anotherUserId)) {
+                profile_join.setVisibility(View.GONE);
+                profile_joined.setVisibility(View.GONE);
+                sameUserProfile.setVisibility(View.VISIBLE);
+                showToast("This is Your Profile!");
+            }
+
+            mRef.child(userId).child("followingList").child(anotherUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (!userId.equals(anotherUserId)) {
+                            profile_join.setVisibility(View.GONE);
+                            sameUserProfile.setVisibility(View.GONE);
+                            profile_joined.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-        profile_join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRef.child(userId).child("followingList").child(anotherUserId).setValue(anotherUserId);
-                mRef.child(userId).child("followingList").child(userId).setValue(userId);
-                profile_join.setVisibility(View.GONE);
-                sameUserProfile.setVisibility(View.GONE);
-                profile_joined.setVisibility(View.VISIBLE);
-                showToast("You joined this User!");
-            }
-        });
+            profile_join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mRef.child(userId).child("followingList").child(anotherUserId).setValue(anotherUserId);
+                    mRef.child(userId).child("followingList").child(userId).setValue(userId);
+                    profile_join.setVisibility(View.GONE);
+                    sameUserProfile.setVisibility(View.GONE);
+                    profile_joined.setVisibility(View.VISIBLE);
+                    showToast("You joined this User!");
+                }
+            });
 
-        profile_joined.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            profile_joined.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 //                mRef.child(userId).child("followingList").addListenerForSingleValueEvent(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                        if (dataSnapshot.exists()){
 //                            for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
 //                                if (dataSnapshot1.getKey().equals(anotherUserId)){
-                                    mRef.child(userId).child("followingList").child(anotherUserId).removeValue();
-                                    profile_joined.setVisibility(View.GONE);
-                                    sameUserProfile.setVisibility(View.GONE);
-                                    profile_join.setVisibility(View.VISIBLE);
-                                    showToast("You unjoined this User!");
+                    mRef.child(userId).child("followingList").child(anotherUserId).removeValue();
+                    profile_joined.setVisibility(View.GONE);
+                    sameUserProfile.setVisibility(View.GONE);
+                    profile_join.setVisibility(View.VISIBLE);
+                    showToast("You unjoined this User!");
 //                                }
 //                            }
 //                        }
@@ -184,8 +193,9 @@ public class AnotherUserActivity extends AppCompatActivity {
 //
 //                    }
 //                });
-            }
-        });
+                }
+            });
+        }
 
         TabLayout tabLayout = findViewById(R.id.anotherUserProfileTabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Posts"));
@@ -218,13 +228,6 @@ public class AnotherUserActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mRef.child(userId).removeEventListener(profileValueEventListener);
-    }
-
     public void showToast(String toast_text){
         LayoutInflater inflater = LayoutInflater.from(AnotherUserActivity.this);
         View layout = inflater.inflate(R.layout.toast_layout, null);
@@ -237,6 +240,17 @@ public class AnotherUserActivity extends AppCompatActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        try {
+            mRef.child(userId).removeEventListener(profileValueEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
