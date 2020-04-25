@@ -4,29 +4,30 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/white_black"
-    android:layout_marginTop="25dp"
+    android:background="?attr/cardbackground"
+    android:layout_marginTop="@dimen/_9sdp"
     >
 
     <LinearLayout
+        android:id="@+id/followingListLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="?attr/colorPrimary"
-        android:padding="15dp"
+        android:background="?attr/cardbackground"
+        android:padding="@dimen/_7sdp"
         >
 
         <androidx.cardview.widget.CardView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginLeft="@dimen/_9sdp"
             app:cardCornerRadius="75dp"
             >
 
             <ImageView
                 android:id="@+id/sub_image"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:src="@drawable/zoro"
                 android:scaleType="centerCrop"
                 />
@@ -35,19 +36,41 @@
 
         <TextView
             android:id="@+id/sub_name"
-            android:layout_width="235dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="match_parent"
             android:text="Zoro Wallpaper"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/_9sdp"
             android:textColor="?attr/textcolor"
             android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/addFavourite"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_star"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_15sdp"
             />
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_star"
+            android:id="@+id/removeFavourite"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_star_colored"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:visibility="gone"
             />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

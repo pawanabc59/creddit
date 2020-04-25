@@ -5,19 +5,19 @@ import android.widget.TextView;
 
 public class FollowingListModel {
 
-    public int sub_image;
-    public String sub_name;
+    public String sub_name, sub_image, anotherUserId;
 
-    public FollowingListModel(int sub_image, String sub_name) {
+    public FollowingListModel(String sub_image, String sub_name, String anotherUserId) {
         this.sub_image = sub_image;
         this.sub_name = sub_name;
+        this.anotherUserId = anotherUserId;
     }
 
-    public int getSub_image() {
+    public String getSub_image() {
         return sub_image;
     }
 
-    public void setSub_image(int sub_image) {
+    public void setSub_image(String sub_image) {
         this.sub_image = sub_image;
     }
 
@@ -27,5 +27,13 @@ public class FollowingListModel {
 
     public void setSub_name(String sub_name) {
         this.sub_name = sub_name;
+    }
+
+    public String getAnotherUserId() {
+        return anotherUserId;
+    }
+
+    public void setAnotherUserId(String anotherUserId) {
+        this.anotherUserId = anotherUserId;
     }
 }

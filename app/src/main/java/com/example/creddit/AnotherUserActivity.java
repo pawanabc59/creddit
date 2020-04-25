@@ -160,8 +160,10 @@ public class AnotherUserActivity extends AppCompatActivity {
             profile_join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mRef.child(userId).child("followingList").child(anotherUserId).setValue(anotherUserId);
-                    mRef.child(userId).child("followingList").child(userId).setValue(userId);
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("key").setValue(anotherUserId);
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("favourite").setValue(0);
+                    mRef.child(userId).child("followingList").child(userId).child("key").setValue(userId);
+                    mRef.child(userId).child("followingList").child(userId).child("favourite").setValue(0);
                     profile_join.setVisibility(View.GONE);
                     sameUserProfile.setVisibility(View.GONE);
                     profile_joined.setVisibility(View.VISIBLE);
@@ -178,11 +180,12 @@ public class AnotherUserActivity extends AppCompatActivity {
 //                        if (dataSnapshot.exists()){
 //                            for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
 //                                if (dataSnapshot1.getKey().equals(anotherUserId)){
-                    mRef.child(userId).child("followingList").child(anotherUserId).removeValue();
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("key").removeValue();
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("favourite").removeValue();
                     profile_joined.setVisibility(View.GONE);
                     sameUserProfile.setVisibility(View.GONE);
                     profile_join.setVisibility(View.VISIBLE);
-                    showToast("You unjoined this User!");
+                    showToast("You left this User!");
 //                                }
 //                            }
 //                        }

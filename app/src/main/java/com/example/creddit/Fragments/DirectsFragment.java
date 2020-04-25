@@ -202,7 +202,7 @@ public class DirectsFragment extends Fragment {
 
         mRef.child("users").child(userId).child("friends").removeEventListener(UsersListValueEventListener);
         try {
-            mRef.child("users").addValueEventListener(searchUserValueEventListener);
+            mRef.child("users").removeEventListener(searchUserValueEventListener);
         } catch (Exception e) {
             e.printStackTrace();
         }

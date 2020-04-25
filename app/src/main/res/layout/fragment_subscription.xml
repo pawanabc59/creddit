@@ -1,16 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.SubscriptionFragment"
-    android:background="?attr/white_black"
-    >
+    android:background="?attr/white_black">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchAllUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        app:queryHint="Search User"
+        app:defaultQueryHint="Search User"
+        app:iconifiedByDefault="false"
+        android:background="@drawable/outline_layout"
+        />
+
+    <TextView
+        android:id="@+id/favouriteList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="FAVOURITE USERS LIST"
+        android:textStyle="normal"
+        android:textColor="?attr/textcolor"
+        android:background="?attr/white_black"
+        android:layout_marginVertical="@dimen/_4sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:layout_below="@+id/searchAllUsers"
+        android:visibility="gone"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sub_fav_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/favouriteList"
+        android:minHeight="@dimen/_50sdp"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/textSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="JOINED USERS LIST"
+        android:textStyle="normal"
+        android:textColor="?attr/textcolor"
+        android:background="?attr/white_black"
+        android:layout_marginVertical="@dimen/_4sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:layout_below="@+id/sub_fav_recyclerview"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sub_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/textSub"
         />
 
-</FrameLayout>
+</RelativeLayout>
