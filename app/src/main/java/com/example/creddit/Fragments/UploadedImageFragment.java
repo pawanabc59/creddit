@@ -56,7 +56,7 @@ public class UploadedImageFragment extends Fragment {
 
         uploadedImage = new ArrayList<>();
 
-        cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity());
+        cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity(), "uploadedImageFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 //        cardManager.setReverseLayout(true);
 //        cardManager.setStackFromEnd(true);

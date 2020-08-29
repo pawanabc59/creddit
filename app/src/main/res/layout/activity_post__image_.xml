@@ -28,7 +28,7 @@
             android:text="POST"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginLeft="@dimen/_170sdp"
+            android:layout_marginLeft="@dimen/_150sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:textColor="?attr/textcolor" />
 
@@ -125,7 +125,6 @@
                 android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="@dimen/_30sdp"
-                android:fontFamily=""
                 />
 
         </LinearLayout>
@@ -139,6 +138,82 @@
         android:layout_below="@+id/post_image_title"
         android:layout_marginTop="@dimen/_20sdp"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentBottom="true">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_25sdp">
+
+        <TextView
+            android:id="@+id/nsfw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/nsfw_outline_layout"
+            android:text="NSFW"
+            android:textColor="#f81107"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:paddingHorizontal="@dimen/_7sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            />
+
+        <TextView
+            android:id="@+id/nsfw_fill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/nsfw_fill_outline_layout"
+            android:text="NSFW"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:paddingHorizontal="@dimen/_7sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_25sdp">
+
+            <TextView
+                android:id="@+id/spoiler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spoiler_outline_layout"
+                android:text="SPOILER"
+                android:textColor="?attr/textcolor"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                />
+
+            <TextView
+                android:id="@+id/spoiler_fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spoiler_fill_outline_layout"
+                android:text="SPOILER"
+                android:textColor="?attr/textcolor"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

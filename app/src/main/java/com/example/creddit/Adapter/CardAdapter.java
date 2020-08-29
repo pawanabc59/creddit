@@ -63,15 +63,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     Activity parentActivity;
     ValueEventListener deletePostValueEventListener, getPostCountValueEventListener, savedImageCountValueEventListener, savePostValueEventListener, showSavedImageValueEventListener, unsavePostValueEventListener;
     int i, numberOfPost, flag = 0;
-    String TAG = "my";
+    String TAG = "my", fragmentType;
     SharedPref sharedPref;
     int theme, savedImageCount;
     String userId;
 
-    public CardAdapter(Context mContext, List<CardModel> mData, Activity parentActivity) {
+    public CardAdapter(Context mContext, List<CardModel> mData, Activity parentActivity, String fragmentType) {
         this.mContext = mContext;
         this.mData = mData;
         this.parentActivity = parentActivity;
+        this.fragmentType = fragmentType;
     }
 
     @NonNull
@@ -126,6 +127,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         TextView commentCount = holder.commentCount;
         ImageView deletePost = holder.deletePost;
         ImageView cardMenu = holder.card_menu;
+        final ImageView joinSubreddit = holder.joinSubreddit;
+        final ImageView unjoindedSubreddit = holder.unjoinedSubreddit;
 
         if (parentActivity instanceof ProfileActivity) {
             cardMenu.setVisibility(View.GONE);
@@ -144,6 +147,32 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.postedTime.setText(mData.get(position).postedTime);
 
         cardImagePath = mData.get(position).getCard_image();
+
+        if (fragmentType.equals("popularFragment")){
+            joinSubreddit.setVisibility(View.VISIBLE);
+        }
+
+        joinSubreddit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").setValue(mData.get(position).getUserId());
+                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").setValue(0);
+                joinSubreddit.setVisibility(View.GONE);
+                unjoindedSubreddit.setVisibility(View.VISIBLE);
+                showToast("You joined this Sub!");
+            }
+        });
+
+        unjoindedSubreddit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").removeValue();
+                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").removeValue();
+                unjoindedSubreddit.setVisibility(View.GONE);
+                joinSubreddit.setVisibility(View.VISIBLE);
+                showToast("You left this Sub!");
+            }
+        });
 
         deletePost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +221,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                     mRef.child(dataSnapshot1.getKey()).child("uploadedBy").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("userId").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("vote").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("postType").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("NSFW").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("spoiler").removeValue();
 //                                                    mRef2.child("numberOfPosts").setValue(numberOfPost-1);
                                                 }
                                             }
@@ -459,7 +491,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
-        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost;
+        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost, joinSubreddit, unjoinedSubreddit;
         LinearLayout cardHeader;
 
         public ViewHolder(@NonNull View itemView) {
@@ -483,6 +515,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             commentCount = itemView.findViewById(R.id.commentCount);
             deletePost = itemView.findViewById(R.id.deletePost);
             cardHeader = itemView.findViewById(R.id.card_header);
+            joinSubreddit = itemView.findViewById(R.id.joinSubreddit);
+            unjoinedSubreddit = itemView.findViewById(R.id.unjoinedSubreddit);
 
         }
 

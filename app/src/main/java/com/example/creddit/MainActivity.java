@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String currentDate;
     SimpleDateFormat sdf;
 
+    Toolbar toolbar;
+
     ValueEventListener navigationValueEventListener;
 
     @Override
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("users");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setting_tab = findViewById(R.id.setting_tab);
@@ -210,6 +212,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+//        toggle.setDrawerIndicatorEnabled(false);
+//        toolbar.setNavigationIcon(R.drawable.reddit_logo_hd);
+
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.reddit_logo_hd);
+
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 

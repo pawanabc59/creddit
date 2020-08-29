@@ -51,7 +51,7 @@ public class Post_Image_Activity extends AppCompatActivity {
     private Bitmap bitmap;
     byte[] image_byte_data;
     Uri filepath, uri;
-    TextView postImagePost, postImageTitle;
+    TextView postImagePost, postImageTitle, spoiler, spoilerFill, nsfw, nsfwFill;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
@@ -61,7 +61,7 @@ public class Post_Image_Activity extends AppCompatActivity {
     String userId, pushId, postTitle, currentDate, cardPostProfile;
     SimpleDateFormat simpleDateFormat;
     Date date;
-    int numberOfPosts;
+    int numberOfPosts, spoiler_number, nsfw_number;
     ProgressBar postProgressBar;
     ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener;
 
@@ -102,6 +102,47 @@ public class Post_Image_Activity extends AppCompatActivity {
         postImagePost = findViewById(R.id.post_image_post);
         postImageTitle = findViewById(R.id.post_image_title);
         postProgressBar = findViewById(R.id.postProgressBar);
+
+        nsfw = findViewById(R.id.nsfw);
+        nsfwFill = findViewById(R.id.nsfw_fill);
+        spoiler = findViewById(R.id.spoiler);
+        spoilerFill = findViewById(R.id.spoiler_fill);
+
+        nsfw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nsfw.setVisibility(View.GONE);
+                nsfwFill.setVisibility(View.VISIBLE);
+                nsfw_number = 1;
+            }
+        });
+
+        nsfwFill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nsfwFill.setVisibility(View.GONE);
+                nsfw.setVisibility(View.VISIBLE);
+                nsfw_number = 0;
+            }
+        });
+
+        spoiler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spoiler.setVisibility(View.GONE);
+                spoilerFill.setVisibility(View.VISIBLE);
+                spoiler_number = 1;
+            }
+        });
+
+        spoilerFill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spoilerFill.setVisibility(View.GONE);
+                spoiler.setVisibility(View.VISIBLE);
+                spoiler_number = 0;
+            }
+        });
 
         open_camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +230,9 @@ public class Post_Image_Activity extends AppCompatActivity {
                                             mRef_post.child("vote").setValue("0");
                                             mRef_post.child("postTime").setValue(currentDate);
                                             mRef_post.child("cardPostProfileImage").setValue(cardPostProfile);
+                                            mRef_post.child("NSFW").setValue(nsfw_number);
+                                            mRef_post.child("spoiler").setValue(spoiler_number);
+                                            mRef_post.child("postType").setValue("image");
                                             mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts + 1);
 
                                             postImagePost.setVisibility(View.VISIBLE);

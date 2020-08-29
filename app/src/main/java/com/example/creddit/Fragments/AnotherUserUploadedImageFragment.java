@@ -68,7 +68,7 @@ public class AnotherUserUploadedImageFragment extends Fragment {
 
         uploadedImage = new ArrayList<>();
 
-        cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity());
+        cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity(), "anotherUserPopularFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 
 

@@ -66,7 +66,7 @@ public class SavedPostsFragment extends Fragment {
 
         saved_posts = new ArrayList<>();
 
-        cardAdapter = new CardAdapter(getContext(), saved_posts, getActivity());
+        cardAdapter = new CardAdapter(getContext(), saved_posts, getActivity(), "savedPostsFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRef_user = mRef.child("users").child(userId).child("savedImages");
         mRef_post = mRef.child("posts").child("imagePosts");

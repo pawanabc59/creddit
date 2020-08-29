@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
 
         home_posts = new ArrayList<>();
 
-        cardAdapter = new CardAdapter(getContext(), home_posts, getActivity());
+        cardAdapter = new CardAdapter(getContext(), home_posts, getActivity(), "homeFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 //        home_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Pawan Kumar Maurya", "Check my awesome zoro wallpaper" ));
 

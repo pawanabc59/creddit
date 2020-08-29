@@ -25,6 +25,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 android:elevation="4dp"
+                app:layout_scrollFlags="scroll|enterAlways"
                 app:titleTextColor="?attr/textcolor" />
 
             <FrameLayout
@@ -43,6 +44,7 @@
                 android:background="?attr/backgroundcolor"
                 app:itemIconTint="?attr/tintcolor"
                 app:itemTextColor="?attr/colorAccent"
+                app:labelVisibilityMode="unlabeled"
                 app:menu="@menu/bottom_navigation"
                 tools:ignore="MissingConstraints" />
 

@@ -88,6 +88,25 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/joinSubreddit"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_add"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_25sdp"
+                        android:visibility="gone"/>
+                    <ImageView
+                        android:id="@+id/unjoinedSubreddit"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/ic_done"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_25sdp"
+                        android:visibility="gone"/>
+
+                    <ImageView
                         android:id="@+id/card_menu"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"

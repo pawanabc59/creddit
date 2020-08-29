@@ -59,17 +59,16 @@
                     android:id="@+id/anotherUserProfileJoin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="JOIN"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/buttoncolor"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="@dimen/_24sdp"
                     android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_24sdp"
                     android:background="@drawable/text_outline_layout"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_3sdp"
-                    />
+                    android:text="JOIN"
+                    android:textColor="?attr/buttoncolor"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/anotherUserProfileJoined"

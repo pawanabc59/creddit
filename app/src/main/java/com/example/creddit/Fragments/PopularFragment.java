@@ -35,8 +35,9 @@ public class PopularFragment extends Fragment {
     String currentDate, postTime, cardPostTime, userId;
     Date todayDate, postedDate;
     CardAdapter cardAdapter;
+    ArrayList<String> followingList;
 
-    ValueEventListener postValueEventListener;
+    ValueEventListener postValueEventListener, followingListValueEventListener;
 
     DatabaseReference rootRef, postRef;
     FirebaseUser user;
@@ -50,6 +51,7 @@ public class PopularFragment extends Fragment {
         recycler_popular_posts = view.findViewById(R.id.recycler_popular_posts);
 
         popular_posts = new ArrayList<>();
+        followingList = new ArrayList<String>();
 
         sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         currentDate = sdf.format(new Date());
@@ -59,10 +61,30 @@ public class PopularFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userId = user.getUid();
+
+            followingListValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                            followingList.add(dataSnapshot1.child("key").getValue().toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+
+            FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).child("followingList").addListenerForSingleValueEvent(followingListValueEventListener);
         }
 
-        cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity());
+        cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity(), "popularFragment");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        System.out.println("following list is"+followingList);
 
         postValueEventListener = new ValueEventListener() {
             @Override
@@ -101,8 +123,12 @@ public class PopularFragment extends Fragment {
                                 cardPostTime = (minutes + "min ago");
                             }
 
-                            popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
-                            cardAdapter.notifyDataSetChanged();
+//                            you have to change here from taking userid to subreddit id .
+                            if (!followingList.contains(dataSnapshot1.child("userId").getValue().toString())) {
+                                popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
+                                cardAdapter.notifyDataSetChanged();
+                                followingList.add(dataSnapshot1.child("userId").getValue().toString());
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
