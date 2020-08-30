@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,12 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 //import android.widget.Toolbar;
 
@@ -59,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String userId;
     String currentDate;
     SimpleDateFormat sdf;
+    LinearLayout setting_layout;
 
     Toolbar toolbar;
 
@@ -90,11 +86,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setting_tab = findViewById(R.id.setting_tab);
         night_mode = findViewById(R.id.night_mode);
+        setting_layout = findViewById(R.id.setting);
 
-        setting_tab.setOnClickListener(new View.OnClickListener() {
+//        setting_tab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), " setting is clicked ", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        setting_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), " setting is clicked ", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent);
             }
         });
 

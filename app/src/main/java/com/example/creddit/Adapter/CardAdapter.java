@@ -61,11 +61,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     FirebaseUser user;
     DatabaseReference mRef, mRefUser, mRef2;
     Activity parentActivity;
-    ValueEventListener deletePostValueEventListener, getPostCountValueEventListener, savedImageCountValueEventListener, savePostValueEventListener, showSavedImageValueEventListener, unsavePostValueEventListener;
+    ValueEventListener deletePostValueEventListener, getPostCountValueEventListener, savedImageCountValueEventListener, savePostValueEventListener, showSavedImageValueEventListener, unsavePostValueEventListener, nsfwValueEventListener;
     int i, numberOfPost, flag = 0;
     String TAG = "my", fragmentType;
     SharedPref sharedPref;
-    int theme, savedImageCount;
+    int theme, savedImageCount, showNSFWValue, blurNSFWValue;
     String userId;
 
     public CardAdapter(Context mContext, List<CardModel> mData, Activity parentActivity, String fragmentType) {
@@ -94,6 +94,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 //            view = inflater.inflate(R.layout.card_image_layout_delete, null);
 //        }else {
 //        view = layoutInflater.inflate(R.layout.card_image_layout, parent, false);
+
         view = layoutInflater.inflate(R.layout.card_image_layout, null);
 //        }
 
@@ -103,7 +104,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("posts").child("imagePosts");
@@ -111,11 +112,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-
-        if (user != null) {
-            userId = user.getUid();
-            mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
-        }
 
         final ImageView postUpvote = holder.post_upvote;
         ImageView postDownvote = holder.post_downvote;
@@ -129,6 +125,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         ImageView cardMenu = holder.card_menu;
         final ImageView joinSubreddit = holder.joinSubreddit;
         final ImageView unjoindedSubreddit = holder.unjoinedSubreddit;
+        final ImageView card_image_nsfw_spoiler = holder.card_image_nsfw_spoiler;
+        TextView card_description_nsfw_spoiler = holder.card_description_nsfw_spoiler;
+        final LinearLayout nsfw_spoiler_layout = holder.nsfw_spoiler_layout;
+        final LinearLayout normal_layout = holder.normal_layout;
 
         if (parentActivity instanceof ProfileActivity) {
             cardMenu.setVisibility(View.GONE);
@@ -138,15 +138,60 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             deletePost.setVisibility(View.GONE);
         }
 
-//        vote = Integer.parseInt(mData.get(position).getVote());
-        holder.card_title.setText(mData.get(position).card_title);
-        holder.posted_by.setText(mData.get(position).posted_by);
-        holder.card_description.setText(mData.get(position).card_description);
-        Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
-        Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
-        holder.postedTime.setText(mData.get(position).postedTime);
+        if (user != null) {
+            userId = user.getUid();
+            mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
 
-        cardImagePath = mData.get(position).getCard_image();
+            nsfwValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        showNSFWValue = dataSnapshot.child("showNSFW").getValue(Integer.class);
+                        blurNSFWValue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            mRefUser.addValueEventListener(nsfwValueEventListener);
+
+        }
+//        else {
+
+        if (mData.get(position).getNsfw() == 1){
+//            holder.nsfw.setVisibility(View.VISIBLE);
+            if (blurNSFWValue == 1) {
+                holder.nsfw.setVisibility(View.VISIBLE);
+                normal_layout.setVisibility(View.GONE);
+                nsfw_spoiler_layout.setVisibility(View.VISIBLE);
+                Picasso.get().load(mData.get(position).getCard_image()).resize(7, 7).into(card_image_nsfw_spoiler);
+            }
+            else {
+                holder.nsfw.setVisibility(View.VISIBLE);
+            }
+        }
+            if (mData.get(position).getSpoiler() == 1) {
+                holder.spoiler.setVisibility(View.VISIBLE);
+                normal_layout.setVisibility(View.GONE);
+                nsfw_spoiler_layout.setVisibility(View.VISIBLE);
+                Picasso.get().load(mData.get(position).getCard_image()).resize(7, 7).into(card_image_nsfw_spoiler);
+            }
+
+//        vote = Integer.parseInt(mData.get(position).getVote());
+            holder.card_title.setText(mData.get(position).card_title);
+            holder.posted_by.setText(mData.get(position).posted_by);
+            holder.card_description.setText(mData.get(position).card_description);
+            card_description_nsfw_spoiler.setText(mData.get(position).card_description);
+            Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
+            Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
+
+            holder.postedTime.setText(mData.get(position).postedTime);
+
+            cardImagePath = mData.get(position).getCard_image();
+//        }
 
         if (fragmentType.equals("popularFragment")){
             joinSubreddit.setVisibility(View.VISIBLE);
@@ -324,6 +369,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }
         });
 
+        card_image_nsfw_spoiler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, SingleImageShowActivity.class);
+                intent.putExtra("cardImage", mData.get(position).getCard_image());
+                mContext.startActivity(intent);
+
+            }
+        });
+
         holder.card_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -490,9 +545,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount;
-        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost, joinSubreddit, unjoinedSubreddit;
-        LinearLayout cardHeader;
+        TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount, nsfw, spoiler, card_description_nsfw_spoiler;
+        ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost, joinSubreddit, unjoinedSubreddit, card_image_nsfw_spoiler;
+        LinearLayout cardHeader, nsfw_spoiler_layout, normal_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -517,6 +572,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             cardHeader = itemView.findViewById(R.id.card_header);
             joinSubreddit = itemView.findViewById(R.id.joinSubreddit);
             unjoinedSubreddit = itemView.findViewById(R.id.unjoinedSubreddit);
+            nsfw = itemView.findViewById(R.id.nsfw_fill_post);
+            spoiler = itemView.findViewById(R.id.spoiler_fill_post);
+            card_description_nsfw_spoiler = itemView.findViewById(R.id.card_description_nsfw_spoiler);
+            card_image_nsfw_spoiler = itemView.findViewById(R.id.card_image_nsfw_spoiler);
+
+            nsfw_spoiler_layout = itemView.findViewById(R.id.nsfw_spoiler_layout);
+            normal_layout = itemView.findViewById(R.id.normal_layout);
 
         }
 

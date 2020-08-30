@@ -147,6 +147,8 @@ public class LoginActivity extends AppCompatActivity {
                                         mRef2.child("optionalAbout").setValue(dataSnapshot.child("optionalAbout").getValue().toString());
                                         mRef2.child("profileBannerImage").setValue(dataSnapshot.child("profileBannerImage").getValue().toString());
                                         mRef2.child("savedImages").child("numberOfSavedImages").setValue(dataSnapshot.child("savedImages").child("numberOfSavedImages").getValue(Integer.class));
+                                        mRef2.child("showNSFW").setValue(dataSnapshot.child("showNSFW").getValue(Integer.class));
+                                        mRef2.child("blurNSFW").setValue(dataSnapshot.child("blurNSFW").getValue(Integer.class));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         mRef2.child("profileImage").setValue("null");
@@ -154,6 +156,8 @@ public class LoginActivity extends AppCompatActivity {
                                         mRef2.child("optionalAbout").setValue("none");
                                         mRef2.child("profileBannerImage").setValue("null");
                                         mRef2.child("savedImages").child("numberOfSavedImages").setValue(0);
+                                        mRef2.child("showNSFW").setValue(0);
+                                        mRef2.child("blurNSFW").setValue(0);
                                     }
                                     loginProgressBar.setVisibility(View.GONE);
                                     btnLogin.setVisibility(View.VISIBLE);

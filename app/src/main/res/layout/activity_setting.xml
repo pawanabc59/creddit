@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/white_black"
+    tools:context=".SettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        android:background="?attr/cardbackground">
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_person"
+            android:layout_marginRight="@dimen/_15sdp"/>
+        <Switch
+            android:id="@+id/showNSFW"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:text="Show NSFW content (I'm over 18)"
+            android:textColor="?attr/textcolor"
+            android:textSize="16sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        android:background="?attr/cardbackground">
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_warning"
+            android:layout_marginRight="@dimen/_15sdp"/>
+        <Switch
+            android:id="@+id/blurNSFW"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:text="Blur NSFW Images"
+            android:textColor="?attr/textcolor"
+            android:textSize="16sp"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -5,9 +5,11 @@ public class CardModel {
     public String card_profile_image, card_image;
     public String card_title;
     public String posted_by;
-    public String card_description, postedTime, userId, vote;
+    public String card_description, postedTime, userId, vote, post_type;
+    int  nsfw, spoiler;
 
-    public CardModel(String card_profile_image, String card_image, String card_title, String posted_by, String card_description, String postedTime, String userId) {
+    public CardModel(String card_profile_image, String card_image, String card_title, String posted_by, String card_description, String postedTime, String userId,
+                     int nsfw, int spoiler, String post_type) {
         this.card_profile_image = card_profile_image;
         this.card_image = card_image;
         this.card_title = card_title;
@@ -15,6 +17,9 @@ public class CardModel {
         this.card_description = card_description;
         this.postedTime = postedTime;
         this.userId = userId;
+        this.nsfw = nsfw;
+        this.spoiler = spoiler;
+        this.post_type = post_type;
 //        this.vote = vote;
     }
 
@@ -25,6 +30,31 @@ public class CardModel {
 //    public void setVote(String vote) {
 //        this.vote = vote;
 //    }
+
+
+    public String getPost_type() {
+        return post_type;
+    }
+
+    public void setPost_type(String post_type) {
+        this.post_type = post_type;
+    }
+
+    public int getNsfw() {
+        return nsfw;
+    }
+
+    public void setNsfw(int nsfw) {
+        this.nsfw = nsfw;
+    }
+
+    public int getSpoiler() {
+        return spoiler;
+    }
+
+    public void setSpoiler(int spoiler) {
+        this.spoiler = spoiler;
+    }
 
     public String getPostedTime() {
         return postedTime;

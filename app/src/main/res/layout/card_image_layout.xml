@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_2sdp"
     android:layout_marginBottom="@dimen/_3sdp"
     android:paddingTop="@dimen/_5sdp">
@@ -26,8 +26,9 @@
                 android:id="@+id/card_header"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_37sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="?attr/colorPrimary">
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:background="?attr/colorPrimary"
+                android:padding="@dimen/_1sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -91,20 +92,21 @@
                         android:id="@+id/joinSubreddit"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/ic_add"
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/_7sdp"
                         android:layout_marginRight="@dimen/_25sdp"
-                        android:visibility="gone"/>
+                        android:src="@drawable/ic_add"
+                        android:visibility="gone" />
+
                     <ImageView
                         android:id="@+id/unjoinedSubreddit"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:src="@drawable/ic_done"
-                        android:layout_marginTop="@dimen/_7sdp"
                         android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/_7sdp"
                         android:layout_marginRight="@dimen/_25sdp"
-                        android:visibility="gone"/>
+                        android:src="@drawable/ic_done"
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/card_menu"
@@ -114,8 +116,8 @@
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:src="@drawable/ic_menu_show"
-                        app:itemTextColor="?attr/textcolor"
-                        android:visibility="visible"/>
+                        android:visibility="visible"
+                        app:itemTextColor="?attr/textcolor" />
 
                     <ImageView
                         android:id="@+id/deletePost"
@@ -125,33 +127,109 @@
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:src="@drawable/ic_delete"
-                        app:itemTextColor="?attr/textcolor"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        app:itemTextColor="?attr/textcolor" />
 
                 </RelativeLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/card_description"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="Some cool comment regarding the post"
-                android:textColor="?attr/textcolor"
-                android:textSize="20sp" />
+                android:layout_marginTop="@dimen/_3sdp"
+                android:paddingVertical="@dimen/_3sdp">
 
-            <ImageView
-                android:id="@+id/card_image"
+                <TextView
+                    android:id="@+id/nsfw_fill_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:background="@drawable/nsfw_fill_outline_layout"
+                    android:paddingHorizontal="@dimen/_7sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="NSFW"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/spoiler_fill_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:background="@drawable/spoiler_fill_outline_layout"
+                    android:paddingHorizontal="@dimen/_7sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="SPOILER"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nsfw_spoiler_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:adjustViewBounds="true"
-                android:maxHeight="@dimen/_360sdp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/zoro" />
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/card_description_nsfw_spoiler"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="Some cool comment regarding the post"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/card_image_nsfw_spoiler"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/zoro" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/normal_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/card_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="Some cool comment regarding the post"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="@dimen/_360sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/zoro" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

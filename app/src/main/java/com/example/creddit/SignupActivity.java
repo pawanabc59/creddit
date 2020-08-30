@@ -172,6 +172,9 @@ public class SignupActivity extends AppCompatActivity {
                             mRef.child(uid).child("userNumber").setValue(numberOfUsers+1);
                             FirebaseDatabase.getInstance().getReference("creddit").child("numberOfUsers").setValue(numberOfUsers+1);
 
+                            mRef.child(uid).child("showNSFW").setValue(0);
+                            mRef.child(uid).child("blurNSFW").setValue(0);
+
                             firebaseAuth.signOut();
 
 //                            String key = mRef.push().getKey();

@@ -69,6 +69,7 @@
                 android:layout_marginBottom="15dp">
 
                 <LinearLayout
+                    android:id="@+id/setting"
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     >

@@ -37,10 +37,11 @@ public class PopularFragment extends Fragment {
     CardAdapter cardAdapter;
     ArrayList<String> followingList;
 
-    ValueEventListener postValueEventListener, followingListValueEventListener;
+    ValueEventListener postValueEventListener, followingListValueEventListener, nsfwValueEventListener;
 
-    DatabaseReference rootRef, postRef;
+    DatabaseReference mRef, postRef;
     FirebaseUser user;
+    int showNSFWvalue=0, blurNSFWvalue=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,12 +80,26 @@ public class PopularFragment extends Fragment {
             };
 
             FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).child("followingList").addListenerForSingleValueEvent(followingListValueEventListener);
+
+            nsfwValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        showNSFWvalue = dataSnapshot.child("showNSFW").getValue(Integer.class);
+                        blurNSFWvalue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
         }
 
         cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity(), "popularFragment");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        System.out.println("following list is"+followingList);
 
         postValueEventListener = new ValueEventListener() {
             @Override
@@ -125,7 +140,12 @@ public class PopularFragment extends Fragment {
 
 //                            you have to change here from taking userid to subreddit id .
                             if (!followingList.contains(dataSnapshot1.child("userId").getValue().toString())) {
-                                popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
+                                if (showNSFWvalue == 0 && dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                    popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                                }
+                                else {
+                                    popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                                }
                                 cardAdapter.notifyDataSetChanged();
                                 followingList.add(dataSnapshot1.child("userId").getValue().toString());
                             }
@@ -153,6 +173,6 @@ public class PopularFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        postRef.addValueEventListener(postValueEventListener);
+        postRef.removeEventListener(postValueEventListener);
     }
 }

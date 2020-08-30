@@ -1,15 +1,14 @@
 package com.example.creddit.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.creddit.Adapter.CardAdapter;
 import com.example.creddit.Model.CardModel;
@@ -34,18 +33,19 @@ public class HomeFragment extends Fragment {
     List<CardModel> home_posts;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
-    DatabaseReference mRef,mRef_user, mRef_post,mRef2;
+    DatabaseReference mRef, mRef_user, mRef_post, mRef2;
     FirebaseUser user;
     String userId;
-    String cardProfileImage="",cardPostUserId, cardImage, cardTitle, postedBy, cardDescription, cardPostTime;
+    String cardProfileImage = "", cardPostUserId, cardImage, cardTitle, postedBy, cardDescription, cardPostTime;
     CardAdapter cardAdapter;
 
     String currentDate, postTime;
     SimpleDateFormat sdf;
     Date todayDate, postedDate;
-    ValueEventListener postValueEventListener, followedUserslistValueEventListener, userFollowedValueEventListener;
+    ValueEventListener postValueEventListener, followedUserslistValueEventListener, userFollowedValueEventListener, nsfwValueEventListener;
 
     ArrayList<String> followedUsersId = new ArrayList<>();
+    int showNSFWvalue = 0, blurNSFWvalue = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,67 +70,90 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 //        home_posts.add(new CardModel(R.drawable.zoro,R.drawable.zoro, "Zoro Fan Club", "Pawan Kumar Maurya", "Check my awesome zoro wallpaper" ));
 
-        if (user == null){
+        if (user == null) {
 
             showPosts();
 
-        }
-        else {
+        } else {
             userId = user.getUid();
 
-            followedUserslistValueEventListener = new ValueEventListener() {
+            nsfwValueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()){
-                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                            followedUsersId.add(dataSnapshot1.getKey());
-                        }
+                    if (dataSnapshot.exists()) {
+                        showNSFWvalue = dataSnapshot.child("showNSFW").getValue(Integer.class);
+                        blurNSFWvalue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
 
-                        userFollowedValueEventListener = new ValueEventListener() {
+                        followedUserslistValueEventListener = new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                home_posts.clear();
-                                if (dataSnapshot2.exists()){
-                                    try {
-                                        for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
-                                            String postKey = dataSnapshot3.getKey();
-                                            postTime = dataSnapshot3.child("postTime").getValue(String.class);
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                        followedUsersId.add(dataSnapshot1.getKey());
+                                    }
 
-                                            todayDate = sdf.parse(currentDate);
-                                            postedDate = sdf.parse(postTime);
+                                    userFollowedValueEventListener = new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                            home_posts.clear();
+                                            if (dataSnapshot2.exists()) {
+                                                try {
+                                                    for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
+                                                        String postKey = dataSnapshot3.getKey();
+                                                        postTime = dataSnapshot3.child("postTime").getValue(String.class);
 
-                                            long diff = todayDate.getTime() - postedDate.getTime();
-                                            long seconds = diff / 1000;
-                                            long minutes = seconds / 60;
-                                            long hours = minutes / 60;
-                                            int days = (int) (hours / 24);
+                                                        todayDate = sdf.parse(currentDate);
+                                                        postedDate = sdf.parse(postTime);
 
-                                            if ((days / 365) > 0) {
-                                                int year = days / 365;
-                                                int leftMonths = days % 365;
-                                                int month = leftMonths / 30;
-                                                int leftDays = month % 30;
-                                                cardPostTime = (year + "y " + month + "m ago");
-                                            } else if ((days / 30) > 0) {
-                                                int month = days / 30;
-                                                int leftDays = days % 30;
-                                                cardPostTime = (month + "m ago");
-                                            } else if ((hours / 24) > 0) {
-                                                cardPostTime = (days + "d ago");
-                                            } else if ((minutes / 60) > 0) {
-                                                cardPostTime = (hours + "h ago");
-                                            } else {
-                                                cardPostTime = (minutes + "min ago");
-                                            }
+                                                        long diff = todayDate.getTime() - postedDate.getTime();
+                                                        long seconds = diff / 1000;
+                                                        long minutes = seconds / 60;
+                                                        long hours = minutes / 60;
+                                                        int days = (int) (hours / 24);
 
-                                            if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
-                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class)));
-                                                cardAdapter.notifyDataSetChanged();
+                                                        if ((days / 365) > 0) {
+                                                            int year = days / 365;
+                                                            int leftMonths = days % 365;
+                                                            int month = leftMonths / 30;
+                                                            int leftDays = month % 30;
+                                                            cardPostTime = (year + "y " + month + "m ago");
+                                                        } else if ((days / 30) > 0) {
+                                                            int month = days / 30;
+                                                            int leftDays = days % 30;
+                                                            cardPostTime = (month + "m ago");
+                                                        } else if ((hours / 24) > 0) {
+                                                            cardPostTime = (days + "d ago");
+                                                        } else if ((minutes / 60) > 0) {
+                                                            cardPostTime = (hours + "h ago");
+                                                        } else {
+                                                            cardPostTime = (minutes + "min ago");
+                                                        }
+
+                                                        if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
+                                                            if (showNSFWvalue == 0) {
+                                                                if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                                    home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
+                                                                }
+                                                            } else {
+                                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
+                                                            }
+                                                            cardAdapter.notifyDataSetChanged();
+                                                        }
+                                                    }
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    };
+                                    mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
+                                } else {
+                                    showPosts();
                                 }
                             }
 
@@ -139,10 +162,9 @@ public class HomeFragment extends Fragment {
 
                             }
                         };
-                        mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
-                    }
-                    else {
-                        showPosts();
+
+                        mRef.child("users").child(userId).child("followingList").addValueEventListener(followedUserslistValueEventListener);
+
                     }
                 }
 
@@ -151,8 +173,8 @@ public class HomeFragment extends Fragment {
 
                 }
             };
+            FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
 
-            mRef.child("users").child(userId).child("followingList").addValueEventListener(followedUserslistValueEventListener);
 
         }
 
@@ -162,7 +184,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void showPosts(){
+    public void showPosts() {
         mRef_user = mRef.child("users");
         mRef_post = mRef.child("posts").child("imagePosts");
 
@@ -202,8 +224,11 @@ public class HomeFragment extends Fragment {
                             } else {
                                 cardPostTime = (minutes + "min ago");
                             }
-
-                            home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class)));
+                            if (showNSFWvalue == 0 && dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                            } else {
+                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                            }
                             cardAdapter.notifyDataSetChanged();
                         }
                     } catch (Exception e) {
