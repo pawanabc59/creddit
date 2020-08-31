@@ -1,15 +1,14 @@
 package com.example.creddit.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.creddit.Adapter.CardAdapter;
 import com.example.creddit.Model.CardModel;
@@ -38,7 +37,7 @@ public class UploadedImageFragment extends Fragment {
     ValueEventListener postValueEventListener, nsfwValueEventListener;
 
     DatabaseReference rootRef, postRef;
-    int showNSFWvalue=0, blurNSFWvalue=0;
+    int showNSFWvalue = 0, blurNSFWvalue = 0;
 
 
     @Override
@@ -58,7 +57,7 @@ public class UploadedImageFragment extends Fragment {
         nsfwValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     showNSFWvalue = dataSnapshot.child("showNSFW").getValue(Integer.class);
                     blurNSFWvalue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
                 }
@@ -117,9 +116,11 @@ public class UploadedImageFragment extends Fragment {
                                 } else {
                                     cardPostTime = (minutes + "min ago");
                                 }
-                                if (showNSFWvalue == 0 && dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
-                                    uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
-                                }else{
+                                if (showNSFWvalue == 0) {
+                                    if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                        uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                                    }
+                                } else {
                                     uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
                                 }
                                 cardAdapter.notifyDataSetChanged();

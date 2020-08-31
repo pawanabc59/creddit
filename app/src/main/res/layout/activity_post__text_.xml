@@ -16,16 +16,33 @@
         app:titleTextColor="?attr/textcolor"
         app:title="Text Post"
         >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_180sdp">
         <TextView
             android:id="@+id/post_text_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="POST"
             android:textColor="?attr/textcolor"
+            android:textSize="16sp"
             android:textAlignment="viewEnd"
-            android:layout_gravity="end"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_gravity="end" />
+
+        <ProgressBar
+            android:id="@+id/postProgressBar"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_165sdp"
+            android:visibility="gone"
+            />
+
+        </FrameLayout>
+
     </androidx.appcompat.widget.Toolbar>
 
     <EditText
@@ -51,5 +68,81 @@
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentBottom="true">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_25sdp">
+
+            <TextView
+                android:id="@+id/nsfw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nsfw_outline_layout"
+                android:text="NSFW"
+                android:textColor="#f81107"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                />
+
+            <TextView
+                android:id="@+id/nsfw_fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nsfw_fill_outline_layout"
+                android:text="NSFW"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_25sdp">
+
+            <TextView
+                android:id="@+id/spoiler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spoiler_outline_layout"
+                android:text="SPOILER"
+                android:textColor="?attr/textcolor"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                />
+
+            <TextView
+                android:id="@+id/spoiler_fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spoiler_fill_outline_layout"
+                android:text="SPOILER"
+                android:textColor="?attr/textcolor"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
 </RelativeLayout>

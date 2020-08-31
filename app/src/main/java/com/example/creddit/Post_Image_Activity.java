@@ -169,43 +169,43 @@ public class Post_Image_Activity extends AppCompatActivity {
 
                 postTitle = postImageTitle.getText().toString();
 
-                numberOfPostValueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            numberOfPosts = ((Long) dataSnapshot.getValue()).intValue();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                };
-
-                mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(numberOfPostValueEventListener);
-
-                cardPostProfileValueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                };
-
-                mRef_user.addListenerForSingleValueEvent(cardPostProfileValueEventListener);
-
                 if (postTitle.equals("")) {
                     postImagePost.setVisibility(View.VISIBLE);
                     postProgressBar.setVisibility(View.GONE);
                     postImageTitle.setError("Please add a title to post");
                 } else {
+                    numberOfPostValueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                numberOfPosts = ((Long) dataSnapshot.getValue()).intValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    };
+
+                    mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(numberOfPostValueEventListener);
+
+                    cardPostProfileValueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    };
+
+                    mRef_user.addListenerForSingleValueEvent(cardPostProfileValueEventListener);
+
                     pushId = mRef.push().getKey();
                     mRef_post = mRef.child("posts").child("imagePosts").child(pushId);
 

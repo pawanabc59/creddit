@@ -140,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                             mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    sessionManager.put_showNSFW(dataSnapshot.child("showNSFW").getValue(Integer.class));
+                                    sessionManager.put_blurNSFW(dataSnapshot.child("blurNSFW").getValue(Integer.class));
                                     try {
                                         String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
                                         mRef2.child("profileImage").setValue(profileImagePath);
@@ -158,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                                         mRef2.child("savedImages").child("numberOfSavedImages").setValue(0);
                                         mRef2.child("showNSFW").setValue(0);
                                         mRef2.child("blurNSFW").setValue(0);
+                                        sessionManager.put_showNSFW(0);
+                                        sessionManager.put_blurNSFW(0);
                                     }
                                     loginProgressBar.setVisibility(View.GONE);
                                     btnLogin.setVisibility(View.VISIBLE);

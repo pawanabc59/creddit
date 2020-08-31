@@ -18,7 +18,7 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:src="@drawable/ic_person"
-            android:layout_marginRight="@dimen/_15sdp"/>
+            android:layout_marginRight="@dimen/_10sdp"/>
         <Switch
             android:id="@+id/showNSFW"
             android:layout_width="@dimen/_250sdp"
@@ -39,7 +39,7 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:src="@drawable/ic_warning"
-            android:layout_marginRight="@dimen/_15sdp"/>
+            android:layout_marginRight="@dimen/_10sdp"/>
         <Switch
             android:id="@+id/blurNSFW"
             android:layout_width="@dimen/_250sdp"

@@ -57,16 +57,20 @@ public class SettingActivity extends AppCompatActivity {
 
                     if (NSFWvalue==1){
                         showNSFW.setChecked(true);
+                        mRef.child("showNSFW").setValue(1);
                     }
                     else {
                         showNSFW.setChecked(false);
+                        mRef.child("showNSFW").setValue(0);
                     }
 
                     if (blurNSFWValue == 1){
                         blurNSFW.setChecked(true);
+                        mRef.child("blurNSFW").setValue(1);
                     }
                     else {
                         blurNSFW.setChecked(false);
+                        mRef.child("blurNSFW").setValue(0);
                     }
 
                 }
@@ -85,10 +89,12 @@ public class SettingActivity extends AppCompatActivity {
                 if (b){
                     NSFWvalue = 1;
                     mRef.child("showNSFW").setValue(1);
+                    sharedPref.put_showNSFW(1);
                 }
                 else{
                     NSFWvalue = 0;
                     mRef.child("showNSFW").setValue(0);
+                    sharedPref.put_showNSFW(0);
                 }
             }
         });
@@ -99,10 +105,12 @@ public class SettingActivity extends AppCompatActivity {
                 if (b){
                     blurNSFWValue = 1;
                     mRef.child("blurNSFW").setValue(1);
+                    sharedPref.put_blurNSFW(1);
                 }
                 else {
                     blurNSFWValue = 0;
                     mRef.child("blurNSFW").setValue(0);
+                    sharedPref.put_blurNSFW(0);
                 }
             }
         });

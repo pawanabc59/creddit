@@ -113,6 +113,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
+        sharedPref = new SharedPref(mContext);
+
         final ImageView postUpvote = holder.post_upvote;
         ImageView postDownvote = holder.post_downvote;
         ImageView postComment = holder.post_comment;
@@ -129,6 +131,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         TextView card_description_nsfw_spoiler = holder.card_description_nsfw_spoiler;
         final LinearLayout nsfw_spoiler_layout = holder.nsfw_spoiler_layout;
         final LinearLayout normal_layout = holder.normal_layout;
+        LinearLayout text_post_layout = holder.text_post_layout;
+        TextView text_post_title = holder.text_post_title;
+        TextView text_post_description = holder.text_post_description;
 
         if (parentActivity instanceof ProfileActivity) {
             cardMenu.setVisibility(View.GONE);
@@ -142,58 +147,81 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             userId = user.getUid();
             mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
 
-            nsfwValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()){
-                        showNSFWValue = dataSnapshot.child("showNSFW").getValue(Integer.class);
-                        blurNSFWValue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            };
-            mRefUser.addValueEventListener(nsfwValueEventListener);
+//            nsfwValueEventListener = new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()){
+//                        showNSFWValue = dataSnapshot.child("showNSFW").getValue(Integer.class);
+//                        blurNSFWValue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            };
+//            mRefUser.addValueEventListener(nsfwValueEventListener);
 
         }
 //        else {
 
-        if (mData.get(position).getNsfw() == 1){
-//            holder.nsfw.setVisibility(View.VISIBLE);
-            if (blurNSFWValue == 1) {
-                holder.nsfw.setVisibility(View.VISIBLE);
-                normal_layout.setVisibility(View.GONE);
-                nsfw_spoiler_layout.setVisibility(View.VISIBLE);
-                Picasso.get().load(mData.get(position).getCard_image()).resize(7, 7).into(card_image_nsfw_spoiler);
-            }
-            else {
-                holder.nsfw.setVisibility(View.VISIBLE);
-            }
-        }
-            if (mData.get(position).getSpoiler() == 1) {
-                holder.spoiler.setVisibility(View.VISIBLE);
-                normal_layout.setVisibility(View.GONE);
-                nsfw_spoiler_layout.setVisibility(View.VISIBLE);
-                Picasso.get().load(mData.get(position).getCard_image()).resize(7, 7).into(card_image_nsfw_spoiler);
-            }
+//        try {
+        showNSFWValue = sharedPref.get_showNSFW();
+        blurNSFWValue = sharedPref.get_blurNSFW();
 
-//        vote = Integer.parseInt(mData.get(position).getVote());
-            holder.card_title.setText(mData.get(position).card_title);
-            holder.posted_by.setText(mData.get(position).posted_by);
-            holder.card_description.setText(mData.get(position).card_description);
-            card_description_nsfw_spoiler.setText(mData.get(position).card_description);
-            Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
-            Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
-
-            holder.postedTime.setText(mData.get(position).postedTime);
-
-            cardImagePath = mData.get(position).getCard_image();
+//            System.out.println("showNSFWvalue : "+showNSFWValue+" and blurNSFWvalue : "+blurNSFWValue);
+//        } catch (Exception e) {
+//            e.printStackTrace();
 //        }
 
-        if (fragmentType.equals("popularFragment")){
+        if (mData.get(position).getNsfw() == 1) {
+            holder.nsfw.setVisibility(View.VISIBLE);
+
+            if (mData.get(position).getPost_type().equals("image")) {
+                if (blurNSFWValue == 1) {
+                    normal_layout.setVisibility(View.GONE);
+                    text_post_layout.setVisibility(View.GONE);
+                    nsfw_spoiler_layout.setVisibility(View.VISIBLE);
+                    Picasso.get().load(mData.get(position).getCard_image()).resize(7, 7).into(card_image_nsfw_spoiler);
+                }
+            } else if (mData.get(position).getPost_type().equals("text")) {
+                normal_layout.setVisibility(View.GONE);
+                nsfw_spoiler_layout.setVisibility(View.GONE);
+                text_post_layout.setVisibility(View.VISIBLE);
+            }
+        }
+        if (mData.get(position).getSpoiler() == 1) {
+            holder.spoiler.setVisibility(View.VISIBLE);
+            if (mData.get(position).getPost_type().equals("image")) {
+                normal_layout.setVisibility(View.GONE);
+                text_post_layout.setVisibility(View.GONE);
+                nsfw_spoiler_layout.setVisibility(View.VISIBLE);
+                Picasso.get().load(mData.get(position).getCard_image()).resize(7, 7).into(card_image_nsfw_spoiler);
+            } else if (mData.get(position).getPost_type().equals("text")) {
+                normal_layout.setVisibility(View.GONE);
+                nsfw_spoiler_layout.setVisibility(View.GONE);
+                text_post_layout.setVisibility(View.VISIBLE);
+            }
+        }
+
+//        vote = Integer.parseInt(mData.get(position).getVote());
+        holder.card_title.setText(mData.get(position).card_title);
+        holder.posted_by.setText(mData.get(position).posted_by);
+        holder.card_description.setText(mData.get(position).card_description);
+        card_description_nsfw_spoiler.setText(mData.get(position).card_description);
+        Picasso.get().load(mData.get(position).getCard_profile_image()).into(holder.profile_photo);
+        Picasso.get().load(mData.get(position).getCard_image()).into(holder.card_image);
+
+        text_post_title.setText(mData.get(position).card_description);
+        text_post_description.setText(mData.get(position).card_image);
+
+        holder.postedTime.setText(mData.get(position).postedTime);
+
+        cardImagePath = mData.get(position).getCard_image();
+//        }
+
+        if (fragmentType.equals("popularFragment")) {
             joinSubreddit.setVisibility(View.VISIBLE);
         }
 
@@ -394,15 +422,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 showSavedImageValueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
+                        if (dataSnapshot.exists()) {
 //                            for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
 //                                if (dataSnapshot1.child("imagePath").getValue(String.class).equals(mData.get(position).getCard_image())){
-                                    saveItem.setVisible(false);
-                                    unsaveItem.setVisible(true);
+                            saveItem.setVisible(false);
+                            unsaveItem.setVisible(true);
 //                                }
 //                            }
-                        }
-                        else{
+                        } else {
                             saveItem.setVisible(true);
                             unsaveItem.setVisible(false);
                         }
@@ -424,7 +451,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                 savedImageCountValueEventListener = new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()){
+                                        if (dataSnapshot.exists()) {
                                             savedImageCount = dataSnapshot.child("numberOfSavedImages").getValue(Integer.class);
                                         }
                                     }
@@ -439,13 +466,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                 savePostValueEventListener = new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()){
-                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                                                if (dataSnapshot1.child("imagePath").getValue(String.class).equals(mData.get(position).getCard_image())){
+                                        if (dataSnapshot.exists()) {
+                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                if (dataSnapshot1.child("imagePath").getValue(String.class).equals(mData.get(position).getCard_image())) {
                                                     firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("key").setValue(dataSnapshot1.getKey());
                                                     firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("imagePath").setValue(mData.get(position).getCard_image());
-                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("postNumber").setValue(-(savedImageCount+1));
-                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child("numberOfSavedImages").setValue(savedImageCount+1);
+                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("postNumber").setValue(-(savedImageCount + 1));
+                                                    firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child("numberOfSavedImages").setValue(savedImageCount + 1);
                                                     saveItem.setVisible(false);
                                                     unsaveItem.setVisible(true);
                                                     showToast("Post Saved! ");
@@ -545,9 +572,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount, nsfw, spoiler, card_description_nsfw_spoiler;
+        TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount, nsfw, spoiler, card_description_nsfw_spoiler, text_post_title, text_post_description;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost, joinSubreddit, unjoinedSubreddit, card_image_nsfw_spoiler;
-        LinearLayout cardHeader, nsfw_spoiler_layout, normal_layout;
+        LinearLayout cardHeader, nsfw_spoiler_layout, normal_layout, text_post_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -576,9 +603,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             spoiler = itemView.findViewById(R.id.spoiler_fill_post);
             card_description_nsfw_spoiler = itemView.findViewById(R.id.card_description_nsfw_spoiler);
             card_image_nsfw_spoiler = itemView.findViewById(R.id.card_image_nsfw_spoiler);
+            text_post_title = itemView.findViewById(R.id.text_post_title);
+            text_post_description = itemView.findViewById(R.id.text_post_description);
 
             nsfw_spoiler_layout = itemView.findViewById(R.id.nsfw_spoiler_layout);
             normal_layout = itemView.findViewById(R.id.normal_layout);
+            text_post_layout = itemView.findViewById(R.id.text_post_layout);
 
         }
 
@@ -600,7 +630,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         return uri;
     }
 
-    public void showToast(String toast_text){
+    public void showToast(String toast_text) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View layout = inflater.inflate(R.layout.toast_layout, null);
 

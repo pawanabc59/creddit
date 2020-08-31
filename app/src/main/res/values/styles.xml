@@ -13,7 +13,7 @@
         <item name="colorPrimary">#ffffff</item>
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#2196F3</item>
-        <item name="backgroundcolor">#fcfcfc</item>
+        <item name="backgroundcolor">#C0C0C0</item>
         <item name="cardbackground">#ffffff</item>
         <item name="textcolor">#000000</item>
         <item name="tintcolor">#808080</item>

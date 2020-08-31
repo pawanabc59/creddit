@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.creddit.Adapter.CardAdapter;
 import com.example.creddit.Model.CardModel;
 import com.example.creddit.R;
+import com.example.creddit.SharedPref;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
     String userId;
     String cardProfileImage = "", cardPostUserId, cardImage, cardTitle, postedBy, cardDescription, cardPostTime;
     CardAdapter cardAdapter;
+    SharedPref sharedPref;
 
     String currentDate, postTime;
     SimpleDateFormat sdf;
@@ -64,6 +66,8 @@ public class HomeFragment extends Fragment {
         sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         currentDate = sdf.format(new Date());
 
+        sharedPref = new SharedPref(getContext());
+
         home_posts = new ArrayList<>();
 
         cardAdapter = new CardAdapter(getContext(), home_posts, getActivity(), "homeFragment");
@@ -77,83 +81,79 @@ public class HomeFragment extends Fragment {
         } else {
             userId = user.getUid();
 
-            nsfwValueEventListener = new ValueEventListener() {
+//            nsfwValueEventListener = new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()) {
+//                        showNSFWvalue = dataSnapshot.child("showNSFW").getValue(Integer.class);
+//                        blurNSFWvalue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
+
+            try {
+                showNSFWvalue = sharedPref.get_showNSFW();
+                blurNSFWvalue = sharedPref.get_blurNSFW();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            followedUserslistValueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        showNSFWvalue = dataSnapshot.child("showNSFW").getValue(Integer.class);
-                        blurNSFWvalue = dataSnapshot.child("blurNSFW").getValue(Integer.class);
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            followedUsersId.add(dataSnapshot1.getKey());
+                        }
 
-                        followedUserslistValueEventListener = new ValueEventListener() {
+                        userFollowedValueEventListener = new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                        followedUsersId.add(dataSnapshot1.getKey());
-                                    }
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                home_posts.clear();
+                                if (dataSnapshot2.exists()) {
+                                    try {
+                                        for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
+                                            String postKey = dataSnapshot3.getKey();
+                                            postTime = dataSnapshot3.child("postTime").getValue(String.class);
 
-                                    userFollowedValueEventListener = new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                            home_posts.clear();
-                                            if (dataSnapshot2.exists()) {
-                                                try {
-                                                    for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
-                                                        String postKey = dataSnapshot3.getKey();
-                                                        postTime = dataSnapshot3.child("postTime").getValue(String.class);
+                                            todayDate = sdf.parse(currentDate);
+                                            postedDate = sdf.parse(postTime);
 
-                                                        todayDate = sdf.parse(currentDate);
-                                                        postedDate = sdf.parse(postTime);
+                                            long diff = todayDate.getTime() - postedDate.getTime();
+                                            long seconds = diff / 1000;
+                                            long minutes = seconds / 60;
+                                            long hours = minutes / 60;
+                                            int days = (int) (hours / 24);
 
-                                                        long diff = todayDate.getTime() - postedDate.getTime();
-                                                        long seconds = diff / 1000;
-                                                        long minutes = seconds / 60;
-                                                        long hours = minutes / 60;
-                                                        int days = (int) (hours / 24);
+                                            if ((days / 365) > 0) {
+                                                int year = days / 365;
+                                                int leftMonths = days % 365;
+                                                int month = leftMonths / 30;
+                                                int leftDays = month % 30;
+                                                cardPostTime = (year + "y " + month + "m ago");
+                                            } else if ((days / 30) > 0) {
+                                                int month = days / 30;
+                                                int leftDays = days % 30;
+                                                cardPostTime = (month + "m ago");
+                                            } else if ((hours / 24) > 0) {
+                                                cardPostTime = (days + "d ago");
+                                            } else if ((minutes / 60) > 0) {
+                                                cardPostTime = (hours + "h ago");
+                                            } else {
+                                                cardPostTime = (minutes + "min ago");
+                                            }
 
-                                                        if ((days / 365) > 0) {
-                                                            int year = days / 365;
-                                                            int leftMonths = days % 365;
-                                                            int month = leftMonths / 30;
-                                                            int leftDays = month % 30;
-                                                            cardPostTime = (year + "y " + month + "m ago");
-                                                        } else if ((days / 30) > 0) {
-                                                            int month = days / 30;
-                                                            int leftDays = days % 30;
-                                                            cardPostTime = (month + "m ago");
-                                                        } else if ((hours / 24) > 0) {
-                                                            cardPostTime = (days + "d ago");
-                                                        } else if ((minutes / 60) > 0) {
-                                                            cardPostTime = (hours + "h ago");
-                                                        } else {
-                                                            cardPostTime = (minutes + "min ago");
-                                                        }
-
-                                                        if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
-                                                            if (showNSFWvalue == 0) {
-                                                                if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
-                                                                    home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
-                                                                }
-                                                            } else {
-                                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
-                                                            }
-                                                            cardAdapter.notifyDataSetChanged();
-                                                        }
+                                            if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
+                                                if (showNSFWvalue == 0) {
+                                                    if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                        home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
                                                     }
-                                                } catch (ParseException e) {
-                                                    e.printStackTrace();
+                                                } else {
+                                                    home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
                                                 }
+                                                cardAdapter.notifyDataSetChanged();
                                             }
                                         }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    };
-                                    mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
-                                } else {
-                                    showPosts();
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
 
@@ -162,9 +162,9 @@ public class HomeFragment extends Fragment {
 
                             }
                         };
-
-                        mRef.child("users").child(userId).child("followingList").addValueEventListener(followedUserslistValueEventListener);
-
+                        mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
+                    } else {
+                        showPosts();
                     }
                 }
 
@@ -173,7 +173,18 @@ public class HomeFragment extends Fragment {
 
                 }
             };
-            FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
+
+            mRef.child("users").child(userId).child("followingList").addValueEventListener(followedUserslistValueEventListener);
+
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            };
+//            FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
 
 
         }
@@ -224,8 +235,10 @@ public class HomeFragment extends Fragment {
                             } else {
                                 cardPostTime = (minutes + "min ago");
                             }
-                            if (showNSFWvalue == 0 && dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
-                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                            if (showNSFWvalue == 0) {
+                                if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                    home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                                }
                             } else {
                                 home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
                             }
