@@ -13,7 +13,8 @@
         <item name="colorPrimary">#ffffff</item>
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#2196F3</item>
-        <item name="backgroundcolor">#C0C0C0</item>
+        <item name="backgroundcolor">#e6e6e6</item>
+        <item name="backgroundcolor2">#C0C0C0</item>
         <item name="cardbackground">#ffffff</item>
         <item name="textcolor">#000000</item>
         <item name="tintcolor">#808080</item>
@@ -33,6 +34,11 @@
         <item name="colorControlNormal">#808080</item>
         <item name="colorControlActivated">#2196F3</item>
         <item name="colorControlHighlight">#2196F3</item>
+
+<!--        this is used for show pop up profile so that pop up show on the top of activity not independently and
+            windowCloseOntouchOutside is used to make disappear the pop up window when touched outside the area of pop up window-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
     <style name="darktheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -40,10 +46,11 @@
         <item name="windowNoTitle">true</item>
 
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimary">#151515</item>
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#2196F3</item>
         <item name="backgroundcolor">#031113</item>
+        <item name="backgroundcolor2">#000000</item>
 <!--        <item name="cardbackground">#424242</item>-->
         <item name="cardbackground">#1d1d1d</item>
         <item name="textcolor">#ffffff</item>
@@ -63,6 +70,9 @@
         <item name="colorControlNormal">#808080</item>
         <item name="colorControlActivated">#2196F3</item>
         <item name="colorControlHighlight">#2196F3</item>
+
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
 
     </style>
 

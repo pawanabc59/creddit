@@ -32,6 +32,7 @@ import com.example.creddit.Model.CardModel;
 import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
 import com.example.creddit.SharedPref;
+import com.example.creddit.ShowPopUpProfileDetailsActivity;
 import com.example.creddit.SingleImageShowActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -189,6 +190,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 normal_layout.setVisibility(View.GONE);
                 nsfw_spoiler_layout.setVisibility(View.GONE);
                 text_post_layout.setVisibility(View.VISIBLE);
+                text_post_description.setVisibility(View.GONE);
             }
         }
         if (mData.get(position).getSpoiler() == 1) {
@@ -202,6 +204,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 normal_layout.setVisibility(View.GONE);
                 nsfw_spoiler_layout.setVisibility(View.GONE);
                 text_post_layout.setVisibility(View.VISIBLE);
+                text_post_description.setVisibility(View.GONE);
             }
         }
 
@@ -373,12 +376,25 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }
         });
 
-        holder.cardHeader.setOnClickListener(new View.OnClickListener() {
+        holder.card_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, AnotherUserActivity.class);
+                anotherSubredditIntent(position);
+            }
+        });
+
+        holder.profile_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                anotherSubredditIntent(position);
+            }
+        });
+
+        holder.posted_by.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ShowPopUpProfileDetailsActivity.class);
                 intent.putExtra("anotherUserId", mData.get(position).getUserId());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });
@@ -550,6 +566,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }
         });
 
+    }
+
+    public void anotherSubredditIntent(int position){
+        Intent intent = new Intent(mContext, AnotherUserActivity.class);
+        intent.putExtra("anotherUserId", mData.get(position).getUserId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
     }
 
     @Override

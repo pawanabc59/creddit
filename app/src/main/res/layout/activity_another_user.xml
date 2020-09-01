@@ -142,7 +142,8 @@
                 android:layout_height="@dimen/_500sdp"
                 android:layout_below="@+id/anotherUserProfileTabLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="0dp" />
+                android:layout_marginEnd="0dp"
+                android:background="?attr/backgroundcolor2"/>
 
         </RelativeLayout>
 
