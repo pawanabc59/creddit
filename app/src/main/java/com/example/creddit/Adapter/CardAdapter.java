@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,7 @@ import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
 import com.example.creddit.SharedPref;
 import com.example.creddit.ShowPopUpProfileDetailsActivity;
+import com.example.creddit.ShowSinglePostActivity;
 import com.example.creddit.SingleImageShowActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -345,7 +347,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         postComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "comment is clicked", Toast.LENGTH_SHORT).show();
+                showSinglePostActivity(position, fragmentType);
+            }
+        });
+
+        holder.card_description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSinglePostActivity(position, fragmentType);
+            }
+        });
+
+        holder.text_post_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSinglePostActivity(position, fragmentType);
             }
         });
 
@@ -376,6 +392,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }
         });
 
+//        holder.cardViewImagePost.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(mContext, "This is card header", Toast.LENGTH_SHORT);
+//            }
+//        });
+
         holder.card_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -387,6 +410,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 anotherSubredditIntent(position);
+            }
+        });
+
+        card_description_nsfw_spoiler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSinglePostActivity(position, fragmentType);
             }
         });
 
@@ -575,6 +605,23 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         mContext.startActivity(intent);
     }
 
+    public void showSinglePostActivity(int position, String fragmentType){
+        Intent intent = new Intent(mContext, ShowSinglePostActivity.class);
+        intent.putExtra("cardPostProfileImage", mData.get(position).getCard_profile_image());
+        intent.putExtra("imagePath", mData.get(position).getCard_image());
+        intent.putExtra("cardTitle", mData.get(position).getCard_title());
+        intent.putExtra("uploadedBy", mData.get(position).getPosted_by());
+        intent.putExtra("cardDescription", mData.get(position).getCard_description());
+        intent.putExtra("postedTime", mData.get(position).getPostedTime());
+        intent.putExtra("anotherUserId", mData.get(position).getUserId());
+        intent.putExtra("NSFW", mData.get(position).getNsfw());
+        intent.putExtra("spoiler", mData.get(position).getSpoiler());
+        intent.putExtra("postType", mData.get(position).getPost_type());
+        intent.putExtra("fragmentType", fragmentType);
+
+        mContext.startActivity(intent);
+    }
+
     @Override
     public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
@@ -598,6 +645,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         TextView card_title, posted_by, card_description, postedTime, upvoteCount, downvoteCount, commentCount, nsfw, spoiler, card_description_nsfw_spoiler, text_post_title, text_post_description;
         ImageView profile_photo, card_image, post_upvote, post_downvote, post_comment, post_share, card_menu, post_after_upvote, post_after_downvote, deletePost, joinSubreddit, unjoinedSubreddit, card_image_nsfw_spoiler;
         LinearLayout cardHeader, nsfw_spoiler_layout, normal_layout, text_post_layout;
+        CardView cardViewImagePost;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -628,6 +676,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             card_image_nsfw_spoiler = itemView.findViewById(R.id.card_image_nsfw_spoiler);
             text_post_title = itemView.findViewById(R.id.text_post_title);
             text_post_description = itemView.findViewById(R.id.text_post_description);
+            cardViewImagePost = itemView.findViewById(R.id.card_image_post);
 
             nsfw_spoiler_layout = itemView.findViewById(R.id.nsfw_spoiler_layout);
             normal_layout = itemView.findViewById(R.id.normal_layout);

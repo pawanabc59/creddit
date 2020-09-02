@@ -182,7 +182,7 @@
                 <TextView
                     android:id="@+id/card_description_nsfw_spoiler"
                     android:layout_width="@dimen/_180sdp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_70sdp"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="Some cool comment regarding the post"

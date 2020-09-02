@@ -17,7 +17,8 @@
         android:roundIcon="@drawable/reddit_logo_hd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowPopUpProfileDetailsActivity"></activity>
+        <activity android:name=".ShowSinglePostActivity"></activity>
+        <activity android:name=".ShowPopUpProfileDetailsActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".AnotherUserActivity" />
         <activity android:name=".SingleChatActicity" />
