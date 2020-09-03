@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="?attr/backgroundcolor"
-                app:itemIconTint="?attr/tintcolor"
                 app:itemTextColor="?attr/colorAccent"
                 app:labelVisibilityMode="unlabeled"
                 app:menu="@menu/bottom_navigation"

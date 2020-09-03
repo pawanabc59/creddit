@@ -35,6 +35,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout;
+import ua.zabelnikov.swipelayout.layout.listener.OnLayoutSwipedListener;
+
 public class SingleImageShowActivity extends AppCompatActivity {
 
     SharedPref sharedPref;
@@ -45,6 +48,7 @@ public class SingleImageShowActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef;
     ImageView backgroundWallpaper;
+    SwipeableLayout swipeableLayout;
 //    TextView single_card_title, single_card_posted_by, singleCardDescription;
 //    ImageView single_post_upvote, single_post_downvote, single_post_comment, single_post_share;
 
@@ -75,6 +79,7 @@ public class SingleImageShowActivity extends AppCompatActivity {
         single_card_image = findViewById(R.id.single_card_image);
         backgroundWallpaper = findViewById(R.id.backgroundWallpaper);
         imageDownload = findViewById(R.id.imageDownload);
+        swipeableLayout = findViewById(R.id.swipeableLayout);
 //        single_card_title = findViewById(R.id.single_card_title);
 //        single_card_posted_by = findViewById(R.id.single_posted_by);
 //        single_post_upvote = findViewById(R.id.single_post_upvote);
@@ -88,6 +93,13 @@ public class SingleImageShowActivity extends AppCompatActivity {
 //        String card_description = intent.getExtras().getString("card_description");
 //        String posted_by = intent.getExtras().getString("posted_by");
         final String cardImage = intent.getExtras().getString("cardImage");
+
+        swipeableLayout.setOnSwipedListener(new OnLayoutSwipedListener() {
+            @Override
+            public void onLayoutSwiped() {
+                finish();
+            }
+        });
 //        String cardProfileImage = intent.getExtras().getString("cardProfileImage");
 
 //        single_card_title.setText(card_title);

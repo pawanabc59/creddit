@@ -583,8 +583,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 //                                Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.card_block_user:
-                                showToast("block user is clicked");
-//                                Toast.makeText(mContext, "block user is clicked", Toast.LENGTH_SHORT).show();
+                                mRefUser.child("blockedUsers").child(mData.get(position).getUserId()).child("key").child(mData.get(position).getUserId());
+                                Toast.makeText(mContext, "User is blocked now.", Toast.LENGTH_SHORT).show();
                                 break;
 
                         }
@@ -598,14 +598,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     }
 
-    public void anotherSubredditIntent(int position){
+    public void anotherSubredditIntent(int position) {
         Intent intent = new Intent(mContext, AnotherUserActivity.class);
         intent.putExtra("anotherUserId", mData.get(position).getUserId());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 
-    public void showSinglePostActivity(int position, String fragmentType){
+    public void showSinglePostActivity(int position, String fragmentType) {
         Intent intent = new Intent(mContext, ShowSinglePostActivity.class);
         intent.putExtra("cardPostProfileImage", mData.get(position).getCard_profile_image());
         intent.putExtra("imagePath", mData.get(position).getCard_image());

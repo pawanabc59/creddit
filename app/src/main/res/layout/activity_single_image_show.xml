@@ -108,11 +108,18 @@
         android:scaleType="centerCrop"
         />
 
+        <ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout
+            android:id="@+id/swipeableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/single_card_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             ></com.github.chrisbanes.photoview.PhotoView>
+
+        </ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout>
 
     </FrameLayout>
 

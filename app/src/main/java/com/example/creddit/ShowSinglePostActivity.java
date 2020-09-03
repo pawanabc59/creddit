@@ -90,7 +90,7 @@ public class ShowSinglePostActivity extends AppCompatActivity {
         singlePost_posted_by.setText(intent.getExtras().getString("uploadedBy"));
         singlePost_card_description.setText(intent.getExtras().getString("cardDescription"));
         singlePost_postedTime.setText(intent.getExtras().getString("postedTime"));
-        singlePost_text_post_title.setText(intent.getExtras().getString("cardTitle"));
+        singlePost_text_post_title.setText(intent.getExtras().getString("cardDescription"));
         singlePost_text_post_description.setText(intent.getExtras().getString("imagePath"));
         anotherUserId = intent.getExtras().getString("anotherUserId");
         nsfw = intent.getExtras().getInt("NSFW");

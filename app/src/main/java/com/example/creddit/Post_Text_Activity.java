@@ -122,6 +122,9 @@ public class Post_Text_Activity extends AppCompatActivity {
 
                 postTitle = post_text_title.getText().toString();
                 postDescription = post_text_txt.getText().toString();
+                if (postDescription.equals("")){
+                    postDescription = "null";
+                }
 
                 if (postTitle.equals("")) {
                     post_text_post.setVisibility(View.VISIBLE);

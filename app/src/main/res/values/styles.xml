@@ -4,6 +4,18 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <style name="Popup" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+<!--    <style name="AlertDialogCustom" parent="@android:style/Theme.Holo.Light.Dialog">-->
+<!--        <item name="android:background">@color/white</item>-->
+<!--    </style>-->
+
+<!--    <style name="AlertDialogCustomDark" parent="@android:style/Theme.Holo.Light.Dialog">-->
+<!--        <item name="android:background">@color/black</item>-->
+<!--    </style>-->
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
@@ -26,6 +38,7 @@
         <item name="android:itemBackground">#ffffff</item>
         <item name="android:editTextColor">#000000</item>
         <item name="android:fontFamily">@font/app_font</item>
+        <item name="itemIconTint">@drawable/bottom_tab_colors_dark</item>
 
 <!--        this changes the popup menu text color -->
         <item name="android:textColor">#000000</item>
@@ -35,9 +48,16 @@
         <item name="colorControlActivated">#2196F3</item>
         <item name="colorControlHighlight">#2196F3</item>
 
+<!--        By doing this below code you can apply different themes to different themes-->
+<!--        <item name="android:windowIsTranslucent">@style/Popup</item>-->
+        
+<!--        change the popup background color-->
+        <item name="android:popupBackground">#ffffff</item>
+<!--        <item name="android:background">@color/white</item>-->
+
 <!--        this is used for show pop up profile so that pop up show on the top of activity not independently and
             windowCloseOntouchOutside is used to make disappear the pop up window when touched outside the area of pop up window-->
-        <item name="android:windowIsTranslucent">true</item>
+<!--        <item name="android:windowIsTranslucent">true</item>-->
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
@@ -64,6 +84,8 @@
         <item name="android:editTextColor">#ffffff</item>
         <item name="android:fontFamily">@font/app_font</item>
 
+        <item name="itemIconTint">@drawable/bottom_tab_colors</item>
+
         <item name="android:textColor">#2196F3</item>
         <item name="android:textColorHint">#808080</item>
 
@@ -71,7 +93,10 @@
         <item name="colorControlActivated">#2196F3</item>
         <item name="colorControlHighlight">#2196F3</item>
 
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:popupBackground">#000000</item>
+<!--        <item name="android:background">@color/black</item>-->
+
+<!--        <item name="android:windowIsTranslucent">true</item>-->
         <item name="android:windowCloseOnTouchOutside">true</item>
 
     </style>

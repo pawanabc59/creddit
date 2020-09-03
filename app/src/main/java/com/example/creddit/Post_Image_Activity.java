@@ -61,7 +61,7 @@ public class Post_Image_Activity extends AppCompatActivity {
     String userId, pushId, postTitle, currentDate, cardPostProfile;
     SimpleDateFormat simpleDateFormat;
     Date date;
-    int numberOfPosts, spoiler_number, nsfw_number;
+    int numberOfPosts, spoiler_number, nsfw_number, imageUploaded=0;
     ProgressBar postProgressBar;
     ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener;
 
@@ -173,20 +173,21 @@ public class Post_Image_Activity extends AppCompatActivity {
                     postImagePost.setVisibility(View.VISIBLE);
                     postProgressBar.setVisibility(View.GONE);
                     postImageTitle.setError("Please add a title to post");
-                } else {
-                    numberOfPostValueEventListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                numberOfPosts = ((Long) dataSnapshot.getValue()).intValue();
+                } else if (imageUploaded == 1){
+
+                        numberOfPostValueEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    numberOfPosts = ((Long) dataSnapshot.getValue()).intValue();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    };
+                            }
+                        };
 
                     mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(numberOfPostValueEventListener);
 
@@ -256,6 +257,11 @@ public class Post_Image_Activity extends AppCompatActivity {
                         }
                     });
                 }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please select image to upload.", Toast.LENGTH_SHORT);
+                    postImagePost.setVisibility(View.VISIBLE);
+                    postProgressBar.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -290,6 +296,7 @@ public class Post_Image_Activity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
                     image_byte_data = byteArrayOutputStream.toByteArray();
 
+                    imageUploaded = 1;
                     Picasso.get().load(filepath).into(gallery_image);
                 } catch (IOException e) {
                     e.printStackTrace();
