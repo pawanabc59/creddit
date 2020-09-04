@@ -12,109 +12,103 @@
         android:id="@+id/followingListLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="?attr/cardbackground"
-        android:padding="@dimen/_7sdp"
-        >
+        android:orientation="horizontal"
+        android:padding="@dimen/_7sdp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_marginLeft="@dimen/_9sdp"
-            app:cardCornerRadius="75dp"
-            >
+            app:cardCornerRadius="75dp">
 
             <ImageView
                 android:id="@+id/sub_image"
                 android:layout_width="@dimen/_22sdp"
                 android:layout_height="@dimen/_22sdp"
-                android:src="@drawable/zoro"
-                android:scaleType="centerCrop"
                 android:layout_gravity="center"
-                />
+                android:scaleType="centerCrop"
+                android:src="@drawable/zoro" />
 
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/sub_name"
-            android:layout_width="@dimen/_170sdp"
+            android:layout_width="@dimen/_160sdp"
             android:layout_height="match_parent"
-            android:text="Zoro Wallpaper"
-            android:layout_marginLeft="@dimen/_9sdp"
-            android:textColor="?attr/textcolor"
-            android:textSize="16sp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_9sdp"
             android:gravity="center_vertical"
-            />
+            android:text="Zoro Wallpaper"
+            android:textColor="?attr/textcolor"
+            android:textSize="16sp" />
 
         <RelativeLayout
             android:id="@+id/markFavourite"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
-        <ImageView
-            android:id="@+id/addFavourite"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/ic_star"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/_15sdp"
-            />
+            <ImageView
+                android:id="@+id/addFavourite"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:src="@drawable/ic_star" />
 
-        <ImageView
-            android:id="@+id/removeFavourite"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/ic_star_colored"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:visibility="gone"
-            />
+            <ImageView
+                android:id="@+id/removeFavourite"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:src="@drawable/ic_star_colored"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/blockLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:paddingLeft="@dimen/_10sdp"
-            >
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/unblockUser"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Unblock"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                android:textColor="?attr/buttoncolor"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@drawable/text_outline_layout"
                 android:paddingHorizontal="@dimen/_6sdp"
                 android:paddingVertical="@dimen/_3sdp"
-                android:visibility="visible"
-                />
+                android:text="Unblock"
+                android:textColor="?attr/buttoncolor"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/blockUser"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Block"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@drawable/spoiler_fill_outline_layout"
                 android:paddingHorizontal="@dimen/_6sdp"
                 android:paddingVertical="@dimen/_3sdp"
-                android:visibility="gone"
-                />
+                android:text="Block"
+                android:textColor="#ffffff"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </RelativeLayout>
 

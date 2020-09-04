@@ -177,6 +177,9 @@ public class SavedPostsFragment extends Fragment {
                                             } else {
                                                 cardPostTime = (minutes + "min ago");
                                             }
+
+//                                            we can see here blocked users posts because user has previously choose to save those posts and then afterwards he blocked the user.
+
                                             if (showNSFWvalue == 0) {
                                                 if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
                                                     saved_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));

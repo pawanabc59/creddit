@@ -108,10 +108,10 @@
         android:scaleType="centerCrop"
         />
 
-        <ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout
-            android:id="@+id/swipeableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<!--        <ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout-->
+<!--            android:id="@+id/swipeableLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/single_card_image"
@@ -119,7 +119,15 @@
             android:layout_height="match_parent"
             ></com.github.chrisbanes.photoview.PhotoView>
 
-        </ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout>
+<!--        </ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout>-->
+
+<!--        <com.github.toxa2033.ScaleImageView-->
+<!--            android:id="@+id/single_card_image"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            app:zoom_enabled="true"-->
+<!--            app:dismiss_enabled="true"/>-->
 
     </FrameLayout>
 

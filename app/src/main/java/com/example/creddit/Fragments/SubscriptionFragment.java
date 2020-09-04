@@ -84,7 +84,7 @@ public class SubscriptionFragment extends Fragment {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                         if (!userId.equals(dataSnapshot2.getKey())) {
-                                            favouriteFollowingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class), dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey()));
+                                            favouriteFollowingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class), dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey(), "subscription"));
                                             favouriteFollowingListAdapter.notifyDataSetChanged();
                                         }
                                     }
@@ -156,7 +156,7 @@ public class SubscriptionFragment extends Fragment {
                         if (!userId.equals(dataSnapshot1.getKey())){
                             if (dataSnapshot1.child("optionalName").getValue(String.class).toLowerCase().contains(username.toLowerCase()) ||
                                     dataSnapshot1.child("email").getValue(String.class).toLowerCase().contains(username.toLowerCase())) {
-                                followingListModels.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey()));
+                                followingListModels.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(), "subscription"));
                             }
                         }
                         followingListAdapter.notifyDataSetChanged();
@@ -183,7 +183,7 @@ public class SubscriptionFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                 if (!userId.equals(dataSnapshot2.getKey())) {
-                                    followingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class), dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey()));
+                                    followingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class), dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey(), "subscription"));
                                     followingListAdapter.notifyDataSetChanged();
                                 }
                             }

@@ -583,8 +583,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 //                                Toast.makeText(mContext, "report is clicked", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.card_block_user:
-                                mRefUser.child("blockedUsers").child(mData.get(position).getUserId()).child("key").child(mData.get(position).getUserId());
-                                Toast.makeText(mContext, "User is blocked now.", Toast.LENGTH_SHORT).show();
+                                mRefUser.child("blockedUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        mRefUser.child("blockedUsers").child(mData.get(position).getUserId()).child("key").setValue(mData.get(position).getUserId());
+                                        Toast.makeText(mContext, "User is blocked now.", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                                 break;
 
                         }

@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
     ValueEventListener postValueEventListener, followedUserslistValueEventListener, userFollowedValueEventListener, nsfwValueEventListener;
 
     ArrayList<String> followedUsersId = new ArrayList<>();
+    ArrayList<String> blockedList = new ArrayList<>();
     int showNSFWvalue = 0, blurNSFWvalue = 0;
 
     @Override
@@ -69,6 +70,8 @@ public class HomeFragment extends Fragment {
         sharedPref = new SharedPref(getContext());
 
         home_posts = new ArrayList<>();
+//        withourThisStringAppWouldNotShowAnythingBecauseArrayWillBecomeNULLOtherwise
+//        blockedList.add("randomString");
 
         cardAdapter = new CardAdapter(getContext(), home_posts, getActivity(), "homeFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -95,6 +98,8 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
 
+            getBlockedUsersLists();
+
             followedUserslistValueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -102,13 +107,13 @@ public class HomeFragment extends Fragment {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             followedUsersId.add(dataSnapshot1.getKey());
                         }
-
                         userFollowedValueEventListener = new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                            public void onDataChange(@NonNull final DataSnapshot dataSnapshot2) {
                                 home_posts.clear();
                                 if (dataSnapshot2.exists()) {
                                     try {
+
                                         for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
                                             String postKey = dataSnapshot3.getKey();
                                             postTime = dataSnapshot3.child("postTime").getValue(String.class);
@@ -141,16 +146,19 @@ public class HomeFragment extends Fragment {
                                             }
 
                                             if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
-                                                if (showNSFWvalue == 0) {
-                                                    if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                if (!blockedList.contains(dataSnapshot3.child("userId").getValue(String.class))) {
+                                                    if (showNSFWvalue == 0) {
+                                                        if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                            home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
+                                                        }
+                                                    } else {
                                                         home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
                                                     }
-                                                } else {
-                                                    home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class)));
+                                                    cardAdapter.notifyDataSetChanged();
                                                 }
-                                                cardAdapter.notifyDataSetChanged();
                                             }
                                         }
+
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
@@ -186,13 +194,30 @@ public class HomeFragment extends Fragment {
 //            };
 //            FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
 
-
         }
 
         recycler_home_posts.setLayoutManager(cardManager);
         recycler_home_posts.setAdapter(cardAdapter);
 
         return view;
+    }
+
+    private void getBlockedUsersLists() {
+        mRef.child("users").child(userId).child("blockedUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot4 : dataSnapshot.getChildren()) {
+                        blockedList.add(dataSnapshot4.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void showPosts() {

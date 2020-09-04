@@ -4,17 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.view.MotionEventCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,7 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.ortiz.touchview.TouchImageView;
+import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
+import com.github.chrisbanes.photoview.OnViewDragListener;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.github.toxa2033.ScaleImageView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,8 +43,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout;
-import ua.zabelnikov.swipelayout.layout.listener.OnLayoutSwipedListener;
+//import ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout;
+//import ua.zabelnikov.swipelayout.layout.listener.OnLayoutSwipedListener;
 
 public class SingleImageShowActivity extends AppCompatActivity {
 
@@ -48,7 +56,8 @@ public class SingleImageShowActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef;
     ImageView backgroundWallpaper;
-    SwipeableLayout swipeableLayout;
+//    ScaleImageView single_card_image;
+//    SwipeableLayout swipeableLayout;
 //    TextView single_card_title, single_card_posted_by, singleCardDescription;
 //    ImageView single_post_upvote, single_post_downvote, single_post_comment, single_post_share;
 
@@ -79,7 +88,7 @@ public class SingleImageShowActivity extends AppCompatActivity {
         single_card_image = findViewById(R.id.single_card_image);
         backgroundWallpaper = findViewById(R.id.backgroundWallpaper);
         imageDownload = findViewById(R.id.imageDownload);
-        swipeableLayout = findViewById(R.id.swipeableLayout);
+//        swipeableLayout = findViewById(R.id.swipeableLayout);
 //        single_card_title = findViewById(R.id.single_card_title);
 //        single_card_posted_by = findViewById(R.id.single_posted_by);
 //        single_post_upvote = findViewById(R.id.single_post_upvote);
@@ -94,12 +103,12 @@ public class SingleImageShowActivity extends AppCompatActivity {
 //        String posted_by = intent.getExtras().getString("posted_by");
         final String cardImage = intent.getExtras().getString("cardImage");
 
-        swipeableLayout.setOnSwipedListener(new OnLayoutSwipedListener() {
-            @Override
-            public void onLayoutSwiped() {
-                finish();
-            }
-        });
+//        swipeableLayout.setOnSwipedListener(new OnLayoutSwipedListener() {
+//            @Override
+//            public void onLayoutSwiped() {
+//                finish();
+//            }
+//        });
 //        String cardProfileImage = intent.getExtras().getString("cardProfileImage");
 
 //        single_card_title.setText(card_title);
@@ -109,6 +118,30 @@ public class SingleImageShowActivity extends AppCompatActivity {
 //        Picasso.get().load(cardProfileImage).into(single_card_profile_image);
         Picasso.get().load(cardImage).resize(5,5).into(backgroundWallpaper);
         Picasso.get().load(cardImage).into(single_card_image);
+
+//        single_card_image.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                int action = MotionEventCompat.getActionMasked(motionEvent);
+//                switch(action) {
+//                    case (MotionEvent.ACTION_DOWN) :
+//                        finish();
+//                        return true;
+//                    case (MotionEvent.ACTION_UP) :
+//                        finish();
+//                        return true;
+//                    default :
+//                        return false;
+//                }
+//            }
+//        });
+
+        single_card_image.setOnOutsidePhotoTapListener(new OnOutsidePhotoTapListener() {
+            @Override
+            public void onOutsidePhotoTap(ImageView imageView) {
+                finish();
+            }
+        });
 
         imageDownload.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,50 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
         Picasso.get().load(mData.get(position).sub_image).into(holder.sub_image);
 
         userId = user.getUid();
+
+        if (mData.get(position).getType().equals("subscription")){
+            holder.markFavouriteLayout.setVisibility(View.VISIBLE);
+            holder.blockLayout.setVisibility(View.GONE);
+        }
+        else if (mData.get(position).getType().equals("blocked")){
+            holder.blockLayout.setVisibility(View.VISIBLE);
+            holder.markFavouriteLayout.setVisibility(View.GONE);
+        }
+
+        holder.unblockUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                mRef.child("users").child(userId).child("blockedUsers").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if (dataSnapshot.exists()){
+//                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                                if (dataSnapshot1.getKey().equals(mData.get(position).getAnotherUserId())){
+                                    mRef.child("users").child(userId).child("blockedUsers").child(mData.get(position).getAnotherUserId()).child("key").removeValue();
+                                    holder.unblockUser.setVisibility(View.GONE);
+                                    holder.blockUser.setVisibility(View.VISIBLE);
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+            }
+        });
+
+        holder.blockUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRef.child("users").child(userId).child("blockedUsers").child(mData.get(position).getAnotherUserId()).child("key").setValue(mData.get(position).getAnotherUserId());
+                holder.blockUser.setVisibility(View.GONE);
+                holder.unblockUser.setVisibility(View.VISIBLE);
+            }
+        });
 
         mRef.child("users").child(userId).child("followingList").orderByChild("key").equalTo(mData.get(position).getAnotherUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -156,9 +201,10 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView sub_name;
+        TextView sub_name, blockUser, unblockUser;
         ImageView sub_image, addFavourite, removeFavourite;
         LinearLayout followingListLayout;
+        RelativeLayout markFavouriteLayout, blockLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -168,6 +214,10 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
             followingListLayout = itemView.findViewById(R.id.followingListLayout);
             addFavourite = itemView.findViewById(R.id.addFavourite);
             removeFavourite = itemView.findViewById(R.id.removeFavourite);
+            markFavouriteLayout = itemView.findViewById(R.id.markFavourite);
+            blockLayout = itemView.findViewById(R.id.blockLayout);
+            blockUser = itemView.findViewById(R.id.blockUser);
+            unblockUser = itemView.findViewById(R.id.unblockUser);
         }
     }
 }

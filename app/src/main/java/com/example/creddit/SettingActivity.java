@@ -3,9 +3,12 @@ package com.example.creddit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +29,7 @@ public class SettingActivity extends AppCompatActivity {
     String userId;
     ValueEventListener settingValueEventListener;
     int NSFWvalue = 0, blurNSFWValue = 0;
+    TextView manageBlockedUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class SettingActivity extends AppCompatActivity {
 
         showNSFW = findViewById(R.id.showNSFW);
         blurNSFW = findViewById(R.id.blurNSFW);
+        manageBlockedUsers = findViewById(R.id.manageBlockedUsers);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -112,6 +117,14 @@ public class SettingActivity extends AppCompatActivity {
                     mRef.child("blurNSFW").setValue(0);
                     sharedPref.put_blurNSFW(0);
                 }
+            }
+        });
+
+        manageBlockedUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), BlockedUsersListActivity.class);
+                startActivity(intent);
             }
         });
 
