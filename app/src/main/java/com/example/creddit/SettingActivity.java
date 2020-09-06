@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +33,7 @@ public class SettingActivity extends AppCompatActivity {
     ValueEventListener settingValueEventListener;
     int NSFWvalue = 0, blurNSFWValue = 0;
     TextView manageBlockedUsers;
+//    TextView verifyMail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +51,29 @@ public class SettingActivity extends AppCompatActivity {
         showNSFW = findViewById(R.id.showNSFW);
         blurNSFW = findViewById(R.id.blurNSFW);
         manageBlockedUsers = findViewById(R.id.manageBlockedUsers);
+//        verifyMail = findViewById(R.id.verify_mail);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
         mRef = firebaseDatabase.getReference("creddit").child("users").child(userId);
+
+//        verifyMail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()){
+//                            Toast.makeText(getApplicationContext(), "Mail sent", Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            Toast.makeText(getApplicationContext(), "Some error occurred", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//            }
+//        });
 
         settingValueEventListener = new ValueEventListener() {
             @Override

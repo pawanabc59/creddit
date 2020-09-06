@@ -160,22 +160,38 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
-                            registerProgressBar.setVisibility(View.GONE);
-                            btnRegister.setVisibility(View.VISIBLE);
-                            editRegisterEmail.setText("");
-                            editRegisterPassword.setText("");
-                            editRegistercPassword.setText("");
 
-                            uid = firebaseAuth.getCurrentUser().getUid();
-                            mRef.child(uid).child("createdAt").setValue(currentDate);
-                            mRef.child(uid).child("userNumber").setValue(numberOfUsers+1);
-                            FirebaseDatabase.getInstance().getReference("creddit").child("numberOfUsers").setValue(numberOfUsers+1);
+                            firebaseAuth.getCurrentUser().sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Toast.makeText(getApplicationContext(), "Registration successful! Please verify email.", Toast.LENGTH_SHORT).show();
 
-                            mRef.child(uid).child("showNSFW").setValue(0);
-                            mRef.child(uid).child("blurNSFW").setValue(0);
+                                                registerProgressBar.setVisibility(View.GONE);
+                                                btnRegister.setVisibility(View.VISIBLE);
+                                                editRegisterEmail.setText("");
+                                                editRegisterPassword.setText("");
+                                                editRegistercPassword.setText("");
 
-                            firebaseAuth.signOut();
+                                                uid = firebaseAuth.getCurrentUser().getUid();
+                                                mRef.child(uid).child("createdAt").setValue(currentDate);
+                                                mRef.child(uid).child("userNumber").setValue(numberOfUsers+1);
+                                                FirebaseDatabase.getInstance().getReference("creddit").child("numberOfUsers").setValue(numberOfUsers+1);
+
+                                                mRef.child(uid).child("showNSFW").setValue(0);
+                                                mRef.child(uid).child("blurNSFW").setValue(0);
+
+                                                firebaseAuth.signOut();
+
+                                            }else{
+                                                Toast.makeText(getApplicationContext(), "Error sending in email", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+//                            Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
+
 
 //                            String key = mRef.push().getKey();
 //                            mRef2 = mRef.child(key);

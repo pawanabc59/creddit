@@ -72,5 +72,16 @@
             />
     </LinearLayout>
 
+<!--    <TextView-->
+<!--        android:id="@+id/verify_mail"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Verify Email"-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_marginTop="@dimen/_10sdp"-->
+<!--        android:textColor="?attr/textcolor"/>-->
+
+
+
 
 </LinearLayout>

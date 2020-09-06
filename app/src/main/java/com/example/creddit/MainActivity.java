@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference mRef,mRef2;
+    DatabaseReference mRef, mRef2;
 
     String userId;
     String currentDate;
@@ -126,13 +126,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        if (user == null) {
-            navigationView.getMenu().clear();
-            View nav_header_login = LayoutInflater.from(this).inflate(R.layout.nav_header_login, null);
-            navigationView.addHeaderView(nav_header_login);
-            navigationView.inflateMenu(R.menu.drawer_menu_login);
+        if (user != null && user.isEmailVerified()) {
 
-        } else {
             navigationView.getMenu().clear();
             View nav_header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
             navigationView.addHeaderView(nav_header);
@@ -173,29 +168,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         long hours = minutes / 60;
                         int days = (int) (hours / 24);
 
-                        if ((days/365)>0){
-                            int year = days/365;
-                            int leftMonths = days%365;
-                            int month = leftMonths/30;
-                            int leftDays = month%30;
-                            nav_age.setText(year+"y "+month+"m "+leftDays+"d");
-                        }
-                        else if ((days/30)>0){
-                            int month = days/30;
-                            int leftDays = days%30;
-                            nav_age.setText(month+"m "+leftDays+"d");
-                        }
-                        else {
-                            nav_age.setText(days+"d");
+                        if ((days / 365) > 0) {
+                            int year = days / 365;
+                            int leftMonths = days % 365;
+                            int month = leftMonths / 30;
+                            int leftDays = month % 30;
+                            nav_age.setText(year + "y " + month + "m " + leftDays + "d");
+                        } else if ((days / 30) > 0) {
+                            int month = days / 30;
+                            int leftDays = days % 30;
+                            nav_age.setText(month + "m " + leftDays + "d");
+                        } else {
+                            nav_age.setText(days + "d");
                         }
 
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
-                    if (profileImage.equals("null")){
+                    if (profileImage.equals("null")) {
                         Picasso.get().load(R.drawable.reddit_logo_hd).into(nav_profile_image);
-                    }else {
+                    } else {
                         Picasso.get().load(profileImage).error(R.drawable.reddit_logo_hd).into(nav_profile_image);
                     }
                     nav_username.setText(dataSnapshot.child("optionalName").getValue().toString());
@@ -210,6 +203,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mRef2.addValueEventListener(navigationValueEventListener);
 
             navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+        else{
+            navigationView.getMenu().clear();
+            View nav_header_login = LayoutInflater.from(this).inflate(R.layout.nav_header_login, null);
+            navigationView.addHeaderView(nav_header_login);
+            navigationView.inflateMenu(R.menu.drawer_menu_login);
         }
 
         navigationView.setNavigationItemSelectedListener(this);
