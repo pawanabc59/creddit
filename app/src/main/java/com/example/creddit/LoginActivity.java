@@ -1,18 +1,22 @@
 package com.example.creddit;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout textEmail, textPassword;
     TextInputEditText editEmail, editPassword;
     Button btnLogin;
-    TextView textRegister;
+    TextView textRegister, login_forgot_pass_txt;
     ProgressBar loginProgressBar;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -68,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.login_btn_login);
         loginProgressBar = findViewById(R.id.loginProgressBar);
+
+        login_forgot_pass_txt = findViewById(R.id.login_forgot_pass_txt);
 
         textRegister = findViewById(R.id.login_signup_txt);
 
@@ -120,6 +126,53 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        login_forgot_pass_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText resetPassword1 = new EditText(view.getContext());
+                resetPassword1.setTextColor(R.attr.textcolor);
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(view.getContext());
+                passwordResetDialog.setTitle("Reset Password");
+                passwordResetDialog.setMessage("Enter email to receive reset link");
+                passwordResetDialog.setView(resetPassword1);
+
+                passwordResetDialog.setPositiveButton("Email me", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String mail = resetPassword1.getText().toString().trim();
+                        if (mail.equals("")) {
+                            resetPassword1.setError("Please provide email first");
+                            Toast.makeText(getApplicationContext(),"Please provide email first", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            firebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getApplicationContext(), "Reset link sent to your email", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Error in sending email", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                passwordResetDialog.create().show();
+
             }
         });
     }

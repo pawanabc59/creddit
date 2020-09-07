@@ -1,17 +1,23 @@
 package com.example.creddit;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
     String userId;
     ValueEventListener settingValueEventListener;
     int NSFWvalue = 0, blurNSFWValue = 0;
-    TextView manageBlockedUsers;
+    TextView manageBlockedUsers, resetPassword;
 //    TextView verifyMail;
 
     @Override
@@ -51,9 +57,11 @@ public class SettingActivity extends AppCompatActivity {
         showNSFW = findViewById(R.id.showNSFW);
         blurNSFW = findViewById(R.id.blurNSFW);
         manageBlockedUsers = findViewById(R.id.manageBlockedUsers);
+        resetPassword = findViewById(R.id.resetPassword);
 //        verifyMail = findViewById(R.id.verify_mail);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
         mRef = firebaseDatabase.getReference("creddit").child("users").child(userId);
@@ -147,6 +155,53 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), BlockedUsersListActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final EditText resetPassword1 = new EditText(view.getContext());
+                resetPassword1.setTextColor(R.attr.textcolor);
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(view.getContext());
+                passwordResetDialog.setTitle("Reset Password");
+                passwordResetDialog.setMessage("Enter email to receive reset link");
+                passwordResetDialog.setView(resetPassword1);
+
+                passwordResetDialog.setPositiveButton("Email me", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String mail = resetPassword1.getText().toString().trim();
+                        if (mail.equals("")) {
+                            resetPassword1.setError("Please provide email first");
+                            Toast.makeText(getApplicationContext(),"Please provide email first", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            firebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getApplicationContext(), "Reset link sent to your email", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Error in sending email", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                passwordResetDialog.create().show();
             }
         });
 
