@@ -152,12 +152,28 @@ public class SubscriptionFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 followingListModels.clear();
                 if (dataSnapshot.exists()){
-                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                         if (!userId.equals(dataSnapshot1.getKey())){
-                            if (dataSnapshot1.child("optionalName").getValue(String.class).toLowerCase().contains(username.toLowerCase()) ||
-                                    dataSnapshot1.child("email").getValue(String.class).toLowerCase().contains(username.toLowerCase())) {
-                                followingListModels.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(), "subscription"));
-                            }
+                            mRef.child("subreddits").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
+                                    for (DataSnapshot dataSnapshot4 : dataSnapshot3.getChildren()){
+                                        if (dataSnapshot1.child("optionalName").getValue(String.class).toLowerCase().contains(username.toLowerCase()) ||
+                                                dataSnapshot1.child("email").getValue(String.class).toLowerCase().contains(username.toLowerCase())) {
+                                            followingListModels.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(), "subscription"));
+                                        }
+                                        if (dataSnapshot4.child("subName").getValue(String.class).contains(username.toLowerCase())){
+                                            followingListModels.add(new FollowingListModel(dataSnapshot4.child("subPicture").getValue(String.class), dataSnapshot4.child("subName").getValue(String.class), dataSnapshot4.getKey(), "subscription"));
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                         followingListAdapter.notifyDataSetChanged();
                     }

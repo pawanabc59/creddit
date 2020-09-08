@@ -3,6 +3,7 @@ package com.example.creddit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -38,8 +39,9 @@ public class SettingActivity extends AppCompatActivity {
     String userId;
     ValueEventListener settingValueEventListener;
     int NSFWvalue = 0, blurNSFWValue = 0;
-    TextView manageBlockedUsers, resetPassword;
+    TextView manageBlockedUsers, resetPassword, createSubreddit;
 //    TextView verifyMail;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +56,24 @@ public class SettingActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_setting);
 
+        toolbar = findViewById(R.id.settingToolbar);
         showNSFW = findViewById(R.id.showNSFW);
         blurNSFW = findViewById(R.id.blurNSFW);
         manageBlockedUsers = findViewById(R.id.manageBlockedUsers);
         resetPassword = findViewById(R.id.resetPassword);
+        createSubreddit = findViewById(R.id.createSubreddit);
 //        verifyMail = findViewById(R.id.verify_mail);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -154,6 +169,14 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), BlockedUsersListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        createSubreddit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingActivity.this, CreateNewSubredditActivity.class);
                 startActivity(intent);
             }
         });

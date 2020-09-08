@@ -17,11 +17,12 @@
         android:roundIcon="@drawable/reddit_logo_hd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BlockedUsersListActivity"></activity>
+        <activity android:name=".CreateNewSubredditActivity"></activity>
+        <activity android:name=".BlockedUsersListActivity" />
         <activity android:name=".ShowSinglePostActivity" />
         <activity
             android:name=".ShowPopUpProfileDetailsActivity"
-            android:theme="@style/Popup"></activity>
+            android:theme="@style/Popup" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".AnotherUserActivity" />
         <activity android:name=".SingleChatActicity" />

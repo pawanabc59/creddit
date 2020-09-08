@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/white_black"
+    tools:context=".CreateNewSubredditActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/createSubToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Create Subreddit"
+        android:background="?attr/cardbackground"
+        app:titleTextColor="?attr/textcolor"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/createSubToolbar"
+        android:paddingHorizontal="@dimen/_7sdp">
+
+    <EditText
+        android:id="@+id/subName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Sub name"
+        android:textColor="?attr/textcolor"
+        android:textSize="16sp"/>
+
+    <EditText
+        android:id="@+id/subDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sub description"
+        android:textColor="?attr/textcolor"
+        android:textSize="16sp"
+        android:layout_below="@+id/subName"/>
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Types"
+        android:textColor="?attr/textcolor"
+        android:textSize="20sp"
+        android:layout_below="@+id/subDescription"/>
+
+    <RadioGroup
+        android:id="@+id/types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/type">
+
+        <RadioButton
+            android:id="@+id/publicSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Public"
+            android:textSize="16sp"
+            android:textColor="?attr/textcolor"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/privateSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private"
+            android:textSize="16sp"
+            android:textColor="?attr/textcolor"/>
+
+        <RadioButton
+            android:id="@+id/restrictedSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restricted"
+            android:textSize="16sp"
+            android:textColor="?attr/textcolor"/>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/contentOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Content Option"
+        android:textColor="?attr/textcolor"
+        android:textSize="20sp"
+        android:layout_below="@+id/types"/>
+
+    <RadioGroup
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contentOption">
+
+        <RadioButton
+            android:id="@+id/any"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Any "
+            android:textSize="16sp"
+            android:textColor="?attr/textcolor"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/textOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text Only"
+            android:textSize="16sp"
+            android:textColor="?attr/textcolor"/>
+
+        <RadioButton
+            android:id="@+id/linksOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Links Only"
+            android:textSize="16sp"
+            android:textColor="?attr/textcolor"/>
+    </RadioGroup>
+
+        <Button
+            android:id="@+id/btnCreate"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:layout_below="@id/content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:background="?attr/buttoncolor"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/_105sdp"
+            android:visibility="visible"
+            />
+
+        <ProgressBar
+            android:id="@+id/createSubProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/_135sdp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

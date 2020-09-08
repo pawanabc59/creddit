@@ -7,6 +7,7 @@ public class FollowingListModel {
 
     public String sub_name, sub_image, anotherUserId, type;
 
+//    anotherUserId is also subreddit id
     public FollowingListModel(String sub_image, String sub_name, String anotherUserId, String type) {
         this.sub_image = sub_image;
         this.sub_name = sub_name;

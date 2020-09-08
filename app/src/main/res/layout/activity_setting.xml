@@ -8,6 +8,15 @@
     android:background="?attr/white_black"
     tools:context=".SettingActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/settingToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="?attr/cardbackground"
+        app:titleTextColor="?attr/textcolor"
+        app:title="Settings"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,6 +78,28 @@
             android:layout_gravity="center_vertical"
             android:textSize="16sp"
             android:text="Manage blocked users"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        android:background="?attr/cardbackground">
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_create"
+            android:layout_marginRight="@dimen/_10sdp"/>
+        <TextView
+            android:id="@+id/createSubreddit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/textcolor"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"
+            android:text="Create new Subreddit"
             />
     </LinearLayout>
 
