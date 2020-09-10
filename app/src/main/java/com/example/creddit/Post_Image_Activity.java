@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -36,11 +38,14 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Post_Image_Activity extends AppCompatActivity {
 
@@ -58,12 +63,15 @@ public class Post_Image_Activity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     DatabaseReference mRef, mRef_post, mRef_user;
-    String userId, pushId, postTitle, currentDate, cardPostProfile;
+    String userId, pushId, postTitle, currentDate, cardPostProfile, subName, subId, subType;
     SimpleDateFormat simpleDateFormat;
     Date date;
     int numberOfPosts, spoiler_number, nsfw_number, imageUploaded=0;
     ProgressBar postProgressBar;
-    ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener;
+    ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener, followingCommunityValueEventListener;
+    SearchableSpinner searchableSpinner;
+    List<String> subNameList, subIdList, cardPostProfileList;
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +95,8 @@ public class Post_Image_Activity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
+        subId = userId;
+        subType = "user";
 
         mRef = firebaseDatabase.getReference("creddit");
         mRef_user = mRef.child("users").child(userId);
@@ -103,6 +113,8 @@ public class Post_Image_Activity extends AppCompatActivity {
         postImageTitle = findViewById(R.id.post_image_title);
         postProgressBar = findViewById(R.id.postProgressBar);
 
+        searchableSpinner = findViewById(R.id.subSearch);
+
         nsfw = findViewById(R.id.nsfw);
         nsfwFill = findViewById(R.id.nsfw_fill);
         spoiler = findViewById(R.id.spoiler);
@@ -114,6 +126,32 @@ public class Post_Image_Activity extends AppCompatActivity {
                 nsfw.setVisibility(View.GONE);
                 nsfwFill.setVisibility(View.VISIBLE);
                 nsfw_number = 1;
+            }
+        });
+
+        subNameList = new ArrayList<>();
+        subIdList = new ArrayList<>();
+        cardPostProfileList = new ArrayList<>();
+        subNameList.add("My profile");
+        subIdList.add(userId);
+        cardPostProfileList.add("my profile picture");
+        followedCommunity(subNameList, subIdList, cardPostProfileList);
+
+        searchableSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                subName = subNameList.get(i);
+                subId = subIdList.get(i);
+                if (!subIdList.get(i).equals(userId)){
+                    subType="sub";
+                }
+                cardPostProfile = cardPostProfileList.get(i);
+//                Toast.makeText(getApplicationContext(), "You clicked "+ subNameList.get(i)+" where subid is "+subIdList.get(i), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -191,21 +229,21 @@ public class Post_Image_Activity extends AppCompatActivity {
 
                     mRef.child("posts").child("numberOfPosts").addListenerForSingleValueEvent(numberOfPostValueEventListener);
 
-                    cardPostProfileValueEventListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    };
-
-                    mRef_user.addListenerForSingleValueEvent(cardPostProfileValueEventListener);
+//                    cardPostProfileValueEventListener = new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.exists()) {
+//                                cardPostProfile = dataSnapshot.child("profileImage").getValue().toString();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    };
+//
+//                    mRef_user.addListenerForSingleValueEvent(cardPostProfileValueEventListener);
 
                     pushId = mRef.push().getKey();
                     mRef_post = mRef.child("posts").child("imagePosts").child(pushId);
@@ -221,8 +259,12 @@ public class Post_Image_Activity extends AppCompatActivity {
                                     mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (subType.equals("user")){
+                                                subName = dataSnapshot.child("optionalName").getValue(String.class);
+                                                cardPostProfile = dataSnapshot.child("profileImage").getValue(String.class);
+                                            }
                                             mRef_post.child("postNumber").setValue((-1) * (numberOfPosts + 1));
-                                            mRef_post.child("uploadedBy").setValue(dataSnapshot.child("optionalName").getValue());
+                                            mRef_post.child("uploadedBy").setValue(dataSnapshot.child("optionalName").getValue(String.class));
                                             mRef_post.child("imagePath").setValue(task.getResult().toString());
                                             mRef_post.child("userId").setValue(userId);
                                             mRef_post.child("cardTitle").setValue(postTitle);
@@ -234,6 +276,9 @@ public class Post_Image_Activity extends AppCompatActivity {
                                             mRef_post.child("NSFW").setValue(nsfw_number);
                                             mRef_post.child("spoiler").setValue(spoiler_number);
                                             mRef_post.child("postType").setValue("image");
+                                            mRef_post.child("subType").setValue(subType);
+                                            mRef_post.child("subName").setValue(subName);
+                                            mRef_post.child("subId").setValue(subId);
                                             mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts + 1);
 
                                             postImagePost.setVisibility(View.VISIBLE);
@@ -264,6 +309,33 @@ public class Post_Image_Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void followedCommunity(final List<String> subNameList, final List<String> subIdList, final List<String> cardPostProfileList) {
+        followingCommunityValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                        if (!userId.equals(dataSnapshot1.getKey())){
+                            subNameList.add(dataSnapshot1.child("name").getValue(String.class));
+                            subIdList.add(dataSnapshot1.child("key").getValue(String.class));
+                            cardPostProfileList.add(dataSnapshot1.child("profilePicture").getValue(String.class));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mRef_user.child("followingList").orderByChild("type").equalTo("sub").addValueEventListener(followingCommunityValueEventListener);
+
+        adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, subNameList);
+        searchableSpinner.setAdapter(adapter);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -339,6 +411,7 @@ public class Post_Image_Activity extends AppCompatActivity {
         try {
 
             mRef.child("posts").child("numberOfPosts").removeEventListener(numberOfPostValueEventListener);
+            mRef_user.child("followingList").removeEventListener(followingCommunityValueEventListener);
 
             mRef_user.removeEventListener(cardPostProfileValueEventListener);
         } catch (Exception e) {

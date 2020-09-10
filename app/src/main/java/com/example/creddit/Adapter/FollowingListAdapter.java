@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creddit.AnotherUserActivity;
+import com.example.creddit.EditSubRedditActivity;
 import com.example.creddit.Model.FollowingListModel;
 import com.example.creddit.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -131,15 +132,31 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
             }
         });
 
-        holder.followingListLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, AnotherUserActivity.class);
-                intent.putExtra("anotherUserId", mData.get(position).getAnotherUserId());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-            }
-        });
+        if (mData.get(position).getType().equals("mySubRedditList")){
+            holder.followingListLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.markFavouriteLayout.setVisibility(View.GONE);
+                    holder.blockLayout.setVisibility(View.GONE);
+                    Intent intent = new Intent(mContext, EditSubRedditActivity.class);
+                    intent.putExtra("subId", mData.get(position).getAnotherUserId());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+            });
+
+        }else {
+            holder.followingListLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, AnotherUserActivity.class);
+                    intent.putExtra("anotherUserId", mData.get(position).getAnotherUserId());
+                    intent.putExtra("subType", mData.get(position).getSubType());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
 
         holder.addFavourite.setOnClickListener(new View.OnClickListener() {
             @Override

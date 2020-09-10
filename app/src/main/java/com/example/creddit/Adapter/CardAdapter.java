@@ -610,7 +610,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     public void anotherSubredditIntent(int position) {
         Intent intent = new Intent(mContext, AnotherUserActivity.class);
-        intent.putExtra("anotherUserId", mData.get(position).getUserId());
+        intent.putExtra("anotherUserId", mData.get(position).getSubId());
+        intent.putExtra("subType", mData.get(position).getSubType());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }

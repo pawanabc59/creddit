@@ -17,7 +17,9 @@
         android:roundIcon="@drawable/reddit_logo_hd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateNewSubredditActivity"></activity>
+        <activity android:name=".MySubRedditListActivity"></activity>
+        <activity android:name=".EditSubRedditActivity" />
+        <activity android:name=".CreateNewSubredditActivity" />
         <activity android:name=".BlockedUsersListActivity" />
         <activity android:name=".ShowSinglePostActivity" />
         <activity

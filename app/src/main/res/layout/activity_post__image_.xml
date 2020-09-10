@@ -19,7 +19,8 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_150sdp">
 
         <TextView
             android:id="@+id/post_image_post"
@@ -28,7 +29,6 @@
             android:text="POST"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginLeft="@dimen/_150sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:textColor="?attr/textcolor" />
 
@@ -45,11 +45,20 @@
         </FrameLayout>
     </androidx.appcompat.widget.Toolbar>
 
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/subSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_image_toolbar"
+        android:background="?attr/cardbackground"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
     <EditText
         android:id="@+id/post_image_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/post_image_toolbar"
+        android:layout_below="@+id/subSearch"
         android:layout_marginTop="@dimen/_20sdp"
         android:hint="An interesting title"
         android:paddingLeft="@dimen/_10sdp"

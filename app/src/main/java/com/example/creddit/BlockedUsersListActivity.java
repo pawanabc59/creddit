@@ -77,7 +77,7 @@ public class BlockedUsersListActivity extends AppCompatActivity {
                             if (dataSnapshot.exists()){
                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                     if (blockArrayList.contains(dataSnapshot1.getKey())){
-                                        blockUserListModel.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(), "blocked"));
+                                        blockUserListModel.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(),"self", "blocked"));
                                         blockedListAdapter.notifyDataSetChanged();
                                     }
                                 }

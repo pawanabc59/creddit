@@ -39,7 +39,7 @@ public class SettingActivity extends AppCompatActivity {
     String userId;
     ValueEventListener settingValueEventListener;
     int NSFWvalue = 0, blurNSFWValue = 0;
-    TextView manageBlockedUsers, resetPassword, createSubreddit;
+    TextView manageBlockedUsers, resetPassword, createSubreddit, manageSubReddit;
 //    TextView verifyMail;
     Toolbar toolbar;
 
@@ -62,6 +62,7 @@ public class SettingActivity extends AppCompatActivity {
         manageBlockedUsers = findViewById(R.id.manageBlockedUsers);
         resetPassword = findViewById(R.id.resetPassword);
         createSubreddit = findViewById(R.id.createSubreddit);
+        manageSubReddit = findViewById(R.id.manageSubReddit);
 //        verifyMail = findViewById(R.id.verify_mail);
 
         setSupportActionBar(toolbar);
@@ -177,6 +178,14 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingActivity.this, CreateNewSubredditActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        manageSubReddit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingActivity.this, MySubRedditListActivity.class);
                 startActivity(intent);
             }
         });

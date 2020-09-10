@@ -139,6 +139,12 @@ public class CreateNewSubredditActivity extends AppCompatActivity {
                     mRef.child("subreddits").child(pushId).child("moderators").child(userId).child("key").setValue(userId);
                     mRef.child("users").child(userId).child("createdSubreddits").child(pushId).child("key").setValue(pushId);
                     mRef.child("subreddits").child(pushId).child("subPicture").setValue("null");
+                    mRef.child("subreddits").child(pushId).child("subPictureBanner").setValue("null");
+
+                    mRef.child("search").child(pushId).child("name").setValue(subRedditName);
+                    mRef.child("search").child(pushId).child("profilePicture").setValue("null");
+                    mRef.child("search").child(pushId).child("type").setValue("sub");
+
                     createSubProgressBar.setVisibility(View.GONE);
                     btnCreate.setVisibility(View.VISIBLE);
                     subName.setText("");

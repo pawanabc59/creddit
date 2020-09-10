@@ -11,19 +11,20 @@ import com.example.creddit.Fragments.UploadedImageFragment;
 
 public class AnotherUserProfileTabAdapter extends FragmentStatePagerAdapter {
     int counttab;
-    String anotherUserId;
+    String anotherUserId, subType;
 
-    public AnotherUserProfileTabAdapter(FragmentManager fm, int counttab, String anotherUserId) {
+    public AnotherUserProfileTabAdapter(FragmentManager fm, int counttab, String anotherUserId, String subType) {
         super(fm);
         this.counttab = counttab;
         this.anotherUserId = anotherUserId;
+        this.subType = subType;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                AnotherUserUploadedImageFragment anotherUserUploadedImageFragment = new AnotherUserUploadedImageFragment(anotherUserId);
+                AnotherUserUploadedImageFragment anotherUserUploadedImageFragment = new AnotherUserUploadedImageFragment(anotherUserId, subType);
                 return anotherUserUploadedImageFragment;
             case 1:
                 CustomFeedFragment customFeedFragment = new CustomFeedFragment();

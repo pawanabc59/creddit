@@ -84,7 +84,9 @@ public class SubscriptionFragment extends Fragment {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                         if (!userId.equals(dataSnapshot2.getKey())) {
-                                            favouriteFollowingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class), dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey(), "subscription"));
+                                            favouriteFollowingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class),
+                                                    dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey(),
+                                                    dataSnapshot2.child("type").getValue(String.class), "subscription"));
                                             favouriteFollowingListAdapter.notifyDataSetChanged();
                                         }
                                     }
@@ -147,35 +149,60 @@ public class SubscriptionFragment extends Fragment {
     }
 
     public void searchAllUser(final String username){
+//        searchAllUserValueEventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                followingListModels.clear();
+//                if (dataSnapshot.exists()){
+//                    for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+//                        if (!userId.equals(dataSnapshot1.getKey())){
+//                            mRef.child("subreddits").addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
+//                                    for (DataSnapshot dataSnapshot4 : dataSnapshot3.getChildren()){
+//                                        if (dataSnapshot1.child("optionalName").getValue(String.class).toLowerCase().contains(username.toLowerCase()) ||
+//                                                dataSnapshot1.child("email").getValue(String.class).toLowerCase().contains(username.toLowerCase())) {
+//                                            followingListModels.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(), "subscription"));
+//                                        }
+//                                        if (dataSnapshot4.child("subName").getValue(String.class).contains(username.toLowerCase())){
+//                                            followingListModels.add(new FollowingListModel(dataSnapshot4.child("subPicture").getValue(String.class), dataSnapshot4.child("subName").getValue(String.class), dataSnapshot4.getKey(), "subscription"));
+//                                        }
+//
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                }
+//                            });
+//                        }
+//                        followingListAdapter.notifyDataSetChanged();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        };
+//        mRef.child("users").addListenerForSingleValueEvent(searchAllUserValueEventListener);
+
         searchAllUserValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                followingListModels.clear();
                 if (dataSnapshot.exists()){
-                    for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    followingListModels.clear();
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                         if (!userId.equals(dataSnapshot1.getKey())){
-                            mRef.child("subreddits").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
-                                    for (DataSnapshot dataSnapshot4 : dataSnapshot3.getChildren()){
-                                        if (dataSnapshot1.child("optionalName").getValue(String.class).toLowerCase().contains(username.toLowerCase()) ||
-                                                dataSnapshot1.child("email").getValue(String.class).toLowerCase().contains(username.toLowerCase())) {
-                                            followingListModels.add(new FollowingListModel(dataSnapshot1.child("profileImage").getValue(String.class), dataSnapshot1.child("optionalName").getValue(String.class), dataSnapshot1.getKey(), "subscription"));
-                                        }
-                                        if (dataSnapshot4.child("subName").getValue(String.class).contains(username.toLowerCase())){
-                                            followingListModels.add(new FollowingListModel(dataSnapshot4.child("subPicture").getValue(String.class), dataSnapshot4.child("subName").getValue(String.class), dataSnapshot4.getKey(), "subscription"));
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
+                            if (dataSnapshot1.child("name").getValue(String.class).toLowerCase().contains(username.toLowerCase())) {
+                                followingListModels.add(new FollowingListModel(dataSnapshot1.child("profilePicture").getValue(String.class),
+                                        dataSnapshot1.child("name").getValue(String.class), dataSnapshot1.getKey(),
+                                        dataSnapshot1.child("type").getValue(String.class), "subscription"));
+                                followingListAdapter.notifyDataSetChanged();
+                            }
                         }
-                        followingListAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -185,30 +212,32 @@ public class SubscriptionFragment extends Fragment {
 
             }
         };
-        mRef.child("users").addListenerForSingleValueEvent(searchAllUserValueEventListener);
+        mRef.child("search").addValueEventListener(searchAllUserValueEventListener);
     }
 
     public void showJoinedUsers(){
         joinedListValueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 followingListModels.clear();
                 if (dataSnapshot.exists()){
-                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                        mRef.child("users").child(dataSnapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                if (!userId.equals(dataSnapshot2.getKey())) {
-                                    followingListModels.add(new FollowingListModel(dataSnapshot2.child("profileImage").getValue(String.class), dataSnapshot2.child("optionalName").getValue(String.class), dataSnapshot2.getKey(), "subscription"));
+                    for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+//                        mRef.child("users").child(dataSnapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                if (!userId.equals(dataSnapshot1.getKey())) {
+                                    followingListModels.add(new FollowingListModel(dataSnapshot1.child("profilePicture").getValue(String.class),
+                                            dataSnapshot1.child("name").getValue(String.class), dataSnapshot1.getKey(),
+                                            dataSnapshot1.child("type").getValue(String.class),"subscription"));
                                     followingListAdapter.notifyDataSetChanged();
                                 }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
                     }
                 }
             }
@@ -219,14 +248,20 @@ public class SubscriptionFragment extends Fragment {
             }
         };
 
-        mRef.child("users").child(userId).child("followingList").addListenerForSingleValueEvent(joinedListValueEventListener);
+        mRef.child("users").child(userId).child("followingList").addValueEventListener(joinedListValueEventListener);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        mRef.child("users").child(userId).child("followingList").removeEventListener(favouriteListValueEventListener);
+        try {
+            mRef.child("users").child(userId).child("followingList").removeEventListener(favouriteListValueEventListener);
+            mRef.child("users").child(userId).child("followingList").removeEventListener(joinedListValueEventListener);
+            mRef.child("search").removeEventListener(searchAllUserValueEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        mRef.child("users").child(userId).child("followingList").removeEventListener(joinedListValueEventListener);
 

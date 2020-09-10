@@ -45,6 +45,15 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/subSearchText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_text_toolbar"
+        android:background="?attr/cardbackground"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
     <EditText
         android:id="@+id/post_text_title"
         android:layout_width="match_parent"
@@ -52,7 +61,7 @@
         android:hint="An interesting title"
         android:textColor="?attr/textcolor"
         android:textColorHint="?attr/textcolor"
-        android:layout_below="@+id/post_text_toolbar"
+        android:layout_below="@+id/subSearchText"
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         />

@@ -1,10 +1,5 @@
 package com.example.creddit;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,8 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.creddit.Adapter.AnotherUserProfileTabAdapter;
-import com.example.creddit.Adapter.ProfilePageTabAdapter;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,25 +33,24 @@ public class AnotherUserActivity extends AppCompatActivity {
     ImageView profileImage, profileBannerImage;
 
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference mRef;
+    DatabaseReference mRef, mRef2;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
 
     CollapsingToolbarLayout toolbarLayout;
 
-    String userId, anotherUserId;
+    String userId, anotherUserId, subType, profileImagePath, profileBannerImagePath, subName;
 
-    ValueEventListener profileValueEventListener;
+    ValueEventListener profileValueEventListener, subRedditValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPref = new SharedPref(this);
-        if (sharedPref.loadNightModeState()==true){
+        if (sharedPref.loadNightModeState() == true) {
             setTheme(R.style.darktheme);
-        }
-        else{
+        } else {
             setTheme(R.style.AppTheme);
         }
 
@@ -60,6 +58,7 @@ public class AnotherUserActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         anotherUserId = intent.getExtras().getString("anotherUserId");
+        subType = intent.getExtras().getString("subType");
 
         profileImage = findViewById(R.id.anotherUserProfileImage);
         profileBannerImage = findViewById(R.id.anotherUserProfileBannerImage);
@@ -69,44 +68,78 @@ public class AnotherUserActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("users");
+        mRef2 = firebaseDatabase.getReference("creddit");
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        profileValueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
-                    String profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue().toString();
-                    if (profileImagePath.equals("null")) {
-                        Picasso.get().load(R.drawable.reddit_logo_hd).into(profileImage);
-                    } else {
-                        Picasso.get().load(profileImagePath).error(R.drawable.reddit_logo_hd).into(profileImage);
-                    }
+        if (subType.equals("user")) {
+            profileValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
+                        profileBannerImagePath = dataSnapshot.child("profileBannerImage").getValue().toString();
+                        if (profileImagePath.equals("null")) {
+                            Picasso.get().load(R.drawable.reddit_logo_hd).into(profileImage);
+                        } else {
+                            Picasso.get().load(profileImagePath).error(R.drawable.reddit_logo_hd).into(profileImage);
+                        }
 
-                    if (profileBannerImagePath.equals("null")) {
-                        Picasso.get().load(R.drawable.reddit_logo_hd).into(profileBannerImage);
-                    } else {
-                        Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                        if (profileBannerImagePath.equals("null")) {
+                            Picasso.get().load(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                        } else {
+                            Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                        }
+                        subName = dataSnapshot.child("optionalName").getValue(String.class);
+                        toolbarLayout.setTitle(dataSnapshot.child("optionalName").getValue(String.class));
                     }
-
-                    toolbarLayout.setTitle(dataSnapshot.child("optionalName").getValue().toString());
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
 
-        mRef.child(anotherUserId).addValueEventListener(profileValueEventListener);
+            mRef.child(anotherUserId).addValueEventListener(profileValueEventListener);
+
+        } else {
+            subRedditValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        profileImagePath = dataSnapshot.child("subPicture").getValue().toString();
+                        profileBannerImagePath = dataSnapshot.child("subPictureBanner").getValue().toString();
+                        if (profileImagePath.equals("null")) {
+                            Picasso.get().load(R.drawable.reddit_logo_hd).into(profileImage);
+                        } else {
+                            Picasso.get().load(profileImagePath).error(R.drawable.reddit_logo_hd).into(profileImage);
+                        }
+
+                        if (profileBannerImagePath.equals("null")) {
+                            Picasso.get().load(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                        } else {
+                            Picasso.get().load(profileBannerImagePath).error(R.drawable.reddit_logo_hd).into(profileBannerImage);
+                        }
+                        subName = dataSnapshot.child("subName").getValue(String.class);
+                        toolbarLayout.setTitle(dataSnapshot.child("subName").getValue().toString());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+
+            mRef2.child("subreddits").child(anotherUserId).addValueEventListener(subRedditValueEventListener);
+        }
 
         Toolbar toolbar = findViewById(R.id.anotherUserProfileToolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -121,15 +154,14 @@ public class AnotherUserActivity extends AppCompatActivity {
         profile_joined = findViewById(R.id.anotherUserProfileJoined);
         sameUserProfile = findViewById(R.id.sameUserProfile);
 
-        if (user == null){
+        if (user == null) {
             profile_join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     showToast("You need to login first to join this!");
                 }
             });
-        }
-        else {
+        } else {
             userId = user.getUid();
 
             if (userId.equals(anotherUserId)) {
@@ -162,8 +194,17 @@ public class AnotherUserActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     mRef.child(userId).child("followingList").child(anotherUserId).child("key").setValue(anotherUserId);
                     mRef.child(userId).child("followingList").child(anotherUserId).child("favourite").setValue(0);
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("profilePicture").setValue(profileImagePath);
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("name").setValue(subName);
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("type").setValue(subType);
                     mRef.child(userId).child("followingList").child(userId).child("key").setValue(userId);
                     mRef.child(userId).child("followingList").child(userId).child("favourite").setValue(0);
+                    mRef.child(userId).child("followingList").child(userId).child("type").setValue(subType);
+                    mRef.child(userId).child("followingList").child(userId).child("profilePicture").setValue("selfPicture");
+                    mRef.child(userId).child("followingList").child(userId).child("name").setValue("self");
+                    if (subType.equals("sub")){
+                        mRef2.child("subreddits").child(anotherUserId).child("members").child(userId).setValue(1);
+                    }
                     profile_join.setVisibility(View.GONE);
                     sameUserProfile.setVisibility(View.GONE);
                     profile_joined.setVisibility(View.VISIBLE);
@@ -182,6 +223,12 @@ public class AnotherUserActivity extends AppCompatActivity {
 //                                if (dataSnapshot1.getKey().equals(anotherUserId)){
                     mRef.child(userId).child("followingList").child(anotherUserId).child("key").removeValue();
                     mRef.child(userId).child("followingList").child(anotherUserId).child("favourite").removeValue();
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("type").removeValue();
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("profilePicture").removeValue();
+                    mRef.child(userId).child("followingList").child(anotherUserId).child("name").removeValue();
+                    if (subType.equals("sub")){
+                        mRef2.child("subreddits").child(anotherUserId).child("members").child(userId).removeValue();
+                    }
                     profile_joined.setVisibility(View.GONE);
                     sameUserProfile.setVisibility(View.GONE);
                     profile_join.setVisibility(View.VISIBLE);
@@ -208,7 +255,7 @@ public class AnotherUserActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = findViewById(R.id.anotherUserProfileContentPager);
-        AnotherUserProfileTabAdapter anotherUserProfileTabAdapter = new AnotherUserProfileTabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), anotherUserId);
+        AnotherUserProfileTabAdapter anotherUserProfileTabAdapter = new AnotherUserProfileTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), anotherUserId, subType);
         viewPager.setAdapter(anotherUserProfileTabAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -231,7 +278,7 @@ public class AnotherUserActivity extends AppCompatActivity {
 
     }
 
-    public void showToast(String toast_text){
+    public void showToast(String toast_text) {
         LayoutInflater inflater = LayoutInflater.from(AnotherUserActivity.this);
         View layout = inflater.inflate(R.layout.toast_layout, null);
 
@@ -251,6 +298,7 @@ public class AnotherUserActivity extends AppCompatActivity {
 
         try {
             mRef.child(userId).removeEventListener(profileValueEventListener);
+            mRef.child(anotherUserId).removeEventListener(subRedditValueEventListener);
         } catch (Exception e) {
             e.printStackTrace();
         }

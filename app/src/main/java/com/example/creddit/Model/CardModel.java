@@ -2,14 +2,11 @@ package com.example.creddit.Model;
 
 public class CardModel {
 
-    public String card_profile_image, card_image;
-    public String card_title;
-    public String posted_by;
-    public String card_description, postedTime, userId, vote, post_type;
+    public String card_description, postedTime, userId, vote, post_type,posted_by,card_title,card_profile_image, card_image, subId, subType;
     int  nsfw, spoiler;
 
     public CardModel(String card_profile_image, String card_image, String card_title, String posted_by, String card_description, String postedTime, String userId,
-                     int nsfw, int spoiler, String post_type) {
+                     int nsfw, int spoiler, String post_type, String subId, String subType) {
         this.card_profile_image = card_profile_image;
         this.card_image = card_image;
         this.card_title = card_title;
@@ -20,6 +17,8 @@ public class CardModel {
         this.nsfw = nsfw;
         this.spoiler = spoiler;
         this.post_type = post_type;
+        this.subId = subId;
+        this.subType = subType;
 //        this.vote = vote;
     }
 
@@ -110,5 +109,21 @@ public class CardModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getSubId() {
+        return subId;
+    }
+
+    public void setSubId(String subId) {
+        this.subId = subId;
+    }
+
+    public String getSubType() {
+        return subType;
+    }
+
+    public void setSubType(String subType) {
+        this.subType = subType;
     }
 }

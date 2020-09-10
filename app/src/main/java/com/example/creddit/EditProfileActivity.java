@@ -250,7 +250,7 @@ public class EditProfileActivity extends AppCompatActivity {
 //                                Toast.makeText(getApplicationContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 
 
-                                mRef_post.child("posts").child("imagePosts").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                mRef_post.child("posts").child("imagePosts").orderByChild("subId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()){
@@ -267,6 +267,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
                                     }
                                 });
+
+                                mRef_post.child("search").child(userId).child("profilePicture").setValue(task.getResult().toString());
 
                                 progressBarImage.setVisibility(View.GONE);
                                 editImage.setVisibility(View.VISIBLE);

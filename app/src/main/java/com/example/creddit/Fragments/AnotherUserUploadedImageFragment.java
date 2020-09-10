@@ -37,12 +37,13 @@ public class AnotherUserUploadedImageFragment extends Fragment {
     ValueEventListener postValueEventListener, nsfwValueEventListener;
 
     DatabaseReference rootRef, postRef;
-    String anotherUserId;
+    String anotherUserId, subType, subIdSelection;
     FirebaseUser user;
     int showNSFWvalue = 0, blurNSFWvalue = 0;
 
-    public AnotherUserUploadedImageFragment(String anotherUserId) {
+    public AnotherUserUploadedImageFragment(String anotherUserId, String subType) {
         this.anotherUserId = anotherUserId;
+        this.subType = subType;
     }
 
     @Override
@@ -92,10 +93,15 @@ public class AnotherUserUploadedImageFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 uploadedImage.clear();
+                if (subType.equals("user")){
+                    subIdSelection="userId";
+                } else {
+                    subIdSelection="subId";
+                }
                 if (dataSnapshot.exists()) {
                     try {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            if (dataSnapshot1.child("userId").getValue(String.class).equals(anotherUserId)) {
+                            if (dataSnapshot1.child(subIdSelection).getValue(String.class).equals(anotherUserId)) {
 
                                 postTime = dataSnapshot1.child("postTime").getValue(String.class);
 
@@ -127,10 +133,10 @@ public class AnotherUserUploadedImageFragment extends Fragment {
                                 }
                                 if (showNSFWvalue == 0) {
                                     if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
-                                        uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                                        uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class), dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
                                     }
                                 } else {
-                                    uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("uploadedBy").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class)));
+                                    uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class), dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
                                 }
                                 cardAdapter.notifyDataSetChanged();
                             }

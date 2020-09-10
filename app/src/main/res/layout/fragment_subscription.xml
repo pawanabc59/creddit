@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginVertical="@dimen/_5sdp"
-        app:queryHint="Search User"
+        app:queryHint="Search user or Subreddit"
         app:defaultQueryHint="Search User"
         app:iconifiedByDefault="false"
         android:background="@drawable/outline_layout"

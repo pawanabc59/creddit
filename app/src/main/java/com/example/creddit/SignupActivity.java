@@ -71,6 +71,7 @@ public class SignupActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("users");
+        mRef2 = firebaseDatabase.getReference("creddit");
 
         textRegisterEmail = findViewById(R.id.textRegistercUsername);
         textRegisterPassword = findViewById(R.id.textRegisterPassword);
@@ -181,6 +182,10 @@ public class SignupActivity extends AppCompatActivity {
 
                                                 mRef.child(uid).child("showNSFW").setValue(0);
                                                 mRef.child(uid).child("blurNSFW").setValue(0);
+
+                                                mRef2.child("search").child(uid).child("name").setValue(email);
+                                                mRef2.child("search").child(uid).child("profilePicture").setValue("null");
+                                                mRef2.child("search").child(uid).child("type").setValue("user");
 
                                                 firebaseAuth.signOut();
 

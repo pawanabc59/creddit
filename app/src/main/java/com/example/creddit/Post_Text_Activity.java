@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,24 +24,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Post_Text_Activity extends AppCompatActivity {
 
     SharedPref sharedPref;
     int numberOfPosts, spoiler_number, nsfw_number;
     TextView spoiler, spoilerFill, nsfw, nsfwFill, post_text_post, post_text_title, post_text_txt;
-    String postTitle, postDescription, userId, pushId, currentDate, cardPostProfile;
+    String postTitle, postDescription, userId, pushId, currentDate, cardPostProfile,subName, subId, subType;
     ProgressBar postProgressBar;
     SimpleDateFormat simpleDateFormat;
     Date date;
     DatabaseReference mRef, mRef_post, mRef_user;
     FirebaseDatabase firebaseDatabase;
     FirebaseUser user;
+    SearchableSpinner searchableSpinner;
+    List<String> subNameList, subIdList, cardPostProfileList;
+    ArrayAdapter<String> adapter;
 
-    ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener;
+    ValueEventListener numberOfPostValueEventListener, cardPostProfileValueEventListener, followingCommunityValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +80,38 @@ public class Post_Text_Activity extends AppCompatActivity {
         post_text_title = findViewById(R.id.post_text_title);
         post_text_txt = findViewById(R.id.post_text_txt);
         postProgressBar = findViewById(R.id.postProgressBar);
+        searchableSpinner = findViewById(R.id.subSearchText);
 
         nsfw = findViewById(R.id.nsfw);
         nsfwFill = findViewById(R.id.nsfw_fill);
         spoiler = findViewById(R.id.spoiler);
         spoilerFill = findViewById(R.id.spoiler_fill);
+
+        subNameList = new ArrayList<>();
+        subIdList = new ArrayList<>();
+        cardPostProfileList = new ArrayList<>();
+        subNameList.add("My profile");
+        subIdList.add(userId);
+        cardPostProfileList.add("my profile picture");
+        followedCommunity(subNameList, subIdList, cardPostProfileList);
+
+        searchableSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                subName = subNameList.get(i);
+                subId = subIdList.get(i);
+                if (!subIdList.get(i).equals(userId)){
+                    subType="sub";
+                }
+                cardPostProfile = cardPostProfileList.get(i);
+//                Toast.makeText(getApplicationContext(), "You clicked "+ subNameList.get(i)+" where subid is "+subIdList.get(i), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         nsfw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +184,10 @@ public class Post_Text_Activity extends AppCompatActivity {
                                             mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    if (subType.equals("user")){
+                                                        subName = dataSnapshot.child("optionalName").getValue(String.class);
+                                                        cardPostProfile = dataSnapshot.child("profileImage").getValue(String.class);
+                                                    }
                                                     mRef_post.child("postNumber").setValue((-1) * (numberOfPosts + 1));
                                                     mRef_post.child("uploadedBy").setValue(dataSnapshot.child("optionalName").getValue());
                                                     mRef_post.child("imagePath").setValue(postDescription);
@@ -162,6 +201,9 @@ public class Post_Text_Activity extends AppCompatActivity {
                                                     mRef_post.child("NSFW").setValue(nsfw_number);
                                                     mRef_post.child("spoiler").setValue(spoiler_number);
                                                     mRef_post.child("postType").setValue("text");
+                                                    mRef_post.child("subType").setValue(subType);
+                                                    mRef_post.child("subName").setValue(subName);
+                                                    mRef_post.child("subId").setValue(subId);
                                                     mRef.child("posts").child("numberOfPosts").setValue(numberOfPosts + 1);
 
                                                     post_text_post.setVisibility(View.VISIBLE);
@@ -206,6 +248,33 @@ public class Post_Text_Activity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    private void followedCommunity(final List<String> subNameList, final List<String> subIdList, final List<String> cardPostProfileList) {
+        followingCommunityValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                        if (!userId.equals(dataSnapshot1.getKey())){
+                            subNameList.add(dataSnapshot1.child("name").getValue(String.class));
+                            subIdList.add(dataSnapshot1.child("key").getValue(String.class));
+                            cardPostProfileList.add(dataSnapshot1.child("profilePicture").getValue(String.class));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mRef_user.child("followingList").orderByChild("type").equalTo("sub").addValueEventListener(followingCommunityValueEventListener);
+
+        adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, subNameList);
+        searchableSpinner.setAdapter(adapter);
 
     }
 }
