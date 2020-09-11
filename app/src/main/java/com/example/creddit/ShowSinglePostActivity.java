@@ -108,6 +108,11 @@ public class ShowSinglePostActivity extends AppCompatActivity {
             mRefUser = mRef.child("users").child(userId);
         }
 
+        if (postType.equals("text")){
+            singlePost_normal_layout.setVisibility(View.GONE);
+            singlePost_text_post_layout.setVisibility(View.VISIBLE);
+        }
+
         if (nsfw == 1) {
             singlePost_nsfw_fill_post.setVisibility(View.VISIBLE);
 

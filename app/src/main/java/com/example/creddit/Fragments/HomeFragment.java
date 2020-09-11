@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
                                                 cardPostTime = (minutes + "min ago");
                                             }
 
-                                            if (followedUsersId.contains(dataSnapshot3.child("userId").getValue(String.class))) {
+                                            if (followedUsersId.contains(dataSnapshot3.child("subId").getValue(String.class))) {
                                                 if (!blockedList.contains(dataSnapshot3.child("userId").getValue(String.class))) {
                                                     if (showNSFWvalue == 0) {
                                                         if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {

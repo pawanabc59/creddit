@@ -190,7 +190,15 @@ public class EditSubRedditActivity extends AppCompatActivity {
         saveEditDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String subDescription = subDescriptionSubReddit.getText().toString();
+                if (subDescription.equals("")){
+                    subDescriptionSubReddit.setError("This can not be blank");
+                }
+                else{
+                    mRef.child(subId).child("description").setValue(subDescription);
+                    mRef.child(subId).child("content").setValue(strcontent);
+                    mRef.child(subId).child("type").setValue(strtype);
+                }
             }
         });
 
@@ -254,7 +262,7 @@ public class EditSubRedditActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null){
@@ -284,6 +292,26 @@ public class EditSubRedditActivity extends AppCompatActivity {
                             public void onComplete(@NonNull final Task<Uri> task) {
 
                                 mRef.child(subId).child("subPicture").setValue(task.getResult().toString());
+
+                                try {
+                                    mRef.child(subId).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                                    mRef_post.child("users").child(dataSnapshot1.getKey()).child("followingList").child(subId).child("profilePicture").setValue(task.getResult().toString());
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                                 mRef_post.child("posts").child("imagePosts").orderByChild("subId").equalTo(subId).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override

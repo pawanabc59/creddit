@@ -302,6 +302,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                     mRef.child(dataSnapshot1.getKey()).child("postType").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("NSFW").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("spoiler").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("subId").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("subName").removeValue();
+                                                    mRef.child(dataSnapshot1.getKey()).child("subType").removeValue();
 //                                                    mRef2.child("numberOfPosts").setValue(numberOfPost-1);
                                                 }
                                             }
@@ -638,11 +641,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         super.onViewDetachedFromWindow(holder);
         if (flag == 1) {
 //            mRef.removeEventListener(deletePostValueEventListener);
-            mRef2.removeEventListener(getPostCountValueEventListener);
+            try {
+
+                mRef2.removeEventListener(getPostCountValueEventListener);
 //            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(savedImageCountValueEventListener);
 //            firebaseDatabase.getReference("creddit").child("posts").child("imagePosts").removeEventListener(savePostValueEventListener);
-            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(showSavedImageValueEventListener);
+                firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(showSavedImageValueEventListener);
 //            firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").removeEventListener(unsavePostValueEventListener);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

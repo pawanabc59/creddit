@@ -24,10 +24,10 @@
 
             <ImageView
                 android:id="@+id/sub_image"
-                android:layout_width="@dimen/_22sdp"
-                android:layout_height="@dimen/_22sdp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:src="@drawable/zoro" />
 
         </androidx.cardview.widget.CardView>

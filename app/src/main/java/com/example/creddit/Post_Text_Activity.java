@@ -72,6 +72,8 @@ public class Post_Text_Activity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
+        subId = userId;
+        subType = "user";
 
         mRef_post = firebaseDatabase.getReference("creddit").child("posts");
         mRef_user = mRef.child("users").child(userId);
@@ -176,20 +178,20 @@ public class Post_Text_Activity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                                         if (dataSnapshot1.exists()) {
-                                            cardPostProfile = dataSnapshot1.child("profileImage").getValue().toString();
+//                                            cardPostProfile = dataSnapshot1.child("profileImage").getValue().toString();
 
                                             pushId = mRef.push().getKey();
                                             mRef_post = mRef.child("posts").child("imagePosts").child(pushId);
 
-                                            mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                            mRef_user.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                                @Override
+//                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                     if (subType.equals("user")){
-                                                        subName = dataSnapshot.child("optionalName").getValue(String.class);
-                                                        cardPostProfile = dataSnapshot.child("profileImage").getValue(String.class);
+                                                        subName = dataSnapshot1.child("optionalName").getValue(String.class);
+                                                        cardPostProfile = dataSnapshot1.child("profileImage").getValue(String.class);
                                                     }
                                                     mRef_post.child("postNumber").setValue((-1) * (numberOfPosts + 1));
-                                                    mRef_post.child("uploadedBy").setValue(dataSnapshot.child("optionalName").getValue());
+                                                    mRef_post.child("uploadedBy").setValue(dataSnapshot1.child("optionalName").getValue());
                                                     mRef_post.child("imagePath").setValue(postDescription);
                                                     mRef_post.child("userId").setValue(userId);
                                                     mRef_post.child("cardTitle").setValue(postTitle);
@@ -210,18 +212,18 @@ public class Post_Text_Activity extends AppCompatActivity {
                                                     postProgressBar.setVisibility(View.GONE);
 
                                                     Toast.makeText(getApplicationContext(), "Post Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                    Intent intent = new Intent(Post_Text_Activity.this, MainActivity.class);
                                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                    post_text_post.setVisibility(View.VISIBLE);
-                                                    postProgressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(getApplicationContext(), "Post Not Uploaded", Toast.LENGTH_SHORT);
-                                                }
-                                            });
+//                                                }
+//
+//                                                @Override
+//                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                                                    post_text_post.setVisibility(View.VISIBLE);
+//                                                    postProgressBar.setVisibility(View.GONE);
+//                                                    Toast.makeText(getApplicationContext(), "Post Not Uploaded", Toast.LENGTH_SHORT);
+//                                                }
+//                                            });
 
                                         }
                                     }
@@ -276,5 +278,16 @@ public class Post_Text_Activity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, subNameList);
         searchableSpinner.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        try{
+            mRef_user.child("followingList").removeEventListener(followingCommunityValueEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
