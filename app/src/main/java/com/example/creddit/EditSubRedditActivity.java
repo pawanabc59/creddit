@@ -114,13 +114,13 @@ public class EditSubRedditActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
-                    case R.id.publicSub:
+                    case R.id.publicSubSubReddit:
                         strtype = "public";
                         break;
-                    case R.id.privateSub:
+                    case R.id.privateSubSubReddit:
                         strtype = "private";
                         break;
-                    case R.id.restrictedSub:
+                    case R.id.restrictedSubSubReddit:
                         strtype = "restricted";
                         break;
                 }
@@ -131,13 +131,13 @@ public class EditSubRedditActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
-                    case R.id.any:
+                    case R.id.anySubReddit:
                         strcontent = "any";
                         break;
-                    case R.id.textOnly:
+                    case R.id.textOnlySubReddit:
                         strcontent = "text";
                         break;
-                    case R.id.linksOnly:
+                    case R.id.linksOnlySubReddit:
                         strcontent = "link";
                         break;
                 }
