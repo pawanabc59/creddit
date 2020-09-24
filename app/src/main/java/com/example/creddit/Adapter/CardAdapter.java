@@ -62,7 +62,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    DatabaseReference mRef, mRefUser, mRef2;
+    DatabaseReference mRef, mRefUser, mRef2, mRef3;
     Activity parentActivity;
     ValueEventListener deletePostValueEventListener, getPostCountValueEventListener, savedImageCountValueEventListener, savePostValueEventListener, showSavedImageValueEventListener, unsavePostValueEventListener, nsfwValueEventListener;
     int i, numberOfPost, flag = 0;
@@ -112,6 +112,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit").child("posts").child("imagePosts");
         mRef2 = firebaseDatabase.getReference("creddit").child("posts");
+        mRef3 = firebaseDatabase.getReference("creddit");
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -233,8 +234,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         joinSubreddit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").setValue(mData.get(position).getUserId());
-                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").setValue(0);
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("key").setValue(mData.get(position).getSubId());
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("favourite").setValue(0);
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("type").setValue(mData.get(position).getSubType());
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("profilePicture").setValue(mData.get(position).getCard_profile_image());
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("name").setValue(mData.get(position).getCard_title());
+                if (mData.get(position).getSubType().equals("sub")){
+                    mRef3.child("subreddits").child(mData.get(position).getSubId()).child("members").child(userId).setValue(1);
+                }
+//                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").setValue(mData.get(position).getUserId());
+//                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").setValue(0);
                 joinSubreddit.setVisibility(View.GONE);
                 unjoindedSubreddit.setVisibility(View.VISIBLE);
                 showToast("You joined this Sub!");
@@ -244,8 +253,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         unjoindedSubreddit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").removeValue();
-                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").removeValue();
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("key").removeValue();
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("favourite").removeValue();
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("type").removeValue();
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("profilePicture").removeValue();
+                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("name").removeValue();
+                if (mData.get(position).getSubType().equals("sub")){
+                    mRef3.child("subreddits").child(mData.get(position).getSubId()).child("members").child(userId).removeValue();
+                }
+//                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").removeValue();
+//                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").removeValue();
                 unjoindedSubreddit.setVisibility(View.GONE);
                 joinSubreddit.setVisibility(View.VISIBLE);
                 showToast("You left this Sub!");

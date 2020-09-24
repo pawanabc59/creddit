@@ -119,7 +119,11 @@ public class HomeFragment extends Fragment {
                                             postTime = dataSnapshot3.child("postTime").getValue(String.class);
 
                                             todayDate = sdf.parse(currentDate);
+//                                            try{
                                             postedDate = sdf.parse(postTime);
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
 
                                             long diff = todayDate.getTime() - postedDate.getTime();
                                             long seconds = diff / 1000;
@@ -159,7 +163,7 @@ public class HomeFragment extends Fragment {
                                             }
                                         }
 
-                                    } catch (ParseException e) {
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }

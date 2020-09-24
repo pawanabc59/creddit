@@ -249,7 +249,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "Please verify your email address first", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Please verify your email address first!", Toast.LENGTH_SHORT).show();
                             loginProgressBar.setVisibility(View.GONE);
                             btnLogin.setVisibility(View.VISIBLE);
                             editEmail.setText("");
