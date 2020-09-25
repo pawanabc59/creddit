@@ -41,6 +41,7 @@ public class SavedPostsFragment extends Fragment {
     SimpleDateFormat sdf;
     CardAdapter cardAdapter;
     Date todayDate, postedDate;
+    ArrayList<String> hiddenList = new ArrayList<>();
     ValueEventListener postValueEventListener, savedPostValueEventListener, nsfwValueEventListener;
     int showNSFWvalue = 0, blurNSFWvalue = 0;
 
@@ -63,6 +64,8 @@ public class SavedPostsFragment extends Fragment {
         currentDate = sdf.format(new Date());
 
         saved_posts = new ArrayList<>();
+
+        getHiddenPostsLists();
 
         cardAdapter = new CardAdapter(getContext(), saved_posts, getActivity(), "savedPostsFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -180,14 +183,28 @@ public class SavedPostsFragment extends Fragment {
 
 //                                            we can see here blocked users posts because user has previously choose to save those posts and then afterwards he blocked the user.
 
-                                            if (showNSFWvalue == 0) {
-                                                if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
-                                                    saved_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),"Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class), dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                            if (!hiddenList.contains(dataSnapshot1.getKey())) {
+                                                if (showNSFWvalue == 0) {
+                                                    if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                                        saved_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
+                                                                dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
+                                                                "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
+                                                                dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
+                                                                dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
+                                                                dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
+                                                                dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                                    }
+                                                } else {
+                                                    saved_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
+                                                            dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
+                                                            "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
+                                                            dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
+                                                            dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
+                                                            dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
+                                                            dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
                                                 }
-                                            } else {
-                                                saved_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class), dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                                cardAdapter.notifyDataSetChanged();
                                             }
-                                            cardAdapter.notifyDataSetChanged();
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -221,6 +238,24 @@ public class SavedPostsFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void getHiddenPostsLists() {
+        mRef.child("users").child(userId).child("hiddenPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot5 : dataSnapshot.getChildren()) {
+                        hiddenList.add(dataSnapshot5.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment {
 
     ArrayList<String> followedUsersId = new ArrayList<>();
     ArrayList<String> blockedList = new ArrayList<>();
+    ArrayList<String> hiddenList = new ArrayList<>();
     int showNSFWvalue = 0, blurNSFWvalue = 0;
 
     @Override
@@ -99,6 +100,7 @@ public class HomeFragment extends Fragment {
             }
 
             getBlockedUsersLists();
+            getHiddenPostsLists();
 
             followedUserslistValueEventListener = new ValueEventListener() {
                 @Override
@@ -151,14 +153,16 @@ public class HomeFragment extends Fragment {
 
                                             if (followedUsersId.contains(dataSnapshot3.child("subId").getValue(String.class))) {
                                                 if (!blockedList.contains(dataSnapshot3.child("userId").getValue(String.class))) {
-                                                    if (showNSFWvalue == 0) {
-                                                        if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                    if (!hiddenList.contains(postKey)) {
+                                                        if (showNSFWvalue == 0) {
+                                                            if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class), dataSnapshot3.child("subId").getValue(String.class), dataSnapshot3.child("subType").getValue(String.class)));
+                                                            }
+                                                        } else {
                                                             home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class), dataSnapshot3.child("subId").getValue(String.class), dataSnapshot3.child("subType").getValue(String.class)));
                                                         }
-                                                    } else {
-                                                        home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class), dataSnapshot3.child("subId").getValue(String.class), dataSnapshot3.child("subType").getValue(String.class)));
+                                                        cardAdapter.notifyDataSetChanged();
                                                     }
-                                                    cardAdapter.notifyDataSetChanged();
                                                 }
                                             }
                                         }
@@ -213,6 +217,24 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot dataSnapshot4 : dataSnapshot.getChildren()) {
                         blockedList.add(dataSnapshot4.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getHiddenPostsLists() {
+        mRef.child("users").child(userId).child("hiddenPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot5 : dataSnapshot.getChildren()) {
+                        hiddenList.add(dataSnapshot5.getKey());
                     }
                 }
             }

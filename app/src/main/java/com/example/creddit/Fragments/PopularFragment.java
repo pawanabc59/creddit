@@ -40,6 +40,7 @@ public class PopularFragment extends Fragment {
 
     DatabaseReference mRef, postRef;
     FirebaseUser user;
+    ArrayList<String> hiddenList = new ArrayList<>();
     int showNSFWvalue = 0, blurNSFWvalue = 0;
 
     @Override
@@ -56,6 +57,7 @@ public class PopularFragment extends Fragment {
         sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         currentDate = sdf.format(new Date());
 
+        mRef = FirebaseDatabase.getInstance().getReference("creddit");
         postRef = FirebaseDatabase.getInstance().getReference("creddit").child("posts").child("imagePosts");
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,6 +98,8 @@ public class PopularFragment extends Fragment {
             };
             FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
         }
+
+        getHiddenPostsLists();
 
         cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity(), "popularFragment");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -139,8 +143,18 @@ public class PopularFragment extends Fragment {
 
 //                            you have to change here from taking userid to subreddit id .
                             if (!followingList.contains(dataSnapshot1.child("subId").getValue().toString())) {
-                                if (showNSFWvalue == 0) {
-                                    if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                if (!hiddenList.contains(dataSnapshot1.getKey())) {
+                                    if (showNSFWvalue == 0) {
+                                        if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
+                                            popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
+                                                    dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
+                                                    "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
+                                                    dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
+                                                    dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
+                                                    dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
+                                                    dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                        }
+                                    } else {
                                         popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
                                                 dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
                                                 "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
@@ -149,17 +163,9 @@ public class PopularFragment extends Fragment {
                                                 dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
                                                 dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
                                     }
-                                } else {
-                                    popular_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
-                                            dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
-                                            "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
-                                            dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
-                                            dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
-                                            dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
-                                            dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                    cardAdapter.notifyDataSetChanged();
+                                    followingList.add(dataSnapshot1.child("subId").getValue().toString());
                                 }
-                                cardAdapter.notifyDataSetChanged();
-                                followingList.add(dataSnapshot1.child("subId").getValue().toString());
                             }
                         }
                     } catch (Exception e) {
@@ -180,6 +186,24 @@ public class PopularFragment extends Fragment {
         recycler_popular_posts.setAdapter(cardAdapter);
 
         return view;
+    }
+
+    private void getHiddenPostsLists() {
+        mRef.child("users").child(userId).child("hiddenPosts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot5 : dataSnapshot.getChildren()) {
+                        hiddenList.add(dataSnapshot5.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
