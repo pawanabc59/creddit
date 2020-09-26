@@ -54,6 +54,8 @@ public class PopularFragment extends Fragment {
         popular_posts = new ArrayList<>();
         followingList = new ArrayList<String>();
 
+        hiddenList.add("dummyStringSothatAppDoesn'tCrashOnWhenUserIsNotLoggedIn");
+
         sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         currentDate = sdf.format(new Date());
 
@@ -63,6 +65,8 @@ public class PopularFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userId = user.getUid();
+
+            getHiddenPostsLists();
 
             followingListValueEventListener = new ValueEventListener() {
                 @Override
@@ -98,8 +102,6 @@ public class PopularFragment extends Fragment {
             };
             FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
         }
-
-        getHiddenPostsLists();
 
         cardAdapter = new CardAdapter(getContext(), popular_posts, getActivity(), "popularFragment");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
