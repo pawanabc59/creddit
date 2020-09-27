@@ -64,6 +64,7 @@ public class AnotherUserUploadedImageFragment extends Fragment {
         postRef = FirebaseDatabase.getInstance().getReference("creddit").child("posts").child("imagePosts");
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        hiddenList.add("RandomStringSoAppDoesNotCrashWhenNoOneIsLoggedIn");
 
         if (user != null) {
             userId = user.getUid();
@@ -83,10 +84,11 @@ public class AnotherUserUploadedImageFragment extends Fragment {
                 }
             };
             FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).addValueEventListener(nsfwValueEventListener);
+
+            getHiddenPostsLists();
         }
 
         uploadedImage = new ArrayList<>();
-        getHiddenPostsLists();
 
         cardAdapter = new CardAdapter(getContext(), uploadedImage, getActivity(), "anotherUserPopularFragment");
         LinearLayoutManager cardManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);

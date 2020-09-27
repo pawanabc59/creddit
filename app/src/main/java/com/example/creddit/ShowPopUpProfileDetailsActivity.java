@@ -13,7 +13,10 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,9 +35,10 @@ public class ShowPopUpProfileDetailsActivity extends AppCompatActivity {
     TextView popupAge, popupUsername;
     ImageView popupProfileImage;
 
-    String anotherUserId, currentDate;
+    String anotherUserId, currentDate, subType, userId;
     SimpleDateFormat sdf;
     DatabaseReference mRef;
+    FirebaseUser user;
 
     ValueEventListener navigationValueEventListener;
 
@@ -71,10 +75,16 @@ public class ShowPopUpProfileDetailsActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         anotherUserId = intent.getExtras().getString("anotherUserId");
+        subType = intent.getExtras().getString("subType");
 
 //        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         mRef = FirebaseDatabase.getInstance().getReference("creddit").child("users").child(anotherUserId);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null){
+            userId = user.getUid();
+        }
 
         navigationValueEventListener = new ValueEventListener() {
             @Override
@@ -133,7 +143,31 @@ public class ShowPopUpProfileDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent1 = new Intent(getApplicationContext(), AnotherUserActivity.class);
                 intent1.putExtra("anotherUserId", anotherUserId);
+                intent1.putExtra("subType", "user");
                 startActivity(intent1);
+            }
+        });
+
+        if (user == null){
+            popupBlockPerson.setVisibility(View.GONE);
+        }
+
+        popupBlockPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).child("blockedUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        FirebaseDatabase.getInstance().getReference("creddit").child("users").child(userId).child("blockedUsers").child(anotherUserId).child("key")
+                                .setValue(anotherUserId);
+                        Toast.makeText(getApplicationContext(), "User is blocked now.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 

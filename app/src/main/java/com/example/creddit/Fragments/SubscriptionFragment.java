@@ -50,7 +50,9 @@ public class SubscriptionFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit");
         user = FirebaseAuth.getInstance().getCurrentUser();
-        userId = user.getUid();
+        if (user != null){
+            userId = user.getUid();
+        }
 
         sub_recyclerview = view.findViewById(R.id.sub_recyclerview);
         searchAllUsers = view.findViewById(R.id.searchAllUsers);

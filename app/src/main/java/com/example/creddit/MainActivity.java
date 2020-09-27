@@ -94,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                Toast.makeText(getApplicationContext(), " setting is clicked ", Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
+        if (user == null){
+            setting_layout.setVisibility(View.INVISIBLE);
+        }
+
         setting_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,8 +266,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                             break;
                         case R.id.nav_dashboard:
-                            selectedFragment = new DashboardFragment();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                            if (user == null) {
+                                Intent intent = new Intent(getApplicationContext(), FirstPageActivity.class);
+                                startActivity(intent);
+                            } else {
+                                selectedFragment = new DashboardFragment();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                            }
                             break;
                         case R.id.nav_post:
 //                            you have to delete the post fragment and profile fragment

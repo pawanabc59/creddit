@@ -149,7 +149,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             deletePost.setVisibility(View.GONE);
         }
 
-        if (user != null) {
+        if(user == null){
+            holder.card_menu.setVisibility(View.GONE);
+        }
+        else {
             userId = user.getUid();
             mRefUser = firebaseDatabase.getReference("creddit").child("users").child(userId);
 
@@ -236,19 +239,23 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         joinSubreddit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("key").setValue(mData.get(position).getSubId());
-                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("favourite").setValue(0);
-                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("type").setValue(mData.get(position).getSubType());
-                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("profilePicture").setValue(mData.get(position).getCard_profile_image());
-                mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("name").setValue(mData.get(position).getCard_title());
-                if (mData.get(position).getSubType().equals("sub")){
-                    mRef3.child("subreddits").child(mData.get(position).getSubId()).child("members").child(userId).setValue(1);
-                }
+                if (user==null){
+                    showToast("You need to login to join subReddit");
+                }else {
+                    mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("key").setValue(mData.get(position).getSubId());
+                    mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("favourite").setValue(0);
+                    mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("type").setValue(mData.get(position).getSubType());
+                    mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("profilePicture").setValue(mData.get(position).getCard_profile_image());
+                    mRef3.child("users").child(userId).child("followingList").child(mData.get(position).getSubId()).child("name").setValue(mData.get(position).getCard_title());
+                    if (mData.get(position).getSubType().equals("sub")) {
+                        mRef3.child("subreddits").child(mData.get(position).getSubId()).child("members").child(userId).setValue(1);
+                    }
 //                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("key").setValue(mData.get(position).getUserId());
 //                mRefUser.child("followingList").child(mData.get(position).getUserId()).child("favourite").setValue(0);
-                joinSubreddit.setVisibility(View.GONE);
-                unjoindedSubreddit.setVisibility(View.VISIBLE);
-                showToast("You joined this Sub!");
+                    joinSubreddit.setVisibility(View.GONE);
+                    unjoindedSubreddit.setVisibility(View.VISIBLE);
+                    showToast("You joined this Sub!");
+                }
             }
         });
 
@@ -447,6 +454,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ShowPopUpProfileDetailsActivity.class);
                 intent.putExtra("anotherUserId", mData.get(position).getUserId());
+                intent.putExtra("subType", mData.get(position).getSubType());
                 mContext.startActivity(intent);
             }
         });
