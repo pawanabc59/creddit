@@ -331,6 +331,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                     mRef.child(dataSnapshot1.getKey()).child("subId").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("subName").removeValue();
                                                     mRef.child(dataSnapshot1.getKey()).child("subType").removeValue();
+//                                                    mData.remove(position);
 //                                                    mRef2.child("numberOfPosts").setValue(numberOfPost-1);
                                                 }
                                             }
@@ -612,6 +613,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                         unsaveItem.setVisible(false);
                                                         saveItem.setVisible(true);
                                                         showToast("Post Unsaved! ");
+                                                        if (fragmentType.equals("savedPostsFragment")){
+
+                                                            /*This line will remove the data from the recyclerView*/
+                                                            mData.remove(position);
+                                                            notifyItemRemoved(position);
+                                                            notifyItemRangeChanged(position, mData.size());
+                                                        }
 //                                                        Toast.makeText(mContext, "Post Unsaved!", Toast.LENGTH_SHORT).show();
                                                         break;
                                                     }
@@ -643,6 +651,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                     hideItem.setVisible(false);
                                                     unHideItem.setVisible(true);
                                                     showToast("Post hidden ");
+                                                    /*This will remove the data from the list*/
+                                                    mData.remove(position);
+                                                    notifyItemRemoved(position);
+                                                    notifyItemRangeChanged(position, mData.size());
                                                     break;
 
                                                 }
@@ -674,6 +686,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 //                                                        firebaseDatabase.getReference("creddit").child("users").child(userId).child("savedImages").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
                                                         unHideItem.setVisible(false);
                                                         hideItem.setVisible(true);
+                                                        mData.remove(position);
+                                                        notifyItemRemoved(position);
+                                                        notifyItemRangeChanged(position, mData.size());
                                                         showToast("Post unhidden! ");
                                                         break;
                                                     }
