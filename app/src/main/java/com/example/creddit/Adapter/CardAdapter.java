@@ -32,6 +32,9 @@ import com.example.creddit.BuildConfig;
 import com.example.creddit.Model.CardModel;
 import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
+import com.example.creddit.RoomDatabase.DatabaseClient;
+import com.example.creddit.RoomDatabase.HistoryTab;
+import com.example.creddit.RoomDatabase.MyRoomDatabase;
 import com.example.creddit.SharedPref;
 import com.example.creddit.ShowPopUpProfileDetailsActivity;
 import com.example.creddit.ShowSinglePostActivity;
@@ -744,6 +747,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public void anotherSubredditIntent(int position) {
+        MyRoomDatabase myRoomDatabase = DatabaseClient.databaseClient(mContext);
+
+        if (mData.get(position).getSubType().equals("sub")) {
+            HistoryTab historyTab = new HistoryTab(mData.get(position).getSubId(), mData.get(position).getSubType(),
+                    mData.get(position).getCard_profile_image(), mData.get(position).getCard_title(), userId);
+            myRoomDatabase.dao().historyTabInsertion(historyTab);
+        }
+
         Intent intent = new Intent(mContext, AnotherUserActivity.class);
         intent.putExtra("anotherUserId", mData.get(position).getSubId());
         intent.putExtra("subType", mData.get(position).getSubType());
