@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.creddit.RoomDatabase.DatabaseClient;
+import com.example.creddit.RoomDatabase.LoggedInUser;
+import com.example.creddit.RoomDatabase.MyRoomDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
 
     SharedPref sessionManager;
+    MyRoomDatabase myRoomDatabase;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -177,7 +181,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void Login(final String email, String password) {
+    public void Login(final String email, final String password) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            firebaseAuth.signOut();
+        }
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -217,6 +224,13 @@ public class LoginActivity extends AppCompatActivity {
                                             sessionManager.put_showNSFW(0);
                                             sessionManager.put_blurNSFW(0);
                                         }
+
+                                        myRoomDatabase = DatabaseClient.databaseClient(LoginActivity.this);
+
+                                        LoggedInUser loggedInUser = new LoggedInUser(firebaseUser.getUid(), email, password,
+                                                dataSnapshot.child("profileImage").getValue().toString(), dataSnapshot.child("optionalName").getValue().toString());
+                                        myRoomDatabase.loggedInUserDAO().loggedInUserInsertion(loggedInUser);
+
                                         loginProgressBar.setVisibility(View.GONE);
                                         btnLogin.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Welcome User", Toast.LENGTH_SHORT).show();

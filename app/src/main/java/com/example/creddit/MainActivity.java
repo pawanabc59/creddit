@@ -18,7 +18,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.example.creddit.Fragments.BottomSheetDialogFragment;
+import com.example.creddit.Fragments.BottomSheetPostsDialogFragment;
+import com.example.creddit.Fragments.BottomSheetUsersDialogFragment;
 import com.example.creddit.Fragments.ChatFragment;
 import com.example.creddit.Fragments.DashboardFragment;
 import com.example.creddit.Fragments.MailFragment;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
 //                switchCompat = findViewById(R.id.drawer_night_switch);
 //                switchCompat.setEnabled(false);
-                if (sharedPref.loadNightModeState() == true) {
+                if (sharedPref.loadNightModeState()) {
                     sharedPref.setNightModeState(false);
                     Picasso.get().load(R.drawable.ic_night).into(night_mode);
 //                    switchCompat.setChecked(false);
@@ -139,6 +140,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             nav_profile_image = nav_header.findViewById(R.id.nav_profile_image);
             nav_username = nav_header.findViewById(R.id.nav_username);
             nav_age = nav_header.findViewById(R.id.nav_age);
+
+            nav_username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    BottomSheetUsersDialogFragment bottomSheetUsersDialogFragment = new BottomSheetUsersDialogFragment();
+                    bottomSheetUsersDialogFragment.show(getSupportFragmentManager(), "UsersBottomSheet");
+                }
+            });
 
             userId = user.getUid();
             mRef2 = mRef.child(userId);
@@ -281,8 +290,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Intent intent = new Intent(getApplicationContext(), FirstPageActivity.class);
                                 startActivity(intent);
                             } else {
-                                BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetDialogFragment();
-                                bottomSheetDialogFragment.show(getSupportFragmentManager(), "ExampleBottomSheet");
+                                BottomSheetPostsDialogFragment bottomSheetPostsDialogFragment = new BottomSheetPostsDialogFragment();
+                                bottomSheetPostsDialogFragment.show(getSupportFragmentManager(), "ExampleBottomSheet");
                             }
                             break;
                         case R.id.nav_chat:
@@ -341,12 +350,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent4 = new Intent(getApplicationContext(), HistoryActivity.class);
                 startActivity(intent4);
                 break;
-            case R.id.logout:
-                firebaseAuth.signOut();
-                Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent2);
+//            case R.id.logout:
+//                firebaseAuth.signOut();
+//                Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+//                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent2);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

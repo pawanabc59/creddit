@@ -17,6 +17,9 @@ import com.example.creddit.AnotherUserActivity;
 import com.example.creddit.EditSubRedditActivity;
 import com.example.creddit.Model.FollowingListModel;
 import com.example.creddit.R;
+import com.example.creddit.RoomDatabase.DatabaseClient;
+import com.example.creddit.RoomDatabase.HistoryTab;
+import com.example.creddit.RoomDatabase.MyRoomDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -149,6 +152,15 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
             holder.followingListLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    MyRoomDatabase myRoomDatabase = DatabaseClient.databaseClient(mContext);
+
+                    if (mData.get(position).getSubType().equals("sub")) {
+                        HistoryTab historyTab = new HistoryTab(mData.get(position).getAnotherUserId(), mData.get(position).getSubType(),
+                                mData.get(position).getSub_image(), mData.get(position).getSub_name(), userId);
+                        myRoomDatabase.dao().historyTabInsertion(historyTab);
+                    }
+
                     Intent intent = new Intent(mContext, AnotherUserActivity.class);
                     intent.putExtra("anotherUserId", mData.get(position).getAnotherUserId());
                     intent.putExtra("subType", mData.get(position).getSubType());

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/_5sdp"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_5sdp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        app:cardCornerRadius="75dp"
+        app:cardBackgroundColor="?attr/cardbackground"
+        android:layout_marginHorizontal="@dimen/_10sdp">
+    <ImageView
+        android:id="@+id/loggedInUserPhoto"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/loggedInUserName"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="?attr/textcolor"
+        android:text="User Name"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/logout"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:src="@drawable/ic_exit"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_10sdp"/>
+
+</LinearLayout>

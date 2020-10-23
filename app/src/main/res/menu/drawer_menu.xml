@@ -20,9 +20,9 @@
         <item android:id="@+id/history"
             android:icon="@drawable/ic_history"
             android:title="History"/>
-        <item android:id="@+id/logout"
-            android:icon="@drawable/ic_exit"
-            android:title="Logout"/>
+<!--        <item android:id="@+id/logout"-->
+<!--            android:icon="@drawable/ic_exit"-->
+<!--            android:title="Logout"/>-->
     </group>
 
 <!--    <group android:checkableBehavior="single">-->
