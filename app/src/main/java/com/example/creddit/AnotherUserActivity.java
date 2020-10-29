@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +27,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+
+import java.util.ArrayList;
 
 public class AnotherUserActivity extends AppCompatActivity {
 
     SharedPref sharedPref;
     TextView profile_join, profile_joined, sameUserProfile;
+    SearchableSpinner addToCustomFeed;
     ImageView profileImage, profileBannerImage;
 
     FirebaseDatabase firebaseDatabase;
@@ -37,9 +43,12 @@ public class AnotherUserActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
 
+    ArrayList<String> customFeedNameList;
+    ArrayAdapter<String> adapter;
+
     CollapsingToolbarLayout toolbarLayout;
 
-    String userId, anotherUserId, subType, profileImagePath, profileBannerImagePath, subName;
+    String userId, anotherUserId, subType, profileImagePath, profileBannerImagePath, subName, customFeedName;
 
     ValueEventListener profileValueEventListener, subRedditValueEventListener;
 
@@ -62,6 +71,7 @@ public class AnotherUserActivity extends AppCompatActivity {
 
         profileImage = findViewById(R.id.anotherUserProfileImage);
         profileBannerImage = findViewById(R.id.anotherUserProfileBannerImage);
+        addToCustomFeed = findViewById(R.id.addToCustomFeed);
 
         toolbarLayout = findViewById(R.id.anotherUserToolbarTitle);
 //        toolbar = findViewById(R.id.profile_toolbar);
@@ -105,6 +115,7 @@ public class AnotherUserActivity extends AppCompatActivity {
             mRef.child(anotherUserId).addValueEventListener(profileValueEventListener);
 
         } else {
+
             subRedditValueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -134,6 +145,35 @@ public class AnotherUserActivity extends AppCompatActivity {
             };
 
             mRef2.child("subreddits").child(anotherUserId).addValueEventListener(subRedditValueEventListener);
+
+            if (user != null){
+                userId = user.getUid();
+                customFeedNameList = new ArrayList<>();
+                customFeedNameList.add("Add to Custom Feed");
+
+                getCustomFeedNames(customFeedNameList);
+
+                addToCustomFeed.setVisibility(View.VISIBLE);
+                addToCustomFeed.setTitle("Add to Custom Feed");
+                addToCustomFeed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (i != 0) {
+                            customFeedName = customFeedNameList.get(i);
+                            mRef.child(userId).child("customFeed").child(customFeedName).child(anotherUserId).setValue(1);
+                            Toast.makeText(getApplicationContext(), "Added to Custom Feed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, customFeedNameList);
+                addToCustomFeed.setAdapter(adapter);
+            }
         }
 
         Toolbar toolbar = findViewById(R.id.anotherUserProfileToolbar);
@@ -276,6 +316,24 @@ public class AnotherUserActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getCustomFeedNames(final ArrayList<String> customFeedNameList) {
+        mRef.child(userId).child("customFeed").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                        customFeedNameList.add(dataSnapshot1.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void showToast(String toast_text) {

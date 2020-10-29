@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_black"
     tools:context=".Fragments.CustomFeedFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/customFeedRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="custom feed will come here"
-        android:textSize="24sp"
-        android:layout_margin="100dp"
-        android:textColor="?attr/textcolor"/>
+        android:layout_height="wrap_content"
+        android:background="?attr/cardbackground"
+        />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/createCustomFeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/customFeedRecyclerView"
+        android:text="Create new custom feed"
+        android:textColor="?attr/buttoncolor"
+        android:background="?attr/cardbackground"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        />
+
+</RelativeLayout>

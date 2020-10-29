@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/cardbackground">
+
+    <TextView
+        android:id="@+id/customFeedName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="custom Feed name"
+        android:textColor="?attr/textcolor"
+        android:textSize="18sp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        />
+
+</RelativeLayout>

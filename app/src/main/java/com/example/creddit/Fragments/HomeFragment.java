@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
         sharedPref = new SharedPref(getContext());
 
         home_posts = new ArrayList<>();
-//        withourThisStringAppWouldNotShowAnythingBecauseArrayWillBecomeNULLOtherwise
+        /*with our This String App Would Not Show Anything Because Array Will Become NULL Otherwise*/
 //        blockedList.add("randomString");
 
         cardAdapter = new CardAdapter(getContext(), home_posts, getActivity(), "homeFragment");

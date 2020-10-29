@@ -61,13 +61,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_marginRight="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_24sdp"
+                    android:layout_marginBottom="@dimen/_28sdp"
                     android:background="@drawable/text_outline_layout"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_3sdp"
                     android:text="JOIN"
                     android:textColor="?attr/buttoncolor"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -75,11 +75,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="JOINED"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="?attr/buttoncolor"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="@dimen/_24sdp"
+                    android:layout_marginBottom="@dimen/_28sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/text_outline_layout"
                     android:paddingHorizontal="@dimen/_6sdp"
@@ -92,17 +92,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Your Profile"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="?attr/buttoncolor"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="@dimen/_24sdp"
+                    android:layout_marginBottom="@dimen/_28sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/text_outline_layout"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_3sdp"
                     android:visibility="gone"
                     />
+
+                <!--/////////////////////////////////////////////////////////-->
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/addToCustomFeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:background="@drawable/text_outline_layout"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_3sdp"
+                    android:text="Add to Custom Feed"
+                    android:textColor="?attr/buttoncolor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"/>
+
 
             </FrameLayout>
 

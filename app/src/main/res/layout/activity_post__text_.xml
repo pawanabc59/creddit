@@ -44,11 +44,22 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/subSearchTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_text_toolbar"
+        android:textColor="?attr/textcolor"
+        android:text="Choose a community"
+        android:textSize="14sp"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/subSearchText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/post_text_toolbar"
+        android:layout_below="@+id/subSearchTxt"
         android:background="?attr/cardbackground"
         android:layout_marginTop="@dimen/_10sdp"
         />

@@ -56,7 +56,8 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:src="@drawable/ic_star" />
+                android:src="@drawable/ic_star"
+                android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/removeFavourite"
