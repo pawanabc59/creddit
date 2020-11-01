@@ -114,7 +114,6 @@
                     android:background="@drawable/text_outline_layout"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_3sdp"
-                    android:text="Add to Custom Feed"
                     android:textColor="?attr/buttoncolor"
                     android:textSize="14sp"
                     android:textStyle="bold"

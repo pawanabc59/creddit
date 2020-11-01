@@ -13,149 +13,164 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        app:title="Image Post"
         android:textAlignment="textStart"
+        app:title="Image Post"
         app:titleTextColor="?attr/textcolor">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_150sdp">
+        <!--        <FrameLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="@dimen/_150sdp">-->
 
         <TextView
             android:id="@+id/post_image_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="POST"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:layout_gravity="end"
             android:layout_marginTop="@dimen/_12sdp"
-            android:textColor="?attr/textcolor" />
+            android:layout_marginEnd="20dp"
+            android:text="POST"
+            android:textAlignment="viewEnd"
+            android:textColor="?attr/textcolor"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <ProgressBar
             android:id="@+id/postProgressBar"
-            android:scaleY="0.8"
-            android:scaleX="0.8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            />
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:textAlignment="viewEnd"
+            android:visibility="gone" />
 
-        </FrameLayout>
+        <!--        </FrameLayout>-->
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/subSearchTxt"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_image_toolbar"
-        android:textColor="?attr/textcolor"
-        android:text="Choose a community"
-        android:textSize="14sp"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/subSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subSearchTxt"
-        android:background="?attr/cardbackground"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/post_image_toolbar">
 
-    <EditText
-        android:id="@+id/post_image_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subSearch"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:hint="An interesting title"
-        android:paddingLeft="@dimen/_10sdp"
-        android:textColor="?attr/textcolor"
-        android:textColorHint="?attr/textcolor" />
-
-
-    <LinearLayout
-        android:id="@+id/linear_cam_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_image_title"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:padding="@dimen/_20sdp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/post_image_open_camera"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            android:layout_marginLeft="@dimen/_25sdp"
-            app:cardBackgroundColor="#2196F3"
-            app:cardCornerRadius="75dp">
-
-            <ImageView
-                android:layout_width="@dimen/_45sdp"
-                android:layout_height="@dimen/_45sdp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_camera_white" />
-        </androidx.cardview.widget.CardView>
+            android:background="?attr/colorPrimary">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/subSearchTxt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CAMERA"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Choose a community"
                 android:textColor="?attr/textcolor"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/_15sdp"
-                />
+                android:textSize="14sp" />
 
-        </LinearLayout>
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/subSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subSearchTxt"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="?attr/cardbackground" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            <EditText
+                android:id="@+id/post_image_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subSearch"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:hint="An interesting title"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/post_image_open_gallery"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            android:layout_marginLeft="@dimen/_60sdp"
-            app:cardBackgroundColor="#2196F3"
-            app:cardCornerRadius="75dp">
+
+            <LinearLayout
+                android:id="@+id/linear_cam_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_image_title"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:padding="@dimen/_20sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/post_image_open_camera"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginLeft="@dimen/_25sdp"
+                        app:cardBackgroundColor="#2196F3"
+                        app:cardCornerRadius="75dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_camera_white" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:text="CAMERA"
+                        android:textColor="?attr/textcolor"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/post_image_open_gallery"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginLeft="@dimen/_60sdp"
+                        app:cardBackgroundColor="#2196F3"
+                        app:cardCornerRadius="75dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_photo_librar_white" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:text="LIBRARY"
+                        android:textColor="?attr/textcolor"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <ImageView
-                android:layout_width="@dimen/_45sdp"
-                android:layout_height="@dimen/_45sdp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_photo_librar_white" />
-        </androidx.cardview.widget.CardView>
+                android:id="@+id/gallery_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_300sdp"
+                android:layout_below="@+id/post_image_title"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LIBRARY"
-                android:textColor="?attr/textcolor"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/_30sdp"
-                />
+        </RelativeLayout>
 
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/gallery_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_300sdp"
-        android:layout_below="@+id/post_image_title"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:visibility="gone" />
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -168,31 +183,30 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/_25sdp">
 
-        <TextView
-            android:id="@+id/nsfw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/nsfw_outline_layout"
-            android:text="NSFW"
-            android:textColor="#f81107"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:paddingHorizontal="@dimen/_7sdp"
-            android:paddingVertical="@dimen/_2sdp"
-            />
+            <TextView
+                android:id="@+id/nsfw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nsfw_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="NSFW"
+                android:textColor="#f81107"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/nsfw_fill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/nsfw_fill_outline_layout"
-            android:text="NSFW"
-            android:textColor="#ffffff"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:paddingHorizontal="@dimen/_7sdp"
-            android:paddingVertical="@dimen/_2sdp"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/nsfw_fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nsfw_fill_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="NSFW"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </FrameLayout>
 
@@ -207,26 +221,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spoiler_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="SPOILER"
                 android:textColor="?attr/textcolor"
                 android:textSize="16dp"
-                android:textStyle="bold"
-                android:paddingHorizontal="@dimen/_7sdp"
-                android:paddingVertical="@dimen/_2sdp"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/spoiler_fill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spoiler_fill_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="SPOILER"
                 android:textColor="?attr/textcolor"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:paddingHorizontal="@dimen/_7sdp"
-                android:paddingVertical="@dimen/_2sdp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </FrameLayout>
 

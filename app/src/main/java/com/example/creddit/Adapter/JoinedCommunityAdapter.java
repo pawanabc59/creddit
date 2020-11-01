@@ -66,6 +66,17 @@ public class JoinedCommunityAdapter extends RecyclerView.Adapter<JoinedCommunity
         Picasso.get().load(mData.get(position).sub_image).into(holder.sub_image);
         holder.membersCount.setText(mData.get(position).getMembers()+" members");
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, AnotherUserActivity.class);
+                intent.putExtra("anotherUserId", mData.get(position).getAnotherUserId());
+                intent.putExtra("subType", mData.get(position).getSubType());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
+
         userId = user.getUid();
 
         holder.removeJoinedCommunity.setOnClickListener(new View.OnClickListener() {

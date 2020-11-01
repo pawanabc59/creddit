@@ -18,8 +18,9 @@
         android:roundIcon="@drawable/reddit_logo_hd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CustomFeedActivity"></activity>
-        <activity android:name=".HistoryActivity" />
+        <activity android:name=".HistoryPostsActivity"></activity>
+        <activity android:name=".CustomFeedActivity" />
+        <activity android:name=".HiddenPostsActivity" />
         <activity android:name=".MySubRedditListActivity" />
         <activity android:name=".EditSubRedditActivity" />
         <activity android:name=".CreateNewSubredditActivity" />

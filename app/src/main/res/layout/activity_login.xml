@@ -1,95 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/white_black"
     android:padding="20dp"
-    tools:context=".LoginActivity"
-    android:background="?attr/white_black">
+    tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/login_img"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_80sdp"
-        android:src="@drawable/reddit_logo_hd"
-        />
-
-    <TextView
-        android:id="@+id/login_txt"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_img"
-        android:text="Log in to cReddit"
-        android:textSize="16sp"
-        android:textColor="?attr/textcolor"
-        android:layout_marginTop="@dimen/_20sdp"
-        />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLoginUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_txt"
-        android:layout_marginTop="@dimen/_15sdp"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_username"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/login_txt"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:background="?attr/white_black">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/login_img"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:src="@drawable/reddit_logo_hd" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLoginPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textLoginUsername"
-        android:layout_marginTop="@dimen/_15sdp"
-        >
+            <TextView
+                android:id="@+id/login_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_img"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="Log in to cReddit"
+                android:textColor="?attr/textcolor"
+                android:textSize="16sp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLoginUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_txt"
+                android:layout_marginTop="@dimen/_15sdp">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/login_txt"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textLoginPassword"
-        android:layout_marginTop="@dimen/_15sdp"
-        >
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/login_signup_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/buttoncolor"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:text="SIGN UP"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textLoginUsername"
+                android:layout_marginTop="@dimen/_15sdp">
 
-        <TextView
-            android:id="@+id/login_forgot_pass_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/buttoncolor"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:text="FORGOT PASSWORD"
-            android:layout_marginLeft="120dp"
-            />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
 
-    </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textLoginPassword"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <TextView
+                    android:id="@+id/login_signup_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SIGN UP"
+                    android:textColor="?attr/buttoncolor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/login_forgot_pass_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="120dp"
+                    android:text="FORGOT PASSWORD"
+                    android:textColor="?attr/buttoncolor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/login_btn_login"
@@ -97,20 +102,19 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:text="LOG IN"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="#fff"
         android:background="?attr/buttoncolor"
-        />
+        android:text="LOG IN"
+        android:textColor="#fff"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/loginProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginVertical="@dimen/_10sdp"
         android:visibility="gone" />
 

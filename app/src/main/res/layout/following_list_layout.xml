@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/sub_name"
-            android:layout_width="@dimen/_160sdp"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/_9sdp"
@@ -45,9 +45,9 @@
 
         <RelativeLayout
             android:id="@+id/markFavourite"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="end|center_vertical"
             android:visibility="visible">
 
             <ImageView
@@ -55,7 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_15sdp"
                 android:src="@drawable/ic_star"
                 android:visibility="visible"/>
 
@@ -64,7 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_15sdp"
                 android:src="@drawable/ic_star_colored"
                 android:visibility="gone" />
 
@@ -74,8 +72,8 @@
             android:id="@+id/blockLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
+            android:layout_gravity="end|center_horizontal"
+            android:gravity="end|center_horizontal"
             android:paddingLeft="@dimen/_10sdp"
             android:visibility="gone">
 

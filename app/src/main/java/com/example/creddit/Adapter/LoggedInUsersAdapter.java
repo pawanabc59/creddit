@@ -73,6 +73,10 @@ public class LoggedInUsersAdapter extends RecyclerView.Adapter<LoggedInUsersAdap
 
         myRoomDatabase = DatabaseClient.databaseClient(mContext);
 
+        if (loggedInUsersModels.get(position).getUserIds().equals(firebaseUser.getUid())){
+            holder.loggedInUser.setVisibility(View.VISIBLE);
+        }
+
         holder.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,13 +198,14 @@ public class LoggedInUsersAdapter extends RecyclerView.Adapter<LoggedInUsersAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView loggedInUserPhoto, logout;
+        ImageView loggedInUserPhoto, logout, loggedInUser;
         TextView loggedInUserName;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             loggedInUserName = itemView.findViewById(R.id.loggedInUserName);
             loggedInUserPhoto = itemView.findViewById(R.id.loggedInUserPhoto);
+            loggedInUser = itemView.findViewById(R.id.loggedInUser);
             logout = itemView.findViewById(R.id.logout);
         }
     }

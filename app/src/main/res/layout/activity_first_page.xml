@@ -1,61 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:layout_gravity="center"
-    tools:context=".FirstPageActivity"
-    android:background="?attr/white_black">
+    android:background="?attr/white_black"
+    android:gravity="center"
+    tools:context=".FirstPageActivity">
 
-    <ImageView
-        android:id="@+id/center_image"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/reddit_logo_hd"
-        android:layout_centerHorizontal="true"
-        />
-
-    <TextView
-        android:id="@+id/joinText"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/center_image"
-        android:text="Sign up to upvote the best content."
-        android:textColor="?attr/textcolor"
-        android:gravity="center_horizontal"
-        android:textStyle="bold"
-        android:layout_marginHorizontal="@dimen/_100sdp"
-        android:layout_marginTop="@dimen/_50sdp"
-        />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/joinText"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:gravity="center">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/white_black"
+            android:gravity="center">
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:text="Log in"
-            android:textColor="#fff"
-            android:background="?attr/buttoncolor"
-            android:textSize="14sp"/>
+            <ImageView
+                android:id="@+id/center_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/reddit_logo_hd" />
 
-        <Button
-            android:id="@+id/btn_signup"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:text="Sign up"
-            android:textColor="#fff"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:background="?attr/buttoncolor"
-            android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/joinText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/center_image"
+                android:layout_marginHorizontal="@dimen/_100sdp"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:gravity="center_horizontal"
+                android:text="Sign up to upvote the best content."
+                android:textColor="?attr/textcolor"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/joinText"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="?attr/buttoncolor"
+                    android:text="Log in"
+                    android:textColor="#fff"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_signup"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:background="?attr/buttoncolor"
+                    android:text="Sign up"
+                    android:textColor="#fff"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.RoomDatabase;
 
 import com.example.creddit.AnotherUserActivity;
 import com.example.creddit.BuildConfig;
@@ -33,6 +34,7 @@ import com.example.creddit.Model.CardModel;
 import com.example.creddit.ProfileActivity;
 import com.example.creddit.R;
 import com.example.creddit.RoomDatabase.DatabaseClient;
+import com.example.creddit.RoomDatabase.HistoryPosts;
 import com.example.creddit.RoomDatabase.HistoryTab;
 import com.example.creddit.RoomDatabase.MyRoomDatabase;
 import com.example.creddit.SharedPref;
@@ -763,6 +765,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public void showSinglePostActivity(int position, String fragmentType) {
+        MyRoomDatabase myRoomDatabase = DatabaseClient.databaseClient(mContext);
+        HistoryPosts historyPosts = new HistoryPosts(mData.get(position).getPostId(), mData.get(position).getCard_profile_image(), mData.get(position).getCard_image(),
+                mData.get(position).getCard_title(), mData.get(position).getPosted_by(), mData.get(position).getCard_description(),
+                mData.get(position).getPostedTime(), mData.get(position).getUserId(), mData.get(position).getNsfw(),
+                mData.get(position).getSpoiler(), mData.get(position).getPost_type(), mData.get(position).getSubId(),
+                mData.get(position).getSubType(), userId);
+        myRoomDatabase.historyPostsDAO().historyPostsInsertion(historyPosts);
+
         Intent intent = new Intent(mContext, ShowSinglePostActivity.class);
         intent.putExtra("cardPostProfileImage", mData.get(position).getCard_profile_image());
         intent.putExtra("imagePath", mData.get(position).getCard_image());

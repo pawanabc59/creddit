@@ -4,145 +4,153 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditSubRedditActivity"
-    android:background="?attr/colorPrimary">
+    android:background="?attr/colorPrimary"
+    tools:context=".EditSubRedditActivity">
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_141sdp"
-        app:cardCornerRadius="@dimen/_5sdp"
-        app:cardBackgroundColor="#212121"
-        >
-        <ImageView
-            android:id="@+id/editBannerSubReddit"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_140sdp"
-            android:src="@drawable/zoro"
-            android:scaleType="fitXY"
-            android:visibility="visible"
-            />
-
-        <ProgressBar
-            android:id="@+id/progressBarBannerSubReddit"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_140sdp"
-            android:visibility="gone"
-            />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/editImageCardViewSubReddit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_100sdp"
-        android:layout_marginLeft="@dimen/_30sdp"
-        >
-        <ImageView
-            android:id="@+id/editImageSubReddit"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:src="@drawable/zoro"
-            android:scaleType="centerCrop"
-            />
-
-        <ProgressBar
-            android:id="@+id/progressBarimageSubReddit"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:visibility="gone"
-            />
-    </androidx.cardview.widget.CardView>
-
-    <EditText
-        android:id="@+id/subDescriptionSubReddit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Sub description"
-        android:textColor="?attr/textcolor"
-        android:textSize="16sp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_below="@+id/editImageCardViewSubReddit"/>
-
-    <TextView
-        android:id="@+id/typeSubReddit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Types"
-        android:textColor="?attr/textcolor"
-        android:textSize="20sp"
-        android:layout_below="@+id/subDescriptionSubReddit"/>
-
-    <RadioGroup
-        android:id="@+id/typesSubReddit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/typeSubReddit">
-
-        <RadioButton
-            android:id="@+id/publicSubSubReddit"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Public"
-            android:textSize="16sp"
-            android:textColor="?attr/textcolor"/>
+            android:background="?attr/colorPrimary">
 
-        <RadioButton
-            android:id="@+id/privateSubSubReddit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Private"
-            android:textSize="16sp"
-            android:textColor="?attr/textcolor"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_141sdp"
+                app:cardBackgroundColor="#212121"
+                app:cardCornerRadius="@dimen/_5sdp">
 
-        <RadioButton
-            android:id="@+id/restrictedSubSubReddit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Restricted"
-            android:textSize="16sp"
-            android:textColor="?attr/textcolor"/>
-    </RadioGroup>
+                <ImageView
+                    android:id="@+id/editBannerSubReddit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_140sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/zoro"
+                    android:visibility="visible" />
 
-    <TextView
-        android:id="@+id/contentOptionSubReddit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Content Option"
-        android:textColor="?attr/textcolor"
-        android:textSize="20sp"
-        android:layout_below="@+id/typesSubReddit"/>
+                <ProgressBar
+                    android:id="@+id/progressBarBannerSubReddit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_140sdp"
+                    android:visibility="gone" />
+            </androidx.cardview.widget.CardView>
 
-    <RadioGroup
-        android:id="@+id/contentSubReddit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/contentOptionSubReddit">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/editImageCardViewSubReddit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_100sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
 
-        <RadioButton
-            android:id="@+id/anySubReddit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Any "
-            android:textSize="16sp"
-            android:textColor="?attr/textcolor"/>
+                <ImageView
+                    android:id="@+id/editImageSubReddit"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/zoro" />
 
-        <RadioButton
-            android:id="@+id/textOnlySubReddit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text Only"
-            android:textSize="16sp"
-            android:textColor="?attr/textcolor"/>
+                <ProgressBar
+                    android:id="@+id/progressBarimageSubReddit"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:visibility="gone" />
+            </androidx.cardview.widget.CardView>
 
-        <RadioButton
-            android:id="@+id/linksOnlySubReddit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Links Only"
-            android:textSize="16sp"
-            android:textColor="?attr/textcolor"/>
-    </RadioGroup>
+            <EditText
+                android:id="@+id/subDescriptionSubReddit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editImageCardViewSubReddit"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Sub description"
+                android:textColor="?attr/textcolor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/typeSubReddit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subDescriptionSubReddit"
+                android:text="Types"
+                android:textColor="?attr/textcolor"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/typesSubReddit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/typeSubReddit">
+
+                <RadioButton
+                    android:id="@+id/publicSubSubReddit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Public"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/privateSubSubReddit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Private"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/restrictedSubSubReddit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Restricted"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/contentOptionSubReddit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/typesSubReddit"
+                android:text="Content Option"
+                android:textColor="?attr/textcolor"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/contentSubReddit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contentOptionSubReddit">
+
+                <RadioButton
+                    android:id="@+id/anySubReddit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Any "
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/textOnlySubReddit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Text Only"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/linksOnlySubReddit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Links Only"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
+            </RadioGroup>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/saveEditDetailButtonSubReddit"
@@ -152,7 +160,7 @@
         android:layout_margin="@dimen/_20sdp"
         android:background="?attr/buttoncolor"
         android:text="Save"
-        android:textColor="#fff"/>
+        android:textColor="#fff" />
 
     <ProgressBar
         android:id="@+id/editProgressBarSubReddit"
@@ -160,7 +168,6 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/_20sdp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -26,11 +26,20 @@
         android:background="@drawable/outline_layout"
         />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchAllUsers">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/white_black">
+
     <TextView
         android:id="@+id/history_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchAllUsers"
         android:textSize="16sp"
         android:textColor="?attr/textcolor"
         android:text="Recently visited subs"
@@ -89,5 +98,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/textSub"
         />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -13,80 +13,91 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        app:titleTextColor="?attr/textcolor"
         app:title="Text Post"
-        >
+        app:titleTextColor="?attr/textcolor">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_180sdp">
+        <!--        <FrameLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="@dimen/_180sdp">-->
         <TextView
             android:id="@+id/post_text_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:text="POST"
+            android:textAlignment="viewEnd"
             android:textColor="?attr/textcolor"
             android:textSize="16sp"
-            android:textAlignment="viewEnd"
-            android:layout_gravity="end" />
+            android:layout_marginEnd="20dp" />
 
         <ProgressBar
             android:id="@+id/postProgressBar"
-            android:scaleY="0.8"
-            android:scaleX="0.8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            />
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:textAlignment="viewEnd"
+            android:visibility="gone" />
 
-        </FrameLayout>
+        <!--        </FrameLayout>-->
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/subSearchTxt"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_text_toolbar"
-        android:textColor="?attr/textcolor"
-        android:text="Choose a community"
-        android:textSize="14sp"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/post_text_toolbar">
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/subSearchText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subSearchTxt"
-        android:background="?attr/cardbackground"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
 
-    <EditText
-        android:id="@+id/post_text_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="An interesting title"
-        android:textColor="?attr/textcolor"
-        android:textColorHint="?attr/textcolor"
-        android:layout_below="@+id/subSearchText"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        />
+            <TextView
+                android:id="@+id/subSearchTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Choose a community"
+                android:textColor="?attr/textcolor"
+                android:textSize="14sp" />
 
-    <EditText
-        android:id="@+id/post_text_txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Your text post (optional)"
-        android:textColor="?attr/textcolor"
-        android:textColorHint="?attr/textcolor"
-        android:layout_below="@+id/post_text_title"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        />
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/subSearchText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subSearchTxt"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="?attr/cardbackground" />
+
+            <EditText
+                android:id="@+id/post_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subSearchText"
+                android:layout_marginTop="20dp"
+                android:hint="An interesting title"
+                android:paddingLeft="10dp"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor" />
+
+            <EditText
+                android:id="@+id/post_text_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_text_title"
+                android:layout_marginTop="20dp"
+                android:hint="Your text post (optional)"
+                android:paddingLeft="10dp"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,26 +115,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/nsfw_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="NSFW"
                 android:textColor="#f81107"
                 android:textSize="16dp"
-                android:textStyle="bold"
-                android:paddingHorizontal="@dimen/_7sdp"
-                android:paddingVertical="@dimen/_2sdp"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/nsfw_fill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/nsfw_fill_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="NSFW"
                 android:textColor="#ffffff"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:paddingHorizontal="@dimen/_7sdp"
-                android:paddingVertical="@dimen/_2sdp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </FrameLayout>
 
@@ -138,26 +148,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spoiler_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="SPOILER"
                 android:textColor="?attr/textcolor"
                 android:textSize="16dp"
-                android:textStyle="bold"
-                android:paddingHorizontal="@dimen/_7sdp"
-                android:paddingVertical="@dimen/_2sdp"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/spoiler_fill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spoiler_fill_outline_layout"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="SPOILER"
                 android:textColor="?attr/textcolor"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:paddingHorizontal="@dimen/_7sdp"
-                android:paddingVertical="@dimen/_2sdp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </FrameLayout>
 

@@ -3,173 +3,175 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ShowPopUpProfileDetailsActivity"
-    android:background="?attr/cardbackground">
+    android:layout_height="wrap_content"
+    android:background="?attr/cardbackground"
+    tools:context=".ShowPopUpProfileDetailsActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_10sdp">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="@dimen/_63sdp"
-            android:layout_height="@dimen/_63sdp"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="@dimen/_75sdp"
-            android:background="?attr/gray_lightblue">
-
-        <ImageView
-            android:id="@+id/popup_profile_image"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:src="@mipmap/ic_launcher"
-            android:scaleType="centerCrop"
-            />
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/popup_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Username"
-            android:textColor="?attr/textcolor"
-            android:textStyle="bold" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="20dp"
-                android:gravity="center_vertical">
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/_63sdp"
+                android:layout_height="@dimen/_63sdp"
+                android:layout_marginTop="20dp"
+                android:background="?attr/gray_lightblue"
+                app:cardCornerRadius="@dimen/_75sdp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ic_vintage_blue" />
+                    android:id="@+id/popup_profile_image"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/popup_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Username"
+                android:textColor="?attr/textcolor"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
-                        android:textColor="?attr/textcolor"
-                        android:textStyle="bold" />
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_vintage_blue" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Karma"
-                        android:textColor="#808080" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textColor="?attr/textcolor"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Karma"
+                            android:textColor="#808080" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_sentiment_blue" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/popup_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7m 3d"
+                            android:textColor="?attr/textcolor"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="cReddit age"
+                            android:textColor="#808080" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/popup_viewProfile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="@dimen/_13sdp"
+                android:paddingLeft="@dimen/_25sdp">
 
                 <ImageView
+                    android:layout_width="@dimen/_21sdp"
+                    android:layout_height="@dimen/_21sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_person" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ic_sentiment_blue" />
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginLeft="@dimen/_21sdp"
+                    android:gravity="center_vertical"
+                    android:text="View Profile"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
 
-                <LinearLayout
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/popup_blockPerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp"
+                android:paddingLeft="@dimen/_25sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_19sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_block" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginLeft="@dimen/_22sdp"
+                    android:gravity="center_vertical"
+                    android:text="Block Account"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/popup_age"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7m 3d"
-                        android:textColor="?attr/textcolor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="cReddit age"
-                        android:textColor="#808080" />
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/popup_viewProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_13sdp"
-            android:paddingLeft="@dimen/_25sdp">
-
-            <ImageView
-                android:layout_width="@dimen/_21sdp"
-                android:layout_height="@dimen/_21sdp"
-                android:src="@drawable/ic_person"
-                android:layout_gravity="center_vertical"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                android:textSize="16sp"
-                android:text="View Profile"
-                android:gravity="center_vertical"
-                android:textColor="?attr/textcolor"
-                android:layout_marginLeft="@dimen/_21sdp"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/popup_blockPerson"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_9sdp"
-            android:paddingLeft="@dimen/_25sdp">
-
-            <ImageView
-                android:layout_width="@dimen/_19sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_block"
-                android:layout_gravity="center_vertical"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                android:textSize="16sp"
-                android:text="Block Account"
-                android:gravity="center_vertical"
-                android:textColor="?attr/textcolor"
-                android:layout_marginLeft="@dimen/_22sdp"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

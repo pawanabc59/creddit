@@ -146,7 +146,7 @@ public class AnotherUserUploadedImageFragment extends Fragment {
                                                     dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
                                                     dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
                                                     dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
-                                                    dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                                    dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class), dataSnapshot1.getKey()));
                                         }
                                     } else {
                                         uploadedImage.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
@@ -155,7 +155,7 @@ public class AnotherUserUploadedImageFragment extends Fragment {
                                                 dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
                                                 dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
                                                 dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
-                                                dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                                dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class),dataSnapshot1.getKey()));
                                     }
                                     cardAdapter.notifyDataSetChanged();
                                 }

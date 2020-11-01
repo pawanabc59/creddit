@@ -11,4 +11,24 @@
         android:layout_height="match_parent"
         android:background="?attr/white_black"/>
 
+    <ImageView
+        android:id="@+id/noCustomFeedPosts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/no_posts"
+        android:layout_gravity="top|center_horizontal"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/noCustomFeedPostsTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No custom feed posts available"
+        android:textSize="25sp"
+        android:textColor="?attr/textcolor"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/_120sdp"
+        android:visibility="gone"
+        />
+
 </FrameLayout>

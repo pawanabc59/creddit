@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/UserCardLayout"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_50sdp"
     android:layout_marginTop="@dimen/_1sdp"
-    android:background="?attr/cardbackground">
+    android:background="?attr/cardbackground"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/UsersProfileImage"
+    <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
-        android:layout_margin="@dimen/_7sdp"
-        android:src="@drawable/reddit_logo_hd"
-        android:background="@drawable/outline_layout"
-        android:scaleType="centerCrop"/>
+        android:layout_marginHorizontal="@dimen/_7sdp"
+        android:layout_gravity="center_vertical"
+        app:cardCornerRadius="75dp">
+
+        <ImageView
+            android:id="@+id/UsersProfileImage"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/reddit_logo_hd" />
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="opoiuytgfxcvbnkl"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:text="User name"
         android:textColor="?attr/textcolor"
         android:textSize="16sp"
         android:textStyle="normal"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_3sdp"/>
+        android:layout_gravity="start|center_vertical"/>
 
 </LinearLayout>

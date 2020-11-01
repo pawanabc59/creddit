@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +33,8 @@ public class CustomFeedPostsFragment extends Fragment {
 
     String feedName;
     RecyclerView recycler_custom_feed;
+    ImageView noCustomFeedPostImage;
+    TextView noCustomFeedPostTxt;
     List<CardModel> customFeedPosts;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
@@ -60,6 +64,8 @@ public class CustomFeedPostsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_custom_feed_posts, container, false);
 
         recycler_custom_feed = view.findViewById(R.id.custom_feed_posts_recyclerView);
+        noCustomFeedPostImage = view.findViewById(R.id.noCustomFeedPosts);
+        noCustomFeedPostTxt = view.findViewById(R.id.noCustomFeedPostsTxt);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("creddit");
@@ -94,52 +100,74 @@ public class CustomFeedPostsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                        followedUsersId.add(dataSnapshot1.getKey());
-                    }
-                    userFollowedValueEventListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull final DataSnapshot dataSnapshot2) {
-                            customFeedPosts.clear();
-                            if (dataSnapshot2.exists()) {
-                                try {
+                    if (dataSnapshot.getChildrenCount() <= 1) {
+                        noCustomFeedPostImage.setVisibility(View.VISIBLE);
+                        recycler_custom_feed.setVisibility(View.GONE);
+                        noCustomFeedPostTxt.setVisibility(View.VISIBLE);
+                    } else {
+                        noCustomFeedPostImage.setVisibility(View.GONE);
+                        recycler_custom_feed.setVisibility(View.VISIBLE);
+                        noCustomFeedPostTxt.setVisibility(View.GONE);
 
-                                    for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
-                                        String postKey = dataSnapshot3.getKey();
-                                        postTime = dataSnapshot3.child("postTime").getValue(String.class);
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            followedUsersId.add(dataSnapshot1.getKey());
+                        }
+                        userFollowedValueEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull final DataSnapshot dataSnapshot2) {
+                                customFeedPosts.clear();
+                                if (dataSnapshot2.exists()) {
+                                    try {
 
-                                        todayDate = sdf.parse(currentDate);
-                                        postedDate = sdf.parse(postTime);
+                                        for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
+                                            String postKey = dataSnapshot3.getKey();
+                                            postTime = dataSnapshot3.child("postTime").getValue(String.class);
 
-                                        long diff = todayDate.getTime() - postedDate.getTime();
-                                        long seconds = diff / 1000;
-                                        long minutes = seconds / 60;
-                                        long hours = minutes / 60;
-                                        int days = (int) (hours / 24);
+                                            todayDate = sdf.parse(currentDate);
+                                            postedDate = sdf.parse(postTime);
 
-                                        if ((days / 365) > 0) {
-                                            int year = days / 365;
-                                            int leftMonths = days % 365;
-                                            int month = leftMonths / 30;
-                                            int leftDays = month % 30;
-                                            cardPostTime = (year + "y " + month + "m ago");
-                                        } else if ((days / 30) > 0) {
-                                            int month = days / 30;
-                                            int leftDays = days % 30;
-                                            cardPostTime = (month + "m ago");
-                                        } else if ((hours / 24) > 0) {
-                                            cardPostTime = (days + "d ago");
-                                        } else if ((minutes / 60) > 0) {
-                                            cardPostTime = (hours + "h ago");
-                                        } else {
-                                            cardPostTime = (minutes + "min ago");
-                                        }
+                                            long diff = todayDate.getTime() - postedDate.getTime();
+                                            long seconds = diff / 1000;
+                                            long minutes = seconds / 60;
+                                            long hours = minutes / 60;
+                                            int days = (int) (hours / 24);
 
-                                        if (followedUsersId.contains(dataSnapshot3.child("subId").getValue(String.class))) {
-                                            if (!blockedList.contains(dataSnapshot3.child("userId").getValue(String.class))) {
-                                                if (!hiddenList.contains(postKey)) {
-                                                    if (showNSFWvalue == 0) {
-                                                        if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                            if ((days / 365) > 0) {
+                                                int year = days / 365;
+                                                int leftMonths = days % 365;
+                                                int month = leftMonths / 30;
+                                                int leftDays = month % 30;
+                                                cardPostTime = (year + "y " + month + "m ago");
+                                            } else if ((days / 30) > 0) {
+                                                int month = days / 30;
+                                                int leftDays = days % 30;
+                                                cardPostTime = (month + "m ago");
+                                            } else if ((hours / 24) > 0) {
+                                                cardPostTime = (days + "d ago");
+                                            } else if ((minutes / 60) > 0) {
+                                                cardPostTime = (hours + "h ago");
+                                            } else {
+                                                cardPostTime = (minutes + "min ago");
+                                            }
+
+                                            if (followedUsersId.contains(dataSnapshot3.child("subId").getValue(String.class))) {
+                                                if (!blockedList.contains(dataSnapshot3.child("userId").getValue(String.class))) {
+                                                    if (!hiddenList.contains(postKey)) {
+                                                        if (showNSFWvalue == 0) {
+                                                            if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
+                                                                customFeedPosts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class),
+                                                                        dataSnapshot3.child("imagePath").getValue(String.class),
+                                                                        dataSnapshot3.child("subName").getValue(String.class),
+                                                                        "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class),
+                                                                        dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime,
+                                                                        dataSnapshot3.child("userId").getValue(String.class),
+                                                                        dataSnapshot3.child("NSFW").getValue(Integer.class),
+                                                                        dataSnapshot3.child("spoiler").getValue(Integer.class),
+                                                                        dataSnapshot3.child("postType").getValue(String.class),
+                                                                        dataSnapshot3.child("subId").getValue(String.class),
+                                                                        dataSnapshot3.child("subType").getValue(String.class), dataSnapshot3.getKey()));
+                                                            }
+                                                        } else {
                                                             customFeedPosts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class),
                                                                     dataSnapshot3.child("imagePath").getValue(String.class),
                                                                     dataSnapshot3.child("subName").getValue(String.class),
@@ -150,39 +178,27 @@ public class CustomFeedPostsFragment extends Fragment {
                                                                     dataSnapshot3.child("spoiler").getValue(Integer.class),
                                                                     dataSnapshot3.child("postType").getValue(String.class),
                                                                     dataSnapshot3.child("subId").getValue(String.class),
-                                                                    dataSnapshot3.child("subType").getValue(String.class)));
+                                                                    dataSnapshot3.child("subType").getValue(String.class), dataSnapshot3.getKey()));
                                                         }
-                                                    } else {
-                                                        customFeedPosts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class),
-                                                                dataSnapshot3.child("imagePath").getValue(String.class),
-                                                                dataSnapshot3.child("subName").getValue(String.class),
-                                                                "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class),
-                                                                dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime,
-                                                                dataSnapshot3.child("userId").getValue(String.class),
-                                                                dataSnapshot3.child("NSFW").getValue(Integer.class),
-                                                                dataSnapshot3.child("spoiler").getValue(Integer.class),
-                                                                dataSnapshot3.child("postType").getValue(String.class),
-                                                                dataSnapshot3.child("subId").getValue(String.class),
-                                                                dataSnapshot3.child("subType").getValue(String.class)));
+                                                        cardAdapter.notifyDataSetChanged();
                                                     }
-                                                    cardAdapter.notifyDataSetChanged();
                                                 }
                                             }
                                         }
-                                    }
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    };
-                    mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
+                            }
+                        };
+                        mRef.child("posts").child("imagePosts").orderByChild("postNumber").addValueEventListener(userFollowedValueEventListener);
+                    }
                 }
             }
 

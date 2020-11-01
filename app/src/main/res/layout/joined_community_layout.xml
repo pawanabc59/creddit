@@ -65,16 +65,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/cardbackground"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="end|center_vertical">
 
-        <ImageView
-            android:id="@+id/removeJoinedCommunity"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_22sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:src="@drawable/ic_remove"
-            android:visibility="visible" />
+            <ImageView
+                android:id="@+id/removeJoinedCommunity"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_22sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:src="@drawable/ic_remove"
+                android:visibility="visible" />
 
         </RelativeLayout>
 

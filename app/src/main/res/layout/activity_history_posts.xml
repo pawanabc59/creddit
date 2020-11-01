@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HistoryPostsActivity"
+    android:background="?attr/white_black">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/historyToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="?attr/cardbackground"
+        app:titleTextColor="?attr/textcolor"
+        app:title="History Posts">
+
+        <TextView
+            android:id="@+id/deleteHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="20dp"
+            android:text="Clear history"
+            android:textAlignment="viewEnd"
+            android:textColor="?attr/buttoncolor"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/deleteHistory"-->
+<!--            android:layout_width="@dimen/_25sdp"-->
+<!--            android:layout_height="@dimen/_25sdp"-->
+<!--            android:src="@drawable/ic_delete"-->
+<!--            android:layout_marginStart="@dimen/_175sdp"-->
+<!--            />-->
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/historyToolbar"/>
+
+</RelativeLayout>

@@ -28,98 +28,109 @@
             android:textColor="?attr/textcolor" />
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/post_video_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_video_toolbar"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:hint="An interesting title"
-        android:paddingLeft="@dimen/_10sdp"
-        android:textColor="?attr/textcolor"
-        android:textColorHint="?attr/textcolor" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/post_video_toolbar">
 
-
-    <LinearLayout
-        android:id="@+id/linear_cam_gallery_video"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_video_title"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:padding="@dimen/_20sdp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="?attr/colorPrimary">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/post_video_open_camera"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_marginLeft="@dimen/_25sdp"
-                app:cardBackgroundColor="#2196F3"
-                app:cardCornerRadius="75dp">
-
-                <ImageView
-                    android:layout_width="@dimen/_45sdp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_camera_white" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/post_video_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CAMERA"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:hint="An interesting title"
+                android:paddingLeft="@dimen/_10sdp"
                 android:textColor="?attr/textcolor"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/_14sdp"
-                />
+                android:textColorHint="?attr/textcolor" />
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/post_video_open_gallery"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_marginLeft="@dimen/_70sdp"
-                app:cardBackgroundColor="#2196F3"
-                app:cardCornerRadius="75dp">
-
-                <ImageView
-                    android:layout_width="@dimen/_45sdp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_video_library_white" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linear_cam_gallery_video"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="LIBRARY"
-                android:textColor="?attr/textcolor"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/_35sdp"
-                />
+                android:layout_below="@+id/post_video_title"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:padding="@dimen/_20sdp">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-    </LinearLayout>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/post_video_open_camera"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginLeft="@dimen/_25sdp"
+                        app:cardBackgroundColor="#2196F3"
+                        app:cardCornerRadius="75dp">
 
-    <ImageView
-        android:id="@+id/gallery_video"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_300sdp"
-        android:layout_below="@+id/post_video_title"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:visibility="gone" />
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_camera_white" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/_14sdp"
+                        android:text="CAMERA"
+                        android:textColor="?attr/textcolor"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/post_video_open_gallery"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginLeft="@dimen/_70sdp"
+                        app:cardBackgroundColor="#2196F3"
+                        app:cardCornerRadius="75dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_video_library_white" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/_35sdp"
+                        android:text="LIBRARY"
+                        android:textColor="?attr/textcolor"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gallery_video"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_300sdp"
+                android:layout_below="@+id/post_video_title"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

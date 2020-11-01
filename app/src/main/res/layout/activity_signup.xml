@@ -1,103 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/white_black"
     android:padding="20dp"
-    tools:context=".SignupActivity"
-    android:background="?attr/white_black">
+    tools:context=".SignupActivity">
 
-    <ImageView
-        android:id="@+id/sign_img"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_80sdp"
-        android:src="@drawable/reddit_logo_hd"
-        />
-
-    <TextView
-        android:id="@+id/sign_txt"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sign_img"
-        android:text="Create an account"
-        android:textSize="15sp"
-        android:textColor="?attr/textcolor"
-        android:layout_marginTop="@dimen/_30sdp"
-        />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textRegistercUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_below="@+id/sign_txt">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/sign_username"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:layout_marginTop="25dp"
-            android:inputType="textEmailAddress" />
+            android:background="?attr/white_black">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/sign_img"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:src="@drawable/reddit_logo_hd" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textRegisterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textRegistercUsername"
-        android:layout_marginTop="@dimen/_15sdp"
-        >
+            <TextView
+                android:id="@+id/sign_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sign_img"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:text="Create an account"
+                android:textColor="?attr/textcolor"
+                android:textSize="15sp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/sign_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginTop="25dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textRegistercUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sign_txt"
+                android:layout_marginTop="@dimen/_15sdp">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textRegistercPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textRegisterPassword"
-        android:layout_marginTop="@dimen/_15sdp"
-        >
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/sign_cpassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:layout_marginTop="25dp" />
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/textRegistercEmail"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/textRegistercUsername"-->
+<!--                android:layout_marginTop="@dimen/_15sdp">-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/sign_email"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="25dp"-->
+<!--                    android:hint="UserName"-->
+<!--                    android:inputType="textEmailAddress" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textRegistercPassword"
-        android:layout_marginTop="25dp"
-        >
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
-        <TextView
-            android:id="@+id/sign_login_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/buttoncolor"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:text="LOG IN INSTEAD"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textRegisterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textRegistercUsername"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textRegistercPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textRegisterPassword"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_cpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textRegistercPassword"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:id="@+id/sign_login_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOG IN INSTEAD"
+                    android:textColor="?attr/buttoncolor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
 
-    </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/sign_btn_signup"
@@ -105,19 +126,18 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:text="CREATE ACCOUNT"
-        android:textSize="14sp"
-        android:textColor="#fff"
         android:background="?attr/buttoncolor"
-        />
+        android:text="CREATE ACCOUNT"
+        android:textColor="#fff"
+        android:textSize="14sp" />
 
     <ProgressBar
         android:id="@+id/signUpProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginVertical="@dimen/_10sdp"
         android:visibility="gone" />
 

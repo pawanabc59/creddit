@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent3);
                 break;
             case R.id.history:
-                Intent intent4 = new Intent(getApplicationContext(), HistoryActivity.class);
+                Intent intent4 = new Intent(getApplicationContext(), HistoryPostsActivity.class);
                 startActivity(intent4);
                 break;
 //            case R.id.logout:

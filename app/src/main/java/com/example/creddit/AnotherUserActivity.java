@@ -155,6 +155,7 @@ public class AnotherUserActivity extends AppCompatActivity {
 
                 addToCustomFeed.setVisibility(View.VISIBLE);
                 addToCustomFeed.setTitle("Add to Custom Feed");
+                addToCustomFeed.setPrompt("Add to Custom Feed");
                 addToCustomFeed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

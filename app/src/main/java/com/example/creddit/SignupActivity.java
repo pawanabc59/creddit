@@ -182,6 +182,9 @@ public class SignupActivity extends AppCompatActivity {
 
                                                 mRef.child(uid).child("showNSFW").setValue(0);
                                                 mRef.child(uid).child("blurNSFW").setValue(0);
+                                                mRef.child(uid).child("optionalName").setValue(email);
+                                                mRef.child(uid).child("email").setValue(email);
+                                                mRef.child(uid).child("profileImage").setValue("null");
 
                                                 mRef2.child("search").child(uid).child("name").setValue(email);
                                                 mRef2.child("search").child(uid).child("profilePicture").setValue("null");

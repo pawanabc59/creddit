@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.creddit.Adapter.FollowingListAdapter;
 import com.example.creddit.Adapter.JoinedCommunityAdapter;
@@ -29,6 +31,8 @@ import java.util.ArrayList;
 public class JoinedCommunitiesFragment extends Fragment {
 
     RecyclerView joinedCommunityRecyclerView;
+    ImageView noJoinedCommunityImage;
+    TextView noCommunityJoinedTxt;
     ArrayList<JoinedCommunityModel> joinedCommunityModel;
     JoinedCommunityAdapter joindedCommunityAdapter;
     DatabaseReference mRef;
@@ -50,6 +54,8 @@ public class JoinedCommunitiesFragment extends Fragment {
         userId = user.getUid();
 
         joinedCommunityRecyclerView = view.findViewById(R.id.joined_communities_recycler);
+        noJoinedCommunityImage = view.findViewById(R.id.noCommunityJoined);
+        noCommunityJoinedTxt = view.findViewById(R.id.noCommunityJoinedTxt);
         joinedCommunityModel = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         joindedCommunityAdapter = new JoinedCommunityAdapter(getContext(), joinedCommunityModel);
@@ -59,24 +65,35 @@ public class JoinedCommunitiesFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 joinedCommunityModel.clear();
                 if (dataSnapshot.exists()){
-                    for (final DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                    if (dataSnapshot.getChildrenCount() <= 1){
+                        noJoinedCommunityImage.setVisibility(View.VISIBLE);
+                        joinedCommunityRecyclerView.setVisibility(View.GONE);
+                        noCommunityJoinedTxt.setVisibility(View.VISIBLE);
+                    } else {
 
-                        if (!dataSnapshot1.getKey().equals("1")) {
-                            mRef.child("subreddits").child(dataSnapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
-                                    String membersCount = String.valueOf(dataSnapshot3.child("members").getChildrenCount());
-                                    joinedCommunityModel.add(new JoinedCommunityModel(dataSnapshot3.child("subPicture").getValue(String.class),
-                                            dataSnapshot3.child("subName").getValue(String.class), dataSnapshot3.getKey(), "sub", "joinedCommunity",
-                                            feedName, membersCount));
-                                    joindedCommunityAdapter.notifyDataSetChanged();
-                                }
+                        noJoinedCommunityImage.setVisibility(View.GONE);
+                        joinedCommunityRecyclerView.setVisibility(View.VISIBLE);
+                        noCommunityJoinedTxt.setVisibility(View.GONE);
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                        for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                                }
-                            });
+                            if (!dataSnapshot1.getKey().equals("1")) {
+                                mRef.child("subreddits").child(dataSnapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
+                                        String membersCount = String.valueOf(dataSnapshot3.child("members").getChildrenCount());
+                                        joinedCommunityModel.add(new JoinedCommunityModel(dataSnapshot3.child("subPicture").getValue(String.class),
+                                                dataSnapshot3.child("subName").getValue(String.class), dataSnapshot3.getKey(), "sub", "joinedCommunity",
+                                                feedName, membersCount));
+                                        joindedCommunityAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
                         }
                     }
                 }

@@ -156,10 +156,23 @@ public class HomeFragment extends Fragment {
                                                     if (!hiddenList.contains(postKey)) {
                                                         if (showNSFWvalue == 0) {
                                                             if (dataSnapshot3.child("NSFW").getValue(Integer.class) == 0) {
-                                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class), dataSnapshot3.child("subId").getValue(String.class), dataSnapshot3.child("subType").getValue(String.class)));
+                                                                home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class),
+                                                                        dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class),
+                                                                        "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class),
+                                                                        dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime,
+                                                                        dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class),
+                                                                        dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class),
+                                                                        dataSnapshot3.child("subId").getValue(String.class), dataSnapshot3.child("subType").getValue(String.class),
+                                                                        dataSnapshot3.getKey()));
                                                             }
                                                         } else {
-                                                            home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class), dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class), "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class), dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class), dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class), dataSnapshot3.child("postType").getValue(String.class), dataSnapshot3.child("subId").getValue(String.class), dataSnapshot3.child("subType").getValue(String.class)));
+                                                            home_posts.add(new CardModel(dataSnapshot3.child("cardPostProfileImage").getValue(String.class),
+                                                                    dataSnapshot3.child("imagePath").getValue(String.class), dataSnapshot3.child("subName").getValue(String.class),
+                                                                    "Posted by " + dataSnapshot3.child("uploadedBy").getValue(String.class),
+                                                                    dataSnapshot3.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot3.child("userId").getValue(String.class),
+                                                                    dataSnapshot3.child("NSFW").getValue(Integer.class), dataSnapshot3.child("spoiler").getValue(Integer.class),
+                                                                    dataSnapshot3.child("postType").getValue(String.class), dataSnapshot3.child("subId").getValue(String.class),
+                                                                    dataSnapshot3.child("subType").getValue(String.class),dataSnapshot3.getKey()));
                                                         }
                                                         cardAdapter.notifyDataSetChanged();
                                                     }
@@ -288,10 +301,24 @@ public class HomeFragment extends Fragment {
                             }
                             if (showNSFWvalue == 0) {
                                 if (dataSnapshot1.child("NSFW").getValue(Integer.class) == 0) {
-                                    home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class), dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                    home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
+                                            dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
+                                            "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
+                                            dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
+                                            dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
+                                            dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
+                                            dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class),
+                                            dataSnapshot1.getKey()));
                                 }
                             } else {
-                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class), dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class), "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class), dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime, dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class), dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class), dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class)));
+                                home_posts.add(new CardModel(dataSnapshot1.child("cardPostProfileImage").getValue(String.class),
+                                        dataSnapshot1.child("imagePath").getValue(String.class), dataSnapshot1.child("subName").getValue(String.class),
+                                        "Posted by " + dataSnapshot1.child("uploadedBy").getValue(String.class),
+                                        dataSnapshot1.child("cardTitle").getValue(String.class), cardPostTime,
+                                        dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("NSFW").getValue(Integer.class),
+                                        dataSnapshot1.child("spoiler").getValue(Integer.class), dataSnapshot1.child("postType").getValue(String.class),
+                                        dataSnapshot1.child("subId").getValue(String.class), dataSnapshot1.child("subType").getValue(String.class),
+                                        dataSnapshot1.getKey()));
                             }
                             cardAdapter.notifyDataSetChanged();
                         }

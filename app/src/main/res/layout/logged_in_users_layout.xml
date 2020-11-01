@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/loggedInUserName"
-        android:layout_width="@dimen/_190sdp"
+        android:layout_width="@dimen/_160sdp"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="?attr/textcolor"
@@ -32,11 +32,21 @@
         android:layout_gravity="center"/>
 
     <ImageView
+        android:id="@+id/loggedInUser"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:src="@drawable/ic_done"
+        android:visibility="invisible"
+        />
+
+    <ImageView
         android:id="@+id/logout"
         android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:src="@drawable/ic_exit"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_10sdp"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:src="@drawable/ic_exit" />
 
 </LinearLayout>

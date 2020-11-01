@@ -11,4 +11,24 @@
         android:layout_height="match_parent"
         android:background="?attr/white_black"/>
 
+    <ImageView
+        android:id="@+id/noCommunityJoined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/join_community"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/noCommunityJoinedTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No community Joined"
+        android:textSize="25sp"
+        android:textColor="?attr/textcolor"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/_130sdp"
+        android:visibility="gone"
+        />
+
 </FrameLayout>
